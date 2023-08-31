@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ru" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <title>LitSer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;0,1000;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900;1,1000&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="libs/FontAwesome/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="static/style.bundle.css">
+</head>
+<body>
+
+<div class="path__from-pop popup__wrap">
+    <div class="popup__container">
+        <form enctype="multipart/form-data" method="post" action="">
+            <div class="form__title">
+                <span class="form__span">Начало</span>
+            </div>
+            <div class="file__upload">
+                <div class="form__label">
+                    <span>Полный путь до папки с файлами</span>
+                    <label class="label__block label__path-from" for="path-from">
+                        <i class="fa-duotone fa-house"></i>
+                        <input type="text" id="path-from" class="popup__input" />
+                    </label>
+                </div>
+                <div class="form__label">
+                    <span>Полный путь до папки переноса</span>
+                    <label class="label__block" for="path-to">
+                        <i class="fa-duotone fa-upload"></i>
+                        <input type="text" id="path-to" class="popup__input" />
+                    </label>
+                </div>
+                <div class="form__bth form__bth-right">
+                    <button type="button" class="form__cancel bth__path-cancel">Отмена</button>
+                    <button type="button" class="form__save bth__path-save">Сохранить</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<main id="wrapper">
+
+    <div class="window__button">
+        <div id="minimize-button" class="minimize-button top-bth-f"><i class="fa-solid fa-window-minimize"></i></div>
+        <div id="close-button" class="close-button top-bth-f"><i class="fa-solid fa-xmark"></i></div>
+    </div>
+
+    <section class="section__button">
+        <div class="container top__button-container">
+            <div class="top__button">
+                <div class="kit__button tb__bth"><i class="fa-duotone fa-filter-list"></i> Пресеты</div>
+                <div class="new__button tb__bth"><i class="fa-duotone fa-sliders-up"></i> Новый фильтр</div>
+                <div class="search__button tb__bth"><i class="fa-duotone fa-magnifying-glass"></i> Найти</div>
+            </div>
+            <div id="setting-button" class="setting-button"><i class="fa-duotone fa-gear"></i></div>
+        </div>
+    </section>
+
+    <section class="section__input">
+        <div class="container">
+            <div class="global__input">
+                <div class="gi__left">
+                    <i class="fa-duotone fa-house"></i>
+                    <span>
+                        C <i class="fa-duotone fa-angle-right"></i>
+                        Users <i class="fa-duotone fa-angle-right"></i>
+                        Public <i class="fa-duotone fa-angle-right"></i>
+                        Documents <i class="fa-duotone fa-angle-right"></i>
+                        IISExpress <i class="fa-duotone fa-angle-right"></i>
+                        Logs
+                    </span>
+                </div>
+                <div class="gi__right">
+                    <i class="fa-duotone fa-arrows-rotate"></i>
+                </div>
+            </div>
+            <span class="global__button">Перенести  </span>
+        </div>
+    </section>
+
+    <section class="section__table">
+        <div class="container">
+            <span class="search__result">
+                Найдено 10 файлов по запросу [Архив] в начале...
+            </span>
+        </div>
+
+        <div class="file__table">
+            <div class="file__thead">
+                <div class="container">
+                    <div class="sort__check"></div>
+                    <span class="sort__name">Имя <i class="fa-solid fa-caret-down"></i></span>
+                    <span class="sort__size">Размер</span>
+                    <span class="sort__type">Тип</span>
+                    <span class="sort__time">Изменён</span>
+                    <span class="sort__more"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="file__tbody">
+            <div class="file__table-ctx">
+                <div class="container">
+                    <div class="sort__check"><i class="fa-duotone fa-check"></i></div>
+                    <span class="sort__name"><i class="fa-duotone fa-file-word"></i> Архив_14.08.2023</span>
+                    <span class="sort__size">4.9 MB</span>
+                    <span class="sort__type">Word</span>
+                    <span class="sort__time">25 сент. 2022</span>
+                    <span class="sort__more"></span>
+                </div>
+            </div>
+            <div class="file__table-ctx">
+                <div class="container">
+                    <div class="sort__check"><i class="fa-duotone fa-check"></i></div>
+                    <span class="sort__name"><i class="fa-duotone fa-file-word"></i> Архив_14.08.2023</span>
+                    <span class="sort__size">4.9 MB</span>
+                    <span class="sort__type">Word</span>
+                    <span class="sort__time">25 сент. 2022</span>
+                    <span class="sort__more"></span>
+                </div>
+            </div>
+            <div class="file__table-ctx">
+                <div class="container">
+                    <div class="sort__check"><i class="fa-duotone fa-check"></i></div>
+                    <span class="sort__name"><i class="fa-duotone fa-file-word"></i> Архив_14.08.2023</span>
+                    <span class="sort__size">4.9 MB</span>
+                    <span class="sort__type">Word</span>
+                    <span class="sort__time">25 сент. 2022</span>
+                    <span class="sort__more"></span>
+                </div>
+            </div>
+            <div class="file__table-ctx">
+                <div class="container">
+                    <div class="sort__check"><i class="fa-duotone fa-check"></i></div>
+                    <span class="sort__name"><i class="fa-duotone fa-file-word"></i> Архив_14.08.2023</span>
+                    <span class="sort__size">4.9 MB</span>
+                    <span class="sort__type">Word</span>
+                    <span class="sort__time">25 сент. 2022</span>
+                    <span class="sort__more"></span>
+                </div>
+            </div>
+            <div class="file__table-ctx">
+                <div class="container">
+                    <div class="sort__check"><i class="fa-duotone fa-check"></i></div>
+                    <span class="sort__name"><i class="fa-duotone fa-file-word"></i> Архив_14.08.2023</span>
+                    <span class="sort__size">4.9 MB</span>
+                    <span class="sort__type">Word</span>
+                    <span class="sort__time">25 сент. 2022</span>
+                    <span class="sort__more"></span>
+                </div>
+            </div>
+            <div class="file__table-ctx">
+                <div class="container">
+                    <div class="sort__check"><i class="fa-duotone fa-check"></i></div>
+                    <span class="sort__name"><i class="fa-duotone fa-file-word"></i> Архив_14.08.2023</span>
+                    <span class="sort__size">4.9 MB</span>
+                    <span class="sort__type">Word</span>
+                    <span class="sort__time">25 сент. 2022</span>
+                    <span class="sort__more"></span>
+                </div>
+            </div>
+            <div class="file__table-ctx">
+                <div class="container">
+                    <div class="sort__check"><i class="fa-duotone fa-check"></i></div>
+                    <span class="sort__name"><i class="fa-duotone fa-file-word"></i> Архив_14.08.2023</span>
+                    <span class="sort__size">4.9 MB</span>
+                    <span class="sort__type">Word</span>
+                    <span class="sort__time">25 сент. 2022</span>
+                    <span class="sort__more"></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<script src="static/script.bundle.js"></script>
+
+</body>
+</html>

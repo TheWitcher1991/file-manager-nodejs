@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ru" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <title>LitSer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;0,1000;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900;1,1000&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="./libs/FontAwesome/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="./public/static/style.bundle.css">
+</head>
+<body>
+
+<div class="path__from-pop popup__wrap">
+    <div class="popup__container path__from-container">
+        <form enctype="multipart/form-data" method="post" action="">
+            <div class="form__title">
+                <span class="form__span">Начало</span>
+            </div>
+            <div class="file__upload">
+                <div class="form__label">
+                    <span>Полный путь до папки с файлами</span>
+                    <label class="label__block label__path-from" for="path-from">
+                        <i class="fa-duotone fa-house"></i>
+                        <input type="text" id="path-from" class="popup__input" />
+                    </label>
+                </div>
+                <div class="form__label">
+                    <span>Полный путь до папки переноса</span>
+                    <label class="label__block" for="path-to">
+                        <i class="fa-duotone fa-upload"></i>
+                        <input type="text" id="path-to" class="popup__input" />
+                    </label>
+                </div>
+                <div class="form__bth form__bth-right">
+                    <button type="button" class="form__cancel bth__path-cancel">Отмена</button>
+                    <button type="button" class="form__save bth__path-save">Сохранить</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="preset__from-pop popup__wrap">
+    <div class="popup__container preset__from-container">
+        <form enctype="multipart/form-data" method="post" action="">
+            <div class="form__title">
+                <span class="form__span">Новый пресет</span>
+            </div>
+            <div class="file__upload">
+                <div class="form__label">
+                    <span>Название</span>
+                    <label class="label__block" for="preset-name">
+                        <i class="fa-duotone fa-registered"></i>
+                        <input type="text" id="preset-name" class="popup__input" />
+                    </label>
+                </div>
+                <div class="form__label">
+                    <span>Полный путь до папки с файлами</span>
+                    <label class="label__block" for="preset-from">
+                        <i class="fa-duotone fa-house"></i>
+                        <input type="text" id="preset-from" class="popup__input" />
+                    </label>
+                </div>
+                <div class="form__label">
+                    <span>Полный путь до папки переноса</span>
+                    <label class="label__block" for="preset-to">
+                        <i class="fa-duotone fa-upload"></i>
+                        <input type="text" id="preset-to" class="popup__input" />
+                    </label>
+                </div>
+                <div class="form__bth form__bth-right">
+                    <button type="button" class="form__cancel bth__preset-cancel">Отмена</button>
+                    <button type="button" class="form__save bth__preset-save">Добавить</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="change__from-pop popup__wrap">
+    <div class="popup__container change__from-container">
+        <form enctype="multipart/form-data" method="post" action="">
+            <div class="form__title">
+                <span class="form__span">Настройки пресета</span>
+            </div>
+            <div class="file__upload">
+                <div class="flex__file-form">
+                    <div class="fll__left">
+                        <div class="form__label">
+                            <span>Название</span>
+                            <label class="label__block" for="preset-name">
+                                <i class="fa-duotone fa-registered"></i>
+                                <input type="text" id="change-name" class="popup__input" />
+                            </label>
+                        </div>
+                        <div class="form__label">
+                            <span>Полный путь до папки с файлами</span>
+                            <label class="label__block" for="preset-from">
+                                <i class="fa-duotone fa-house"></i>
+                                <input type="text" id="change-from" class="popup__input" />
+                            </label>
+                        </div>
+                        <div class="form__label">
+                            <span>Полный путь до папки переноса</span>
+                            <label class="label__block" for="preset-to">
+                                <i class="fa-duotone fa-upload"></i>
+                                <input type="text" id="change-to" class="popup__input" />
+                            </label>
+                        </div>
+
+                    </div>
+                    <div class="fll__right">
+                        <div class="form__label">
+                            <span>Тип файлов</span>
+                            <label class="label__block" for="preset-name">
+                                <i class="fa-duotone fa-question"></i>
+                                <input type="text" id="change-name" class="popup__input" placeholder="В формате .type" />
+                            </label>
+                        </div>
+                        <div class="form__label">
+                            <span>Значение в начале названия</span>
+                            <label class="label__block" for="preset-from">
+                                <i class="fa-duotone fa-hand-point-right"></i>
+                                <input type="text" id="change-from" class="popup__input" placeholder="Например, Архив" />
+                            </label>
+                        </div>
+                        <div class="form__label">
+                            <span>Значение в конце названия</span>
+                            <label class="label__block" for="preset-to">
+                                <i class="fa-duotone fa-hand-point-left"></i>
+                                <input type="text" id="change-to" class="popup__input" placeholder="Например, Архив" />
+                            </label>
+                        </div>
+                        <div class="form__label">
+                            <span>Размер до</span>
+                            <label class="label__block" for="preset-to">
+                                <i class="fa-duotone fa-scale-unbalanced-flip"></i>
+                                <input type="text" id="change-to" class="popup__input" placeholder="Значение в КБ" />
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form__bth form__bth-right">
+                    <button type="button" class="form__cancel bth__change-cancel">Отмена</button>
+                    <button type="button" class="form__save bth__change-save">Сохранить</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<main id="wrapper">
+
+    <div class="window__button" style="-webkit-app-region: drag">
+        <div style="-webkit-app-region: no-drag" id="minimize-button" class="minimize-button top-bth-f"><i class="fa-solid fa-window-minimize"></i></div>
+        <div style="-webkit-app-region: no-drag" id="close-button" class="close-button top-bth-f"><i class="fa-solid fa-xmark"></i></div>
+    </div>
+
+    <section class="section__button">
+        <div class="container top__button-container">
+            <label class="gbl__input" for="global__change">
+                <input type="checkbox" name="global__chang" id="global__change" value="1" checked disabled>
+                <span>Читать файлы в подкаталогах</span>
+            </label>
+            <div id="setting-button" class="setting-button"><i class="fa-duotone fa-gear"></i></div>
+        </div>
+    </section>
+
+    <section class="section__input">
+        <div class="container">
+            <input type="text" value="" style="display: none" class="global__to">
+            <input type="text" value="" style="display: none" class="global__from">
+            <input type="text" value="" style="display: none" class="global__preset">
+            <div class="global__input">
+                <div class="gi__left">
+                    <i class="fa-duotone fa-house"></i>
+                    <span class="home__path">
+
+                    </span>
+                </div>
+                <div class="gi__right update__files">
+                    <i class="fa-duotone fa-arrows-rotate"></i>
+                </div>
+            </div>
+
+            <div class="global__input">
+                <div class="gi__left">
+                    <i class="fa-duotone fa-upload"></i>
+                    <span class="home__to">
+                        <!-- C <i class="fa-duotone fa-angle-right"></i>
+                        Users <i class="fa-duotone fa-angle-right"></i>
+                        Public <i class="fa-duotone fa-angle-right"></i>
+                        Documents <i class="fa-duotone fa-angle-right"></i>
+                        IISExpress <i class="fa-duotone fa-angle-right"></i>
+                        Logs -->
+                    </span>
+                </div>
+            </div>
+
+            <div class="app__button">
+                <div class="top__button">
+                    <div class="kit__button tb__bth">
+                        <span class="tb__span kit__button-span"><i class="fa-duotone fa-filter-list"></i> Пресеты</span>
+                        <div class="tb__popup kit__popup" style="display:none;">
+                            <div class="preset__list">
+
+                            </div>
+                            <div class="tb__button">
+                                <button type="button" class="create__preset tb__apply">Добавить</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="new__button tb__bth">
+                        <span class="tb__span new__button-span"><i class="fa-duotone fa-sliders-up"></i> Сортировать</span>
+                        <div class="tb__popup new__popup" style="display:none;">
+                            <div class="preset__list">
+
+                            </div>
+                            <div class="tb__button">
+                                <button type="button" class="new__apply tb__apply">Применить</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="search__button tb__bth">
+                        <span class="tb__span search__button-span"><i class="fa-duotone fa-magnifying-glass"></i> Найти</span>
+                        <div class="tb__popup search__popup" style="display:none;">
+                            <label class="label__block-global" for="global__search">
+                                <i class="fa-duotone fa-magnifying-glass"></i>
+                                <input class="global__search" type="text" name="global__search" id="global__search" placeholder="Название файла..." />
+                            </label>
+                            <div class="tb__button">
+                                <button type="button" class="search__apply tb__apply">Найти</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="global__button-wrap">
+                    <div>
+                        <button type="button" class="global__button transfer__button"><i class="fa-duotone fa-up-from-line"></i></button>
+                        <span>Перенести</span>
+                    </div>
+                    <div>
+                        <button type="button" class="global__button copy__button"><i class="fa-duotone fa-copy"></i></button>
+                        <span>Копировать</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section__table">
+        <div class="container">
+            <span class="search__result">
+                <!-- Найдено 10 файлов по запросу [Архив] в начале... -->
+            </span>
+        </div>
+
+        <div class="file__table">
+            <div class="file__thead">
+                <div class="container">
+                    <!--<div class="sort__check"></div>-->
+                    <span class="sort__name">Имя <i class="fa-solid fa-caret-down"></i></span>
+                    <span class="sort__size">Размер</span>
+                    <span class="sort__type">Тип</span>
+                    <span class="sort__time">Изменён</span>
+                    <span class="sort__more"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="file__tbody">
+            <div class="loader">
+                <div class="sk-circle-bounce">
+                    <div class="loading-chat">
+                        <svg class="spinner" viewBox="0 0 50 50">
+                            <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<script src="./api.js"></script>
+
+
+</body>
+</html>
