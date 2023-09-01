@@ -1,3 +1,15 @@
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: $activeFg;
+}
+
+::-webkit-scrollbar-track {
+    background-color: $mainBg;
+}
+
 aside, details, main, figcaption, figure, footer, header, hgroup, menu, nav, section {
     display: block;
 }

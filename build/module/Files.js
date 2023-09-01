@@ -7,7 +7,16 @@ let { COPYFILE_EXCL } = fs.constants
 
 class Files {
 
-    static mb_strwidth (str) {
+    constructor(db, selector, from = '', to = '') {
+        this.db = db
+        this.selector = selector
+        this.from = from
+        this.to = to
+        this.preset = 'start'
+        this.activeFiles = []
+    }
+
+    mb_strwidth (str) {
         let i = 0,
             l = str.length,
             c = '',
@@ -29,7 +38,7 @@ class Files {
         return length;
     };
 
-    static mb_strimwidth (str, start, width, trimmarker) {
+    mb_strimwidth (str, start, width, trimmarker) {
         if (typeof trimmarker === 'undefined') trimmarker = '';
         let trimmakerWidth = this.mb_strwidth(trimmarker),
             i = start,
@@ -53,17 +62,69 @@ class Files {
         return trimmedStr
     }
 
-    static searchFiles (text, selector, from) {
-        let { count, files_ } = this.readFiles(from),
-            ul = document.querySelector(selector)
+    searchFiles (text, column, type) {
+        let { count, files_ } = this.readFiles(this.from),
+            ul = document.querySelector(this.selector)
 
         count = 0
 
         ul.innerHTML = ''
 
+        if ((column >= 1 && column <= 4) && (type >= 1 && type <= 2)) {
+            let name = document.querySelector('.sort__name'),
+                size = document.querySelector('.sort__size'),
+                file = document.querySelector('.sort__type'),
+                time = document.querySelector('.sort__time')
+
+            document.querySelectorAll('.sort__item').forEach(el => {
+                el.classList.remove('sort__active')
+                if (el.parentNode.querySelector('.sort__arrow')) {
+                    el.parentNode.querySelector('.sort__arrow').remove()
+                }
+            })
+
+            if (column === 1 && type === 1) {
+                files_.sort((x, y) => x.name > y.name ? 1 : -1)
+                name.classList.add('sort__active')
+                name.innerHTML += '<i class="fa-solid fa-caret-down sort__arrow"></i>'
+            } else if (column === 1 && type === 2) {
+                files_.sort((x, y) => x.name < y.name ? 1 : -1)
+                name.classList.add('sort__active')
+                name.innerHTML += '<i class="fa-solid fa-caret-up sort__arrow"></i>'
+            } else if (column === 2 && type === 1) {
+                files_.sort((x, y) => x.size > y.size ? 1 : -1)
+                size.classList.add('sort__active')
+                size.innerHTML += '<i class="fa-solid fa-caret-down sort__arrow"></i>'
+            } else if (column === 2 && type === 2) {
+                files_.sort((x, y) => x.size < y.size ? 1 : -1)
+                size.classList.add('sort__active')
+                size.innerHTML += '<i class="fa-solid fa-caret-up sort__arrow"></i>'
+            } else if (column === 3 && type === 1) {
+                files_.sort((x, y) => x.type > y.type ? 1 : -1)
+                file.classList.add('sort__active')
+                file.innerHTML += '<i class="fa-solid fa-caret-down sort__arrow"></i>'
+            } else if (column === 3 && type === 2) {
+                files_.sort((x, y) => x.type < y.type ? 1 : -1)
+                file.classList.add('sort__active')
+                file.innerHTML += '<i class="fa-solid fa-caret-up sort__arrow"></i>'
+            } else if (column === 4 && type === 1) {
+                files_.sort((x, y) => x.changed > y.changed ? 1 : -1)
+                time.classList.add('sort__active')
+                time.innerHTML += '<i class="fa-solid fa-caret-down sort__arrow"></i>'
+            } else if (column === 4 && type === 2) {
+                files_.sort((x, y) => x.changed < y.changed ? 1 : -1)
+                time.classList.add('sort__active')
+                time.innerHTML += '<i class="fa-solid fa-caret-up sort__arrow"></i>'
+            }
+        }
+
+        this.activeFiles = []
+
         files_.forEach((el, i) => {
 
-            if (el.name.search(text) !== -1) {
+            if (el.name.toLowerCase().search(text.toLowerCase()) !== -1) {
+
+                this.activeFiles.push(el)
 
                 count++
 
@@ -92,22 +153,25 @@ class Files {
                 data-name="${el.name}"
                 data-path="${el.path}"
                 >
-                    <input type="checkbox" class="files checkbox__files" name="file__${el.id}" id="file__${el.id}" style="display: none" value="${el.id}" 
-                    data-id="${el.id}"
-                    data-name="${el.name}"
-                    data-path="${el.path}"
-                    >
+                   
+                   
                     <div class="file__table-temp">
                         <div class="container">
-                            <!--<div class="sort__check"> </div>-->
+                            <div class="sort__check"> 
+                                <input type="checkbox" class="files checkbox__files" name="file__${el.id}" id="file__${el.id}" value="${el.id}" 
+                                    data-id="${el.id}"
+                                    data-name="${el.name}"
+                                    data-path="${el.path}"
+                                />
+                            </div>
                             <span class="sort__name">
                                 ${type}
-                                ${Files.mb_strimwidth(el.name, 0, 40, '...')}
+                                ${this.mb_strimwidth(el.name, 0, 40, '...')}
                             </span>
                             <span class="sort__size">${(el.size / 1024 / 1024).toFixed(2)} МБ</span>
                             <span class="sort__type">${el.type}</span>
                             <span class="sort__time">${time}</span>
-                            <span class="sort__more"><i class="fa-duotone fa-trash"></i></span>
+                            <span class="sort__more"></span>
                         </div>
                     </div>
                 </label>
@@ -118,20 +182,20 @@ class Files {
         })
     }
 
-    static readFiles(dir, files_) {
-        files_ = files_ || []
-        let files = fs.readdirSync(dir)
+    readFiles(from = '') {
+        let files_ = []
+        let files = fs.readdirSync(this.from)
         let count = 0
 
         for (let i in files){
 
             count++;
 
-            let name = dir + '/' + files[i],
+            let name = this.from + '/' + files[i],
                 stats = fs.statSync(name)
 
             if (stats.isDirectory()) {
-                this.readFiles(name, files_)
+                this.readFiles(files_)
             } else {
                 files_.push({
                     id: count,
@@ -145,17 +209,30 @@ class Files {
             }
         }
 
+
         return {
             count: count,
             files_
         }
     }
 
-    static copyFiles(dir, files_) {
+    trashFiles(files_) {
         let arr = []
 
         files_.forEach((el, i) => {
-            fs.copyFile(String(el.path), String(`${dir}\\${el.name}`), COPYFILE_EXCL, err => {
+            fs.unlink(String(el.path), err => {
+                if (err) arr.push(el.name)
+            })
+        })
+
+        alert('Файлы успешно удалён')
+    }
+
+    copyFiles(files_) {
+        let arr = []
+
+        files_.forEach((el, i) => {
+            fs.copyFile(String(el.path), String(`${this.to}\\${el.name}`), COPYFILE_EXCL, err => {
                 if (err) arr.push(el.name)
             });
         })
@@ -163,11 +240,11 @@ class Files {
         alert('Файлы успешно скопированы')
     }
 
-    static renameFiles(dir, files_) {
+    renameFiles(files_) {
         let arr = []
 
         files_.forEach((el, i) => {
-            fs.rename(String(el.path), String(`${dir}\\${el.name}`), err => {
+            fs.rename(String(el.path), String(`${this.to}\\${el.name}`), err => {
                 if (err) arr.push(el.name)
             })
         })
@@ -175,16 +252,64 @@ class Files {
         alert('Файлы успешно перемещены')
     }
 
-    static updatePath (path, selector, preset) {
-        let { count, files_ } = this.readFiles(path),
-            ul = document.querySelector(selector)
+    sortFiles(column, type) {
+        let { count, files_ } = this.readFiles(this.from),
+            ul = document.querySelector(this.selector)
 
+        ul.innerHTML = ''
 
-        document.querySelector('.search__result').innerHTML = `Найдено ${count} файлов`
+        if (this.activeFiles.length > 0)
+            files_ = this.activeFiles
 
-        files_.forEach((el, i) => {
+        if ((column >= 1 && column <= 4) && (type >= 1 && type <= 2)) {
+            let name = document.querySelector('.sort__name'),
+                size = document.querySelector('.sort__size'),
+                file = document.querySelector('.sort__type'),
+                time = document.querySelector('.sort__time')
 
+            document.querySelectorAll('.sort__item').forEach(el => {
+                el.classList.remove('sort__active')
+                if (el.parentNode.querySelector('.sort__arrow')) {
+                    el.parentNode.querySelector('.sort__arrow').remove()
+                }
+            })
 
+            if (column === 1 && type === 1) {
+                files_.sort((x, y) => x.name > y.name ? 1 : -1)
+                name.classList.add('sort__active')
+                name.innerHTML += '<i class="fa-solid fa-caret-down sort__arrow"></i>'
+            } else if (column === 1 && type === 2) {
+                files_.sort((x, y) => x.name < y.name ? 1 : -1)
+                name.classList.add('sort__active')
+                name.innerHTML += '<i class="fa-solid fa-caret-up sort__arrow"></i>'
+            } else if (column === 2 && type === 1) {
+                files_.sort((x, y) => x.size > y.size ? 1 : -1)
+                size.classList.add('sort__active')
+                size.innerHTML += '<i class="fa-solid fa-caret-down sort__arrow"></i>'
+            } else if (column === 2 && type === 2) {
+                files_.sort((x, y) => x.size < y.size ? 1 : -1)
+                size.classList.add('sort__active')
+                size.innerHTML += '<i class="fa-solid fa-caret-up sort__arrow"></i>'
+            } else if (column === 3 && type === 1) {
+                files_.sort((x, y) => x.type > y.type ? 1 : -1)
+                file.classList.add('sort__active')
+                file.innerHTML += '<i class="fa-solid fa-caret-down sort__arrow"></i>'
+            } else if (column === 3 && type === 2) {
+                files_.sort((x, y) => x.type < y.type ? 1 : -1)
+                file.classList.add('sort__active')
+                file.innerHTML += '<i class="fa-solid fa-caret-up sort__arrow"></i>'
+            } else if (column === 4 && type === 1) {
+                files_.sort((x, y) => x.changed > y.changed ? 1 : -1)
+                time.classList.add('sort__active')
+                time.innerHTML += '<i class="fa-solid fa-caret-down sort__arrow"></i>'
+            } else if (column === 4 && type === 2) {
+                files_.sort((x, y) => x.changed < y.changed ? 1 : -1)
+                time.classList.add('sort__active')
+                time.innerHTML += '<i class="fa-solid fa-caret-up sort__arrow"></i>'
+            }
+        }
+
+        files_.forEach((el) => {
 
             let time = new Date(el.changed).toLocaleString('ru', {
                 year: 'numeric',
@@ -211,22 +336,24 @@ class Files {
                 data-name="${el.name}"
                 data-path="${el.path}"
                 >
-                    <input type="checkbox" class="files checkbox__files" name="file__${el.id}" id="file__${el.id}" style="display: none" value="${el.id}" 
-                    data-id="${el.id}"
-                    data-name="${el.name}"
-                    data-path="${el.path}"
-                    >
+                  
                     <div class="file__table-temp">
                         <div class="container">
-                            <!--<div class="sort__check"> </div>-->
+                            <div class="sort__check"> 
+                                <input type="checkbox" class="files checkbox__files" name="file__${el.id}" id="file__${el.id}" value="${el.id}" 
+                                    data-id="${el.id}"
+                                    data-name="${el.name}"
+                                    data-path="${el.path}"
+                                />
+                            </div>
                             <span class="sort__name">
                                 ${type}
-                                ${Files.mb_strimwidth(el.name, 0, 40, '...')}
+                                ${this.mb_strimwidth(el.name, 0, 40, '...')}
                             </span>
                             <span class="sort__size">${(el.size / 1024 / 1024).toFixed(2)} МБ</span>
                             <span class="sort__type">${el.type}</span>
                             <span class="sort__time">${time}</span>
-                            <span class="sort__more"><i class="fa-duotone fa-trash"></i></span>
+                            <span class="sort__more"></span>
                         </div>
                     </div>
                 </label>
@@ -235,18 +362,93 @@ class Files {
         })
     }
 
-    static updatePreset(db, preset) {
-        for (let x in db) {
-            let tmp = String(Object.keys(db[x])[0])
-            for (let y in db[x]) {
+    updatePath () {
+        let { count, files_ } = this.readFiles(this.from),
+            ul = document.querySelector(this.selector)
+
+        files_.sort((x, y) => x.name > y.name ? 1 : -1)
+
+        ul.innerHTML = ''
+
+        document.querySelectorAll('.sort__item').forEach(el => {
+            el.classList.remove('sort__active')
+            if (el.parentNode.querySelector('.sort__arrow')) {
+                el.parentNode.querySelector('.sort__arrow').remove()
+            }
+        })
+
+        document.querySelector('.sort__name').classList.add('sort__active')
+        document.querySelector('.sort__name').innerHTML += '<i class="fa-solid fa-caret-down sort__arrow"></i>'
+
+        document.querySelector('.search__result').innerHTML = `Найдено ${count} файлов`
+
+        files_.forEach((el, i) => {
+
+            let time = new Date(el.changed).toLocaleString('ru', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                timezone: 'UTC'
+            })
+
+            let type = '<i class="fa-duotone fa-file"></i>'
+
+            if (el.type === '.docx' || el.type === '.doc' || el.type === '.docm' || el.type === 'dot') type = '<i class="fa-duotone fa-file-word"></i>'
+            if (el.type === '.pdf') type = '<i class="fa-duotone fa-file-pdf"></i>'
+            // if (el.type === '.pptx' || el.type === '.pptm' || el.type === '.ppt') type = '<i class="fa-duotone fa-presentation-screen"></i>'
+            if (el.type === '.accdb' || el.type === '.sql' || el.type === '.db' || el.type === '.mdb') type = '<i class="fa-duotone fa-database"></i>'
+            if (el.type === '.zip' || el.type === '.7z' || el.type === '.cab' || el.type === '.tar' || el.type === '.deb' || el.type === '.ace' || el.type === '.pak')
+                type = '<i class="fa-duotone fa-file-zipper"></i>'
+            if (el.type === '.png' || el.type === '.jpeg' || el.type === '.jpg' || el.type === '.ico' || el.type === '.pict' || el.type === '.gif' || el.type === '.bmp')
+                type = '<i class="fa-duotone fa-file-image"></i>'
+            if (el.type === '.jar') type = '<i class="fa-brands fa-java"></i>'
+
+            ul.innerHTML += `
+                <label class="file__table-ctx file__ctx-${el.id}" for="file__${el.id}" 
+                data-id="${el.id}"
+                data-name="${el.name}"
+                data-path="${el.path}"
+                >
+                  
+                    <div class="file__table-temp">
+                        <div class="container">
+                            <div class="sort__check"> 
+                                <input type="checkbox" class="files checkbox__files" name="file__${el.id}" id="file__${el.id}" value="${el.id}" 
+                                    data-id="${el.id}"
+                                    data-name="${el.name}"
+                                    data-path="${el.path}"
+                                />
+                            </div>
+                            <span class="sort__name">
+                                ${type}
+                                ${this.mb_strimwidth(el.name, 0, 40, '...')}
+                            </span>
+                            <span class="sort__size">${(el.size / 1024 / 1024).toFixed(2)} МБ</span>
+                            <span class="sort__type">${el.type}</span>
+                            <span class="sort__time">${time}</span>
+                            <span class="sort__more"></span>
+                        </div>
+                    </div>
+                </label>
+            `
+        })
+
+        return true
+    }
+
+    updatePreset() {
+        document.querySelector('.preset__list').innerHTML = ''
+        for (let x in this.db) {
+            let tmp = String(Object.keys(this.db[x])[0])
+            for (let y in this.db[x]) {
                 document.querySelector('.preset__list').innerHTML += `
                     <div class="preset__item-wrap">
                         <label class="preset__item" for="${tmp}">
-                            <input type="radio" name="preset" id="${tmp}" value="${db[x][y].name}" ${tmp === preset ? 'checked' : ''}
-                                data-from="${db[x][y].pathFrom}"
-                                data-to="${db[x][y].pathTo}"
+                            <input type="radio" class="preset" name="preset" id="${tmp}" value="${this.db[x][y].name}" ${tmp === this.preset ? 'checked' : ''}
+                                data-from="${this.db[x][y].pathFrom}"
+                                data-to="${this.db[x][y].pathTo}"
                                 data-id="${tmp}">
-                            <span class="">${db[x][y].name}</span>
+                            <span class="">${this.db[x][y].name}</span>
                         </label>
                         <div>
                             <i class="fa-duotone fa-wrench setting__preset-${tmp}"></i>
@@ -258,30 +460,52 @@ class Files {
         }
     }
 
-    static loadFiles(db, selector) {
+    setPreset(id = '', from = '', to = '') {
+
+        if (id.trim() === '')
+            this.preset = 'start'
+        else {
+            console.log(id)
+            this.preset = id
+            this.from = from
+            this.to = to
+            this.loadFiles()
+        }
+
+    }
+
+    updateDB(db) {
+        this.db = db
+    }
+
+    loadFiles() {
 
         let path = '',
             to = '',
             preset = ''
 
-        for (let x in db) {
-            for (let y in db[x]) {
-                path = db[x][y].pathFrom
-                to = db[x][y].pathTo
-                preset = String(Object.keys(db[x])[0])
+        for (let x in this.db) {
+            for (let y in this.db[x]) {
+                preset = String(Object.keys(this.db[x])[0])
+                if (preset === this.preset) {
+                    path = this.db[x][y].pathFrom
+                    to = this.db[x][y].pathTo
+                }
             }
-            break
         }
 
-        document.querySelector('.home__path').innerHTML = path
-        document.querySelector('.home__to').innerHTML = to
+        this.from = String(path)
+        this.to = String(to)
 
-        document.querySelector('.global__from').value = path
-        document.querySelector('.global__to').value = to
-        document.querySelector('.global__preset').value = to
+        document.querySelector('.home__path').innerHTML = this.from
+        document.querySelector('.home__to').innerHTML = this.to
 
-        this.updatePreset(db, preset)
-        this.updatePath(path, selector, preset)
+        document.querySelector('.global__from').value = this.from
+        document.querySelector('.global__to').value = this.to
+        document.querySelector('.global__preset').value = this.preset
+
+        this.updatePreset()
+        this.updatePath()
 
     }
 

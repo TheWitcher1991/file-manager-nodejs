@@ -7,7 +7,7 @@
     bottom: 0;
     left: 0;
     right: 0;
-    z-index: 1000;
+    z-index: 10000000;
     background: $rbg650;
 }
 
@@ -37,6 +37,16 @@
         font-weight: 700;
         font-size: 20px;
         display: block;
+    }
+
+    i {
+        font-size: 21px;
+        cursor: pointer;
+        transition: all 0.1s linear;
+
+        &:hover {
+            color: $actHover;
+        }
     }
 }
 

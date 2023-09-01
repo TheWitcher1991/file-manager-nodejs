@@ -11,16 +11,16 @@ const path = require('path')
 const { app, BrowserWindow, ipcMain, globalShortcut, dialog } = require('electron')
 const { spawn } = require('child_process')
 
-const log = require('electron-log');
+// const log = require('electron-log');
 
 require('./src/app')
 
 const { GLOBAL } = require('./src/utils/config')
 const pjson = require('./package.json')
 
-log.transports.console.level = 'info'
-log.transports.file.level = 'info'
-log.info('App starting...')
+// log.transports.console.level = 'info'
+// log.transports.file.level = 'info'
+// log.info('App starting...')
 const appversion = pjson.version
 
 let expressPath = './src/app.js'
@@ -33,10 +33,10 @@ if (process.mas) app.setName(pjson.name)
 
 let mainWindow = null
 
-const sendStatusToWindow = (text, ver) => {
+/* const sendStatusToWindow = (text, ver) => {
     log.info(text)
     mainWindow?.webContents.send('message', text, ver)
-}
+} */
 
 function registerGlobalShortcuts() {
     globalShortcut.register('CommandOrControl+Shift+L', () => {
@@ -75,11 +75,11 @@ function createWindow () {
     mainWindow = new BrowserWindow(windowOptions)
     mainWindow.setMenuBarVisibility(false)
     mainWindow.setProgressBar(0.5)
-    mainWindow.webContents.openDevTools()
+    // mainWindow.webContents.openDevTools()
     // mainWindow.loadURL(path.join('file://', __dirname, '/src/index.html'))
     mainWindow.loadURL('http://localhost:8080/')
 
-    log.info(mainWindow);
+    // log.info(mainWindow);
 
     if (debug) {
         mainWindow.webContents.openDevTools()

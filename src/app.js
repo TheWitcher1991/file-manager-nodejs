@@ -46,4 +46,4 @@ app.use(GLOBAL.ROUTES.index.url, csrfMiddleware.csrfProtection, baseRouter)
 let server = http.createServer(app);
 server.listen(GLOBAL.PORT)
 
-server.on('listening', () => console.log(`Сервер запущен и ожидает подключения на порту ${GLOBAL.PORT}...`));
+server.on('listening', () => console.log(`Server start on port ${GLOBAL.PORT}...`));

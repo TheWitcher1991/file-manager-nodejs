@@ -1,13 +1,16 @@
 #wrapper {
     width: 100%;
     height: 100vh;
+    padding: 0 0 10px 0;
     display: flex;
     flex-direction: column;
 }
 
 .section__table {
     flex: 1 1 0;
-    overflow-x: auto;
+    position: relative;
+    display: flex;
+    flex-direction: column;
 }
 
 .window__button {
@@ -96,8 +99,12 @@
 
 .setting-button {
     color: $mainFg;
-    font-size: 17px;
+    font-size: 19px;
     cursor: pointer;
+
+    &:hover {
+        color: $activeFg
+    }
 }
 
 .label__block-global {
@@ -132,7 +139,7 @@
 .gbl__input {
     display: flex;
     align-items: center;
-    cursor: pointer;
+    cursor: no-drop;
 
     input {
         outline: none;
@@ -151,7 +158,6 @@
     position: absolute;
     display: none;
     background: #fff;
-    z-index: 10;
     box-shadow: 0px 0px 50px 0px rgba(82,63,105,.15);
     top: 35px;
     border-radius: 10px;
@@ -164,6 +170,7 @@
     animation-duration: .26s;
     animation-fill-mode: both;
     animation-name: animation-open-popup;
+    z-index: 1111;
 
     .preset__item-wrap {
         display: flex;
@@ -282,6 +289,7 @@
             animation-name: animation-open-popup;
             left: 0;
             right: 0;
+            z-index: 1111;
             margin: 0 auto;
         }
     }
@@ -306,12 +314,36 @@
     border: 0;
     transition: all .2s linear;
     outline: none;
+
+    &:hover {
+        background: $actHover;
+    }
 }
 
-.global__button:hover {
-    background: $actHover;
-}
 
+.global__button-tran {
+    border-radius: 6px;
+    height: 36px;
+    width: 80px;
+    display: none;
+    justify-content: center;
+    color: $mainFg;
+    align-items: center;
+    font-weight: 500;
+    font-size: 15px;
+    background: $mainBg;
+    cursor: pointer;
+    border: 0;
+    transition: all .2s linear;
+    border: 1px solid $fg300;
+    outline: none;
+
+    &:hover {
+        background: #b51308;
+        color: $mainBg;
+        border-color: #b51308;
+    }
+}
 
 .global__input {
     width: 100%;
@@ -340,6 +372,7 @@
     justify-content: space-between;
     width: 100%;
     margin: 16px 0 0 0;
+    z-index: 11111;
 }
 
 .gi__left {
@@ -409,14 +442,13 @@
     .sort__check {
         display: flex;
         align-items: center;
-        flex: 1 0 0;
+        width: 50px;
         white-space: nowrap;
     }
 
     .sort__name {
         display: flex;
         align-items: center;
-        color: $mainFg;
         flex: 1 1 350px;
         white-space: nowrap;
     }
@@ -455,6 +487,10 @@
         flex: 0 1 35px;
         white-space: nowrap;
         padding: 0 0 0 20px;
+    }
+
+    .sort__active {
+        color: $mainFg
     }
 }
 
@@ -500,7 +536,7 @@
         display: flex;
         align-items: center;
         color: $check ;
-        flex: 1 0 0;
+        width: 50px;
         white-space: nowrap;
 
         i {
@@ -546,10 +582,12 @@
         flex: 0 1 35px;
         white-space: nowrap;
         padding: 0 0 0 20px;
+        position: relative;
 
         i {
             transition: all 0.1s linear;
             font-size: 15px;
+
 
             &:hover {
                 color: #b51308;
@@ -575,12 +613,14 @@
 
 .file__tbody {
     position: relative;
+    flex: 1 1 0;
+    overflow-x: auto;
 }
 
 .loader {
     width: 100%;
     height: 100%;
-    top: 75px;
+    top: 0px;
     left: 0;
     position: absolute;
 }
@@ -607,5 +647,117 @@
 
     .fll__left {
         margin: 0 16px 0 0;
+    }
+}
+
+.container__table-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.container__table-title button {
+    color: $mainFg;
+    align-items: center;
+    font-weight: 700;
+    display: none;
+    font-size: 13px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: all .2s linear;
+    cursor: pointer;
+    background: transparent;
+    background: $mainBg;
+    font-family: $Nunito ;
+    margin: 0 0 0 16px;
+    border: 1px solid $fg300;
+
+    &:hover {
+        background: #b51308;
+        color: $mainBg;
+        border-color: #b51308;
+    }
+
+    i {
+        margin: 0 6px 0 0;
+    }
+}
+
+.fixed__table {
+    position: sticky;
+    top: 0;
+    z-index: 111;
+    background: $mainBg;
+}
+
+.preset__list {
+    display: block;
+    max-height: 250px;
+    overflow: hidden;
+    padding: 0 6px 0 0;
+    overflow-y: auto;
+}
+
+.sort__list {
+    display: block;
+
+    label {
+        display: block;
+        width: 100%;
+        margin: 0 0 16px 0;
+
+        > span {
+            color: $mainFg;
+            font-weight: 700;
+            font-size: 14px;
+            padding: 0 0 4px 0;
+            display: block;
+        }
+
+        > select {
+            width: 100%;
+            background: $fg500;
+            padding: 8px 10px;
+            border-radius: 6px;
+            border: 1px solid rgba(0,0,0,0);
+            transition: all .2s ease-in 0s;
+            outline: 0;
+            font-family: $Nunito;
+            appearance: none;
+
+            &:hover {
+                border-color: $activeFg;
+                background: transparent;
+            }
+        }
+    }
+}
+
+.info__block {
+    text-align: center;
+
+    > i {
+        font-size: 38px;
+        color: $activeFg;
+    }
+
+    > span {
+        display: block;
+        margin: 3px 0 2px 0;
+        font-weight: 700;
+        font-size: 17px;
+    }
+
+    > p {
+        color: $fg400;
+        font-size: 14px;
+        padding: 0;
+        margin: 0 0 4px 0;
+    }
+
+    > div span {
+        display: block;
+        color: $fg400;
+        font-size: 14px;
     }
 }

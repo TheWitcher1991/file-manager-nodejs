@@ -30,6 +30,8 @@ const db = require(process.cwd() + '/build/db/db.json')
 
 let size = Object.keys(db).length
 
+let _fs = Files
+
 if (size <= 0) {
     document.querySelector('.path__from-pop').style.display = 'flex'
     document.querySelector('.path__from-container').style.display = 'block'
@@ -61,22 +63,28 @@ if (size <= 0) {
             document.querySelector('.path__from-pop').style.display = 'none'
             document.querySelector('.path__from-container').style.display = 'none'
 
+            _fs = new Files(db, '.file__tbody')
+
             setTimeout(() => {
                 document.querySelector('.loader').style.display = 'none'
-                Files.loadFiles(db, '.file__tbody')
+                _fs.loadFiles()
+                _fs.setPreset()
             }, 1000)
 
         }
 
     })
 } else {
+
+    _fs = new Files(db, '.file__tbody')
+
     setTimeout(() => {
         document.querySelector('.loader').style.display = 'none'
-        Files.loadFiles(db, '.file__tbody')
+        _fs.loadFiles()
+        _fs.setPreset()
     }, 1000)
 
 }
-
 
 document.addEventListener('DOMContentLoaded', () => {
     const a = (main, tmp) => {
@@ -92,11 +100,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.querySelector('.new__popup').style.display = 'none';
             }
             if (main === '.kit__button-span') {
-                document.querySelector('.new__popup').classList.remove('tb__bth-active')
+                document.querySelector('.new__button-span').classList.remove('tb__bth-active')
                 document.querySelector('.search__button-span').classList.remove('tb__bth-active')
             } else if (main === '.new__button-span') {
                 document.querySelector('.kit__button-span').classList.remove('tb__bth-active')
-                document.querySelector('.search__popup').classList.remove('tb__bth-active')
+                document.querySelector('.search__button-span').classList.remove('tb__bth-active')
             } else if (main === '.search__button-span') {
                 document.querySelector('.kit__button-span').classList.remove('tb__bth-active')
                 document.querySelector('.new__button-span').classList.remove('tb__bth-active')
@@ -114,12 +122,6 @@ document.addEventListener('DOMContentLoaded', () => {
     a('.new__button-span', '.new__popup')
     a('.search__button-span', '.search__popup')
 
-    document.querySelector('.search__apply').addEventListener('click', function () {
-        let text = document.querySelector('#global__search')
-
-        Files.searchFiles(text.value, '.file__tbody', document.querySelector('.global__from').value)
-    })
-
     document.querySelector('.update__files').addEventListener('click', function () {
         document.querySelector('.file__tbody').innerHTML = `
             <div class="loader">
@@ -133,8 +135,18 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>`
         setTimeout(() => {
             document.querySelector('.loader').style.display = 'none'
-            Files.updatePath(document.querySelector('.global__from').value, '.file__tbody')
+            _fs.updatePath()
         }, 1000)
+    })
+
+    document.querySelector('.setting-button').addEventListener('click', function () {
+        document.querySelector('.info__from-pop').style.display = 'flex'
+        document.querySelector('.info__from-container').style.display = 'block'
+    })
+
+    document.querySelector('.close__info').addEventListener('click', function () {
+        document.querySelector('.info__from-pop').style.display = 'none'
+        document.querySelector('.info__from-container').style.display = 'none'
     })
 
     document.querySelector('.tb__apply').addEventListener('click', function () {
@@ -197,6 +209,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.querySelector('.preset__from-pop').style.display = 'none'
                 document.querySelector('.preset__from-container').style.display = 'none'
 
+                _fs.updateDB(db)
+
             }
     })
 
@@ -215,41 +229,83 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 
     document.querySelector('.preset__list').addEventListener('click', function (event) {
-        const target = this.querySelectorAll('input')
-        if (!target) return false
+        const target = this.querySelectorAll('input');
+        if (!target) return false;
 
-        target.forEach(el => {
+        [].forEach.call(target, el => {
             el.onclick = () => {
-                let elems = this.querySelector('input:checked');
-                tmpf_.id = elems.dataset.id
-                tmpf_.from = elems.dataset.from
-                tmpf_.to = elems.dataset.to
+                tmpf_['id'] = el.dataset.id
+                tmpf_['from'] = el.dataset.from
+                tmpf_['to'] = el.dataset.to
+
+                _fs.setPreset(tmpf_['id'], tmpf_['from'], tmpf_['to'])
             }
         })
 
-        document.querySelector('.home__path').innerHTML = tmpf_.from
-        document.querySelector('.home__to').innerHTML = tmpf_.to
-        document.querySelector('.home__preset').innerHTML = tmpf_.id
-
-        document.querySelector('.global__from').value = tmpf_.from
-        document.querySelector('.global__to').value = tmpf_.to
-
-        document.querySelector('.file__tbody').innerHTML = ''
-
-        Files.updatePath(String(tmpf_.from), '.file__tbody')
     })
 
     let files_ = []
+
+    document.querySelector('.file__table').addEventListener('click', function (event) {
+        const target = this.querySelector('input')
+        if (!target) return false
+
+        files_ = []
+
+        if (target.checked) {
+            target.removeAttribute('checked')
+            target.checked = false
+        } else {
+            target.setAttribute('checked', 'true')
+            target.checked = true
+        }
+
+        let check = this.parentNode.parentNode.querySelectorAll('.file__tbody input')
+
+        check.forEach(el => {
+            if (target.checked) {
+                el.setAttribute('checked', 'true')
+                el.checked = true
+
+                files_.push({
+                    id: el.dataset.id,
+                    name: el.dataset.name,
+                    path: el.dataset.path,
+                })
+            } else {
+                el.removeAttribute('checked')
+                el.checked = false
+            }
+
+
+        })
+
+        let keySize = Object.keys(files_).length
+
+        if (keySize > 0) {
+            document.querySelector('.search__result').innerHTML = `Выбрано ${keySize} файлов`
+            document.querySelector('.global__button-tran').style.display = 'flex'
+        } else {
+            document.querySelector('.search__result').innerHTML = `Выбрано 0 файлов`
+            document.querySelector('.global__button-tran').style.display = 'none'
+        }
+    })
 
     document.querySelector('.file__tbody').addEventListener('click', function (event) {
         const target = this.querySelectorAll('input')
         if (!target) return false
 
-        target.forEach(el => {
+        let check =  document.querySelector('.file__table input')
 
+        if (check.checked) {
+            check.removeAttribute('checked')
+            check.checked = false
+            files_ = []
+        }
+
+        target.forEach(el => {
             el.onclick = () => {
                 let elems = this.querySelectorAll('input:checked');
-                console.log(elems)
                 files_ = [].map.call(elems, (obj) => {
                     return {
                         id: obj.dataset.id,
@@ -262,7 +318,40 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let keySize = Object.keys(files_).length
 
-        document.querySelector('.search__result').innerHTML = `Выбрано ${keySize} файлов`
+        if (keySize > 0) {
+            document.querySelector('.search__result').innerHTML = `Выбрано ${keySize} файлов`
+            document.querySelector('.global__button-tran').style.display = 'flex'
+        } else {
+            document.querySelector('.search__result').innerHTML = `Выбрано 0 файлов`
+            document.querySelector('.global__button-tran').style.display = 'none'
+        }
+
+    })
+
+    document.querySelector('.search__apply').addEventListener('click', function () {
+        let text = document.querySelector('#global__search'),
+            column = document.querySelector('#sort__column'),
+            type   = document.querySelector('#sort__type')
+
+        _fs.searchFiles(text.value, Number(column.value), Number(type.value))
+    })
+
+    document.querySelector('.new__apply').addEventListener('click', function () {
+        let column = document.querySelector('#sort__column'),
+            type   = document.querySelector('#sort__type')
+
+        _fs.sortFiles(Number(column.value), Number(type.value))
+    })
+
+    document.querySelector('.delete__button').addEventListener('click', function () {
+        let keySize = Object.keys(files_).length
+
+        if (keySize <= 0) {
+            alert('Выберите файлы')
+        } else {
+            _fs.trashFiles(files_)
+            _fs.updatePath()
+        }
     })
 
     document.querySelector('.copy__button').addEventListener('click', function () {
@@ -271,8 +360,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (keySize <= 0) {
             alert('Выберите файлы')
         } else {
-            let to = document.querySelector('.global__to').value
-            Files.copyFiles(to, files_)
+            _fs.copyFiles(files_)
         }
     })
 
@@ -282,24 +370,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (keySize <= 0) {
             alert('Выберите файлы')
         } else {
-            let from = document.querySelector('.global__from').value,
-                to = document.querySelector('.global__to').value
-            Files.renameFiles(to, files_)
-
-            document.querySelector('.file__tbody').innerHTML = `
-            <div class="loader">
-                <div class="sk-circle-bounce">
-                    <div class="loading-chat">
-                        <svg class="spinner" viewBox="0 0 50 50">
-                            <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
-                        </svg>
-                    </div>
-                </div>
-            </div>`
-            setTimeout(() => {
-                document.querySelector('.loader').style.display = 'none'
-                Files.updatePath(from, '.file__tbody')
-            }, 1000)
+            _fs.renameFiles(files_)
+            _fs.updatePath()
         }
     })
 })
