@@ -7,7 +7,7 @@ const path = require('path'),
 
 const PATHS = {
     src: path.join(__dirname, './src'),
-    build: path.join(__dirname, '/build')
+    build: path.join(__dirname, '/dist')
 };
 
 const mode = process.env.NODE_ENV || 'development'
@@ -19,7 +19,7 @@ module.exports = {
         `${PATHS.src}/styles/index.scss`
     ],
     output: {
-        path: path.join(__dirname, './build/public/static'),
+        path: path.join(__dirname, './dist/public/static'),
         filename: 'script.bundle.js'
     },
     devtool: 'source-map',

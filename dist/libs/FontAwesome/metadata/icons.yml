@@ -44289,7 +44289,7 @@ shapes:
   search:
     terms:
       - blocks
-      - build
+      - dist
       - circle
       - square
       - triangle

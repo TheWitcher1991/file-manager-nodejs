@@ -14,7 +14,7 @@
 # next.js
 /.next/
 /out/
-/build/litser-win32-ia32
+/build/
 
 # production
 

@@ -163,7 +163,7 @@
     border-radius: 10px;
     right: 0;
     left: 0;
-    min-width: 290px;
+    min-width: 340px;
     padding: 16px;
     transition: cubic-bezier(.4, 0, .2, 1) .26s transform;
     transform: translateY(40px);
@@ -226,6 +226,36 @@
         align-items: center;
         justify-content: right;
         margin: 16px 0 0 0;
+    }
+
+    .flex__space {
+        justify-content: space-between;
+    }
+
+    .delete__preset {
+        color: $mainFg;
+        background: $mainBg;
+        border: 1px solid $fg300;
+        width: 40px;
+        height: 34px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 6px;
+        font-size: 14px;
+        transition: all 0.2s linear;
+        cursor: pointer;
+
+        i {
+            font-size: inherit;
+            margin: 0;
+        }
+
+        &:hover {
+            background: #b51308;
+            color: $mainBg;
+            border-color: #b51308;
+        }
     }
 
     .tb__apply {
@@ -320,6 +350,28 @@
     }
 }
 
+.global__button-danger {
+    border-radius: 6px;
+    height: 36px;
+    width: 80px;
+    display: none;
+    justify-content: center;
+    color: $mainFg;
+    align-items: center;
+    font-weight: 500;
+    font-size: 17px;
+    background: $mainBg;
+    cursor: pointer;
+    transition: all .2s linear;
+    border: 1px solid $fg300;
+    outline: none;
+
+    &:hover {
+        background: #d1c616;
+        color: $mainBg;
+        border-color: #d1c616;
+    }
+}
 
 .global__button-tran {
     border-radius: 6px;
@@ -417,6 +469,10 @@
     color: $activeFg;
 }
 
+.section__table input{
+    cursor: pointer;
+}
+
 
 .file__thead {
     width: 100%;
@@ -427,7 +483,6 @@
     position: relative;
     padding: 0 0 10px 0;
     border-bottom: 1px solid $fg300;
-    cursor: pointer;
 
     .container {
         display: flex;
@@ -733,6 +788,21 @@
     }
 }
 
+.need__block {
+    > span {
+        display: block;
+        margin: 0 0 6px 0;
+        font-weight: 700;
+        font-size: 16px;
+    }
+
+    > div {
+        span {
+            font-size: 15px;
+        }
+    }
+}
+
 .info__block {
     text-align: center;
 
@@ -759,5 +829,129 @@
         display: block;
         color: $fg400;
         font-size: 14px;
+    }
+}
+
+.label__exp {
+    font-size: 13px;
+    color: $fg400;
+    display: block;
+    margin: 2px 0 0 0;
+}
+
+.remember__popup {
+    min-width: 460px;
+}
+
+.remember__list {
+    margin: 10px 0 16px 0;
+    display: flex;
+    flex-wrap: wrap;
+
+    .remember__item {
+        background-color: #e6f1f8;
+        font-size: 14px;
+        margin: 0 8px 8px 0;
+        padding: 0;
+        transition: all 0.2s linear;
+        display: inline-flex;
+        align-items: end;
+        border-radius: 4px;
+
+        span {
+            height: 30px;
+            display: flex;
+            align-items: center;
+            padding: 0 8px;
+            font-size: 14px;
+        }
+
+        button {
+            border: 0;
+            display: flex;
+            height: 30px;
+            cursor: pointer;
+            width: 30px;
+            align-items: center;
+            background: transparent;
+            justify-content: center;
+            border-radius: 0 4px 4px 0;
+            transition: all 0.1s linear;
+
+            &:hover {
+                color: $mainBg;
+                background: $activeFg;
+            }
+
+            i {
+                margin: 0;
+                font-size: 13px;
+            }
+        }
+    }
+}
+
+.delpreset__block {
+    display: block;
+    text-align: center;
+
+    > i {
+        color: #d1c616;
+        font-size: 50px;
+    }
+
+    > span {
+        display: block;
+        font-size: 18px;
+        font-weight: 700;
+        margin: 18px 0 6px 0;
+    }
+
+    > p {
+        font-size: 15px;
+        display: block;
+        padding: 0px 0 6px 0;
+        margin: 0;
+        font-weight: 600;
+    }
+
+    > div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 10px 0 0 0;
+
+        button {
+            border: 0;
+            outline: none;
+            padding: 8px 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-family: $Nunito;
+            margin: 0 6px;
+            border-radius: 4px;
+            transition: all 0.2s linear;
+        }
+
+        .cancel__danger-pop {
+            background: #b51308;
+            color: $mainBg;
+
+            &:hover {
+                background: #8f0d04;
+            }
+        }
+
+        .apply__danger-pop {
+            background: $activeFg;
+            color: $mainBg;
+
+            &:hover {
+                background: $actHover;
+            }
+        }
     }
 }

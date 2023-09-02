@@ -50,13 +50,13 @@
 
 
 
-                /* const json = fs.readFileSync('../../build/db/db.json', {
+                /* const json = fs.readFileSync('../../dist/db/db.json', {
                     encoding: 'utf-8'
                 })
                 const obj = JSON.parse(json)
                 obj.pathTo = pathTo.value
                 const json2 = JSON.stringify(obj);
-                fs.writeFileSync('../../build/db/db.json', json2); */
+                fs.writeFileSync('../../dist/db/db.json', json2); */
 
             })
         } else {

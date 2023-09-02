@@ -16,7 +16,7 @@ const { GLOBAL } = require('./utils/config')
 const app = express()
 
 app.set('port', GLOBAL.PORT)
-app.set('views', 'build/views')
+app.set('views', 'dist/views')
 app.set('view engine', 'hbs')
 
 if (process.env.NODE_ENV === 'dev')
@@ -36,10 +36,10 @@ app.use(helmet())
 app.use(csrfMiddleware.csrfInit)
 app.use(csrfMiddleware.csrfToken)
 
-app.use(express.static('build'))
-app.use(express.static('build/libs'))
-app.use(express.static('build/public'))
-app.use(express.static('build/electron'))
+app.use(express.static('dist'))
+app.use(express.static('dist/libs'))
+app.use(express.static('dist/public'))
+app.use(express.static('dist/electron'))
 
 app.use(GLOBAL.ROUTES.index.url, csrfMiddleware.csrfProtection, baseRouter)
 

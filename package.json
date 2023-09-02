@@ -11,8 +11,8 @@
     "dev": "electron . --debug",
     "build": "webpack --mode production",
     "watch": "webpack --mode production -w",
-    "package:win": "electron-packager . --overwrite --platform=win32 --arch=ia32 --out=build --icon=",
-    "package:linux": "electron-packager . --overwrite --platform=linux --arch=x64 --out=build"
+    "package:win": "electron-packager . --overwrite --platform=win32 --arch=ia32 --out=build --icon=/dist/public/img/icon.ico",
+    "package:linux": "electron-packager . --overwrite --platform=linux --arch=x64 --out=build --icon=/dist/public/img/icon.ico"
   },
   "author": "github: TheWitcher1991 <alikzoy@gmail.com>",
   "license": "MIT",
@@ -63,5 +63,8 @@
     "fs": false,
     "path": false,
     "os": false
+  },
+  "dependencies": {
+    "@electron/asar": "^3.2.4"
   }
 }
