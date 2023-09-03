@@ -5,14 +5,14 @@
   "bin": "./cli.js",
   "private": true,
   "expressPort": 8080,
-  "basePath": "./build",
+  "basePath": "./dist",
   "scripts": {
     "start": "electron .",
     "dev": "electron . --debug",
     "build": "webpack --mode production",
     "watch": "webpack --mode production -w",
-    "package:win": "electron-packager . --overwrite --platform=win32 --arch=ia32 --out=build --icon=/dist/public/img/icon.ico",
-    "package:linux": "electron-packager . --overwrite --platform=linux --arch=x64 --out=build --icon=/dist/public/img/icon.ico"
+    "package:win": "electron-packager . litser --overwrite --asar --platform=win32 --arch=x64 --app-version=1.0.0 --prune --out=build/win --ignore=src --icon=./dist/public/img/icon.ico",
+    "package:linux": "electron-packager . litser --overwrite --asar --platform=linux --arch=x64 --app-version=1.0.0 --prune --out=build/linux --ignore=src  --icon=./dist/public/img/icon.ico"
   },
   "author": "github: TheWitcher1991 <alikzoy@gmail.com>",
   "license": "MIT",
@@ -47,6 +47,7 @@
     "marked": "^7.0.5",
     "mini-css-extract-plugin": "^2.7.6",
     "morgan": "^1.10.0",
+    "prune": "^0.0.2",
     "sass": "^1.65.1",
     "sass-loader": "^13.3.2",
     "style-loader": "^3.3.3",
@@ -54,6 +55,9 @@
     "update-electron-app": "^2.0.1",
     "webpack": "^5.88.2",
     "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "@electron/asar": "^3.2.4"
   },
   "devEngines": {
     "node": ">= 18.x.x",
@@ -63,8 +67,5 @@
     "fs": false,
     "path": false,
     "os": false
-  },
-  "dependencies": {
-    "@electron/asar": "^3.2.4"
   }
 }

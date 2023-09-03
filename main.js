@@ -13,18 +13,15 @@ const { spawn } = require('child_process')
 
 // const log = require('electron-log');
 
-
-const { GLOBAL } = require('./src/utils/config')
 const pjson = require('./package.json')
 
 // log.transports.console.level = 'info'
 // log.transports.file.level = 'info'
 // log.info('App starting...')
+
 const appversion = pjson.version
 
-let expressPath = './src/app.js'
-
-const expressAppUrl = `http://localhost:${GLOBAL.PORT}`;
+const expressAppUrl = `http://localhost:8080`;
 
 const debug = /--debug/.test(process.argv[2])
 
@@ -62,7 +59,7 @@ function createWindow () {
             nodeIntegration: true,
             contextIsolation: false,
             enableRemoteModule: true,
-            webSecurity: false,
+            // webSecurity: false,
             worldSafeExecuteJavaScript: true,
             preload: path.join(__dirname, '/dist/electron/preload.js')
         }

@@ -139,7 +139,7 @@
 .gbl__input {
     display: flex;
     align-items: center;
-    cursor: no-drop;
+    cursor: pointer;
 
     input {
         outline: none;
@@ -506,6 +506,13 @@
         align-items: center;
         flex: 1 1 350px;
         white-space: nowrap;
+
+        img {
+            margin: 0 6px 0 0;
+            width: 24px;
+            height: 24px;
+            object-fit: cover;
+        }
     }
 
     .sort__size {
@@ -605,6 +612,13 @@
         color: $mainFg;
         flex: 1 1 350px;
         white-space: nowrap;
+
+        img {
+            margin: 0 6px 0 0;
+            width: 24px;
+            height: 24px;
+            object-fit: cover;
+        }
     }
 
     .sort__size {
@@ -891,6 +905,37 @@
     }
 }
 
+.load__block {
+    display: block;
+    text-align: center;
+    padding: 16px;
+
+    > i {
+        color: $activeFg;
+        font-size: 50px;
+    }
+
+    span {
+        display: block;
+        font-size: 18px;
+        font-weight: 700;
+        margin: 18px 0 3px 0;
+    }
+
+    p {
+        font-size: 14px;
+        display: block;
+        padding: 0px 0 6px 0;
+        margin: 0;
+        font-weight: 600;
+    }
+
+     div {
+         font-size: 14px;
+         font-weight: 500;
+     }
+}
+
 .delpreset__block {
     display: block;
     text-align: center;
@@ -936,7 +981,7 @@
             transition: all 0.2s linear;
         }
 
-        .cancel__danger-pop {
+        .cancel__danger-pop, .apply__file-pop {
             background: #b51308;
             color: $mainBg;
 
@@ -945,7 +990,7 @@
             }
         }
 
-        .apply__danger-pop {
+        .apply__danger-pop, .cancel__file-pop {
             background: $activeFg;
             color: $mainBg;
 

@@ -122,10 +122,10 @@
             <div class="file__upload delpreset__block">
                 <i class="fa-light fa-circle-exclamation"></i>
                 <span>Вы уверены?</span>
-                <p>Вы точно хотите выбранные удалить файл(-ы)?</p>
+                <p>Вы точно хотите удалить выбранные файл(-ы)?</p>
                 <div>
-                    <button type="button" class="apply__danger-pop">Да, удалите!</button>
-                    <button type="button" class="cancel__danger-pop">Отмена</button>
+                    <button type="button" class="apply__file-pop">Да, удалите!</button>
+                    <button type="button" class="cancel__file-pop">Отмена</button>
                 </div>
             </div>
         </form>
@@ -220,6 +220,32 @@
     </div>
 </div>
 
+<div class="load__from-pop popup__wrap">
+    <div class="popup__container load__from-container">
+        <form enctype="multipart/form-data" method="post" action="">
+            <div class="file__upload load__block">
+                <i class="fa-duotone fa-spinner fa-spin"></i>
+                <span>Загрузка файлов...</span>
+                <p>Файлов слишком много, подождите пока мы их загрузим</p>
+                <div></div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="gload__from-pop popup__wrap" style="display: flex">
+    <div class="popup__container gload__from-container" style="display: block">
+        <form enctype="multipart/form-data" method="post" action="">
+            <div class="file__upload load__block gload">
+                <i class="fa-duotone fa-spinner fa-spin"></i>
+                <span>Идёт чтение файлов...</span>
+                <p></p>
+                <div></div>
+            </div>
+        </form>
+    </div>
+</div>
+
 <main id="wrapper">
 
     <div class="window__button" style="-webkit-app-region: drag">
@@ -230,10 +256,10 @@
     <section class="section__button">
         <div class="container top__button-container">
             <label class="gbl__input" for="global__change">
-                <input type="checkbox" name="global__chang" id="global__change" value="1" checked disabled>
+                <input type="checkbox" name="global__change" id="global__change" value="1">
                 <span>Читать файлы в подкаталогах</span>
             </label>
-            <div id="setting-button" class="setting-button"><i class="fa-duotone fa-gear"></i></div>
+            <div id="setting-button" class="setting-button"><i class="fa-regular fa-circle-info"></i></div>
         </div>
     </section>
 

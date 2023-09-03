@@ -26,13 +26,14 @@ const rkey = i => {
     return rnd.substring(0, i)
 }
 
-const db = require(path.join(__dirname, '/db/db.json'))
+let db = require(path.join(__dirname, '/db/db.json'))
+const config = require(path.join(__dirname, '/db/config.json'))
 
 let size = Object.keys(db).length
 
 let _fs = Files
 
-if (size <= 0) {
+const init = () => {
     document.querySelector('.path__from-pop').style.display = 'flex'
     document.querySelector('.path__from-container').style.display = 'block'
 
@@ -42,6 +43,8 @@ if (size <= 0) {
             pathTo   = document.querySelector('#path-to')
 
         if (pathFrom.value.trim() !== '' || pathTo.value.trim() !== '') {
+
+
 
             let tmp = new Map([
                 [`start`, {
@@ -64,26 +67,51 @@ if (size <= 0) {
             document.querySelector('.path__from-pop').style.display = 'none'
             document.querySelector('.path__from-container').style.display = 'none'
 
+            pathFrom.value = ''
+            pathTo.value = ''
+
             _fs = new Files(db, '.file__tbody')
 
-            setTimeout(() => {
-                document.querySelector('.loader').style.display = 'none'
-                _fs.loadFiles()
-                _fs.setPreset()
-            }, 1000)
+            if (config.ReadSubfolders === 1) {
+                document.querySelector('#global__change').setAttribute('checked', 'true')
+                document.querySelector('#global__change').checked = true
+                _fs.setReadSubfolders(1)
+            } else {
+                document.querySelector('#global__change').removeAttribute('checked')
+                document.querySelector('#global__change').checked = false
+                _fs.setReadSubfolders(0)
+            }
+
+            document.querySelector('.loader').style.display = 'none'
+
+            _fs.loadFiles()
+            _fs.setPreset()
 
         }
 
     })
+}
+
+if (size <= 0) {
+    init()
 } else {
 
     _fs = new Files(db, '.file__tbody')
 
-    setTimeout(() => {
-        document.querySelector('.loader').style.display = 'none'
-        _fs.loadFiles()
-        _fs.setPreset()
-    }, 1000)
+    if (config.ReadSubfolders === 1) {
+        document.querySelector('#global__change').setAttribute('checked', 'true')
+        document.querySelector('#global__change').checked = true
+        _fs.setReadSubfolders(1)
+    } else {
+        document.querySelector('#global__change').removeAttribute('checked')
+        document.querySelector('#global__change').checked = false
+        _fs.setReadSubfolders(0)
+    }
+
+    document.querySelector('.loader').style.display = 'none'
+
+    _fs.loadFiles()
+    _fs.setPreset()
 
 }
 
@@ -181,6 +209,11 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('.cancel__danger-pop').addEventListener('click', function () {
         document.querySelector('.delpreset__from-pop').style.display = 'none'
         document.querySelector('.delpreset__from-container').style.display = 'none'
+    })
+
+    document.querySelector('.cancel__file-pop').addEventListener('click', function () {
+        document.querySelector('.delfile__from-pop').style.display = 'none'
+        document.querySelector('.delfile__from-container').style.display = 'none'
     })
 
     document.querySelector('.remember__list').addEventListener('click', function () {
@@ -362,14 +395,12 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
             document.querySelector('.loader').style.display = 'none'
             _fs.updatePath()
-        }, 1000)
+        }, 300)
     })
 
     document.querySelector('.file__thead input').addEventListener('click', function (event) {
 
-
         files_ = []
-
 
         let check = this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.querySelectorAll('.file__tbody input')
 
@@ -412,7 +443,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (check.checked) {
             check.removeAttribute('checked')
             check.checked = false
-            files_ = []
         }
 
         target.forEach(el => {
@@ -430,6 +460,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let keySize = Object.keys(files_).length
 
+        if (keySize === _fs.getCountFiles()) {
+            check.setAttribute('checked', 'true')
+            check.checked = true
+        }
+
         if (keySize > 0) {
             document.querySelector('.search__result').innerHTML = `Выбрано ${keySize} файлов`
             document.querySelector('.global__button-tran').style.display = 'flex'
@@ -438,6 +473,25 @@ document.addEventListener('DOMContentLoaded', () => {
             document.querySelector('.global__button-tran').style.display = 'none'
         }
 
+    })
+
+    document.querySelector('#global__change').addEventListener('change', function () {
+
+        if (!this.checked) {
+            this.removeAttribute('checked')
+            this.checked = false
+            config.ReadSubfolders = 0
+            _fs.setReadSubfolders(0)
+        }
+
+        if (this.checked) {
+            this.setAttribute('checked', 'true')
+            this.checked = true
+            config.ReadSubfolders = 1
+            _fs.setReadSubfolders(1)
+        }
+
+        fs.writeFileSync(path.join(__dirname, '/db/config.json'), JSON.stringify(config))
     })
 
     document.querySelector('.search__apply').addEventListener('click', function () {
@@ -455,14 +509,50 @@ document.addEventListener('DOMContentLoaded', () => {
         _fs.sortFiles(Number(column.value), Number(type.value))
     })
 
+    document.querySelector('.apply__danger-pop').addEventListener('click', function () {
+        db = []
+        files_ = []
+        tmpf_ = []
+        size = 0
+
+        _fs.cleanBase()
+
+        fs.writeFileSync(path.join(__dirname, '/db/db.json'), JSON.stringify(db));
+
+        document.querySelector('.delpreset__from-pop').style.display = 'none'
+        document.querySelector('.delpreset__from-container').style.display = 'none'
+
+        init()
+    })
+
     document.querySelector('.delete__button').addEventListener('click', function () {
         let keySize = Object.keys(files_).length
 
         if (keySize <= 0) {
             alert('Выберите файлы')
         } else {
+
+            if (config.FileDeleteNotice === 1) {
+                document.querySelector('.delfile__from-pop').style.display = 'flex'
+                document.querySelector('.delfile__from-container').style.display = 'block'
+            } else {
+                _fs.trashFiles(files_)
+                _fs.updatePath()
+            }
+
+        }
+    })
+
+    document.querySelector('.apply__file-pop').addEventListener('click', function () {
+        let keySize = Object.keys(files_).length
+
+        if (keySize <= 0) {
+            alert('Выберите файлы')
+        } else {
+
             _fs.trashFiles(files_)
             _fs.updatePath()
+
         }
     })
 
@@ -482,8 +572,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (keySize <= 0) {
             alert('Выберите файлы')
         } else {
+
             _fs.renameFiles(files_)
             _fs.updatePath()
+
         }
     })
 })

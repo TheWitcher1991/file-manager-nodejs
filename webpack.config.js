@@ -15,7 +15,7 @@ const target = process.env.NODE_ENV === 'production' ? 'browserslist' : 'web'
 
 module.exports = {
     entry: [
-        `${PATHS.src}/scripts/index.js`,
+        // `${PATHS.src}/scripts/index.js`,
         `${PATHS.src}/styles/index.scss`
     ],
     output: {
