@@ -26,14 +26,25 @@ const rkey = i => {
     return rnd.substring(0, i)
 }
 
-let db = require(path.join(__dirname, '/db/db.json'))
-const config = require(path.join(__dirname, '/db/config.json'))
+const rpath = {
+    db: '/db/db.json',
+    config: '/db/config.json'
+}
+
+let db = require(path.join(__dirname, rpath.db))
+const config = require(path.join(__dirname, rpath.config))
 
 let size = Object.keys(db).length
 
 let _fs = Files
 
+let files_ = []
+
 const init = () => {
+
+    document.querySelector('.gload__from-pop').style.display = 'none'
+    document.querySelector('.gload__from-container').style.display = 'none'
+
     document.querySelector('.path__from-pop').style.display = 'flex'
     document.querySelector('.path__from-container').style.display = 'block'
 
@@ -43,8 +54,6 @@ const init = () => {
             pathTo   = document.querySelector('#path-to')
 
         if (pathFrom.value.trim() !== '' || pathTo.value.trim() !== '') {
-
-
 
             let tmp = new Map([
                 [`start`, {
@@ -62,7 +71,7 @@ const init = () => {
 
             db.push(Object.fromEntries(tmp))
 
-            fs.writeFileSync(path.join(__dirname, '/db/db.json'), JSON.stringify(db));
+            fs.writeFileSync(path.join(__dirname, rpath.db), JSON.stringify(db));
 
             document.querySelector('.path__from-pop').style.display = 'none'
             document.querySelector('.path__from-container').style.display = 'none'
@@ -113,9 +122,22 @@ if (size <= 0) {
     _fs.loadFiles()
     _fs.setPreset()
 
+    document.addEventListener('DOMContentLoaded', function () {
+        const tar = document.querySelector('.file__tbody')
+        let rs = tar.querySelectorAll('input')
+
+
+        console.log(rs)
+    })
+
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', function () {
+
+
+
+
+
     const a = (main, tmp) => {
         document.querySelector(main).addEventListener('click', function () {
             if (tmp === '.kit__popup') {
@@ -239,8 +261,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 _fs.updateRemember()
                 _fs.updateDB(db)
-                fs.writeFileSync(path.join(__dirname, '/db/db.json'), JSON.stringify(db));
-                _fs.updatePath()
+                fs.writeFileSync(path.join(__dirname, rpath.db), JSON.stringify(db));
             }
         })
 
@@ -266,15 +287,12 @@ document.addEventListener('DOMContentLoaded', () => {
                             file.value = ''
 
                             _fs.updateDB(db)
-                            fs.writeFileSync(path.join(__dirname, '/db/db.json'), JSON.stringify(db));
+                            fs.writeFileSync(path.join(__dirname, rpath.db), JSON.stringify(db));
                             _fs.updateRemember()
-                            _fs.updatePath()
                         }
                     }
                 }
             }
-
-
 
         }
 
@@ -305,7 +323,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 db.push(Object.fromEntries(tmp))
 
-                fs.writeFileSync(path.join(__dirname, '/db/db.json'), JSON.stringify(db));
+                fs.writeFileSync(path.join(__dirname, rpath.db), JSON.stringify(db));
 
                 document.querySelector('.preset__list').innerHTML += `
                     <div class="preset__item-wrap">
@@ -368,7 +386,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     })
 
-    let files_ = []
+
+
 
     document.querySelector('.update__files').addEventListener('click', function () {
 
@@ -429,7 +448,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.querySelector('.search__result').innerHTML = `Выбрано ${keySize} файлов`
             document.querySelector('.global__button-tran').style.display = 'flex'
         } else {
-            document.querySelector('.search__result').innerHTML = `Выбрано 0 файлов`
+            document.querySelector('.search__result').innerHTML = `Найдено ${_fs.getCountFiles()} файлов`
             document.querySelector('.global__button-tran').style.display = 'none'
         }
     })
@@ -469,7 +488,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.querySelector('.search__result').innerHTML = `Выбрано ${keySize} файлов`
             document.querySelector('.global__button-tran').style.display = 'flex'
         } else {
-            document.querySelector('.search__result').innerHTML = `Выбрано 0 файлов`
+            document.querySelector('.search__result').innerHTML = `Найдено ${_fs.getCountFiles()} файлов`
             document.querySelector('.global__button-tran').style.display = 'none'
         }
 
@@ -491,7 +510,7 @@ document.addEventListener('DOMContentLoaded', () => {
             _fs.setReadSubfolders(1)
         }
 
-        fs.writeFileSync(path.join(__dirname, '/db/config.json'), JSON.stringify(config))
+        fs.writeFileSync(path.join(__dirname, rpath.config), JSON.stringify(config))
     })
 
     document.querySelector('.search__apply').addEventListener('click', function () {
@@ -517,7 +536,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         _fs.cleanBase()
 
-        fs.writeFileSync(path.join(__dirname, '/db/db.json'), JSON.stringify(db));
+        fs.writeFileSync(path.join(__dirname, rpath.db), JSON.stringify(db));
 
         document.querySelector('.delpreset__from-pop').style.display = 'none'
         document.querySelector('.delpreset__from-container').style.display = 'none'
@@ -537,7 +556,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.querySelector('.delfile__from-container').style.display = 'block'
             } else {
                 _fs.trashFiles(files_)
-                _fs.updatePath()
             }
 
         }
@@ -551,7 +569,6 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
 
             _fs.trashFiles(files_)
-            _fs.updatePath()
 
         }
     })
@@ -573,8 +590,10 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Выберите файлы')
         } else {
 
+            console.log(files_)
+
             _fs.renameFiles(files_)
-            _fs.updatePath()
+
 
         }
     })

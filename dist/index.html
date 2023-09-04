@@ -225,8 +225,8 @@
         <form enctype="multipart/form-data" method="post" action="">
             <div class="file__upload load__block">
                 <i class="fa-duotone fa-spinner fa-spin"></i>
-                <span>Загрузка файлов...</span>
-                <p>Файлов слишком много, подождите пока мы их загрузим</p>
+                <span>Рендер списка файлов...</span>
+                <p>Файлов слишком много, подождите пока мы их отрендерим</p>
                 <div></div>
             </div>
         </form>
@@ -246,6 +246,45 @@
     </div>
 </div>
 
+<div class="gdelete__from-pop popup__wrap">
+    <div class="popup__container gdelete__from-container">
+        <form enctype="multipart/form-data" method="post" action="">
+            <div class="file__upload load__block gdelete">
+                <i class="fa-duotone fa-spinner fa-spin"></i>
+                <span>Идёт удаление файлов...</span>
+                <p></p>
+                <div></div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="gcopy__from-pop popup__wrap">
+    <div class="popup__container gcopy__from-container">
+        <form enctype="multipart/form-data" method="post" action="">
+            <div class="file__upload load__block gcopy">
+                <i class="fa-duotone fa-spinner fa-spin"></i>
+                <span>Идёт копирование файлов...</span>
+                <p></p>
+                <div></div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="gtrasf__from-pop popup__wrap">
+    <div class="popup__container gtrasf__from-container">
+        <form enctype="multipart/form-data" method="post" action="">
+            <div class="file__upload load__block gtrasf">
+                <i class="fa-duotone fa-spinner fa-spin"></i>
+                <span>Идёт перемещение файлов...</span>
+                <p></p>
+                <div></div>
+            </div>
+        </form>
+    </div>
+</div>
+
 <main id="wrapper">
 
     <div class="window__button" style="-webkit-app-region: drag">
@@ -256,7 +295,7 @@
     <section class="section__button">
         <div class="container top__button-container">
             <label class="gbl__input" for="global__change">
-                <input type="checkbox" name="global__change" id="global__change" value="1">
+                <input type="checkbox" name="global__change" id="global__change" value="1" checked disabled>
                 <span>Читать файлы в подкаталогах</span>
             </label>
             <div id="setting-button" class="setting-button"><i class="fa-regular fa-circle-info"></i></div>
@@ -417,7 +456,7 @@
 
 
 
-        <div class="file__tbody">
+        <div class="file__tbody" id="file__tbody">
             <div class="loader">
                 <div class="sk-circle-bounce">
                     <div class="loading-chat">
