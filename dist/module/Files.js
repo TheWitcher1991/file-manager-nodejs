@@ -56,19 +56,37 @@ class Files {
             trimmedStr = ''
 
         for( ; i < l; i++){
-            let charCode=str.charCodeAt(i),
+            let charCode = str.charCodeAt(i),
                 c = str.charAt(i),
                 charWidth = this.mb_strwidth(c),
                 next = str.charAt(i + 1),
-                nextWidth=this.mb_strwidth(next)
+                nextWidth = this.mb_strwidth(next)
             trimmedLength += charWidth
             trimmedStr += c
-            if (trimmedLength+trimmakerWidth+nextWidth > width) {
+            if (trimmedLength + trimmakerWidth + nextWidth > width) {
                 trimmedStr += trimmarker
                 break
             }
         }
         return trimmedStr
+    }
+
+    createNotice(text, id = 0) {
+        const notice = document.createElement('div')
+        notice.className = 'alert__block'
+        notice.id = `alert-${id}`
+        notice.innerHTML = `
+            <i class="fa-light fa-bell-on"></i>
+            <span>${text}</span>
+        `
+
+        let wrap = document.querySelector('#notice__wrapper')
+
+        wrap.prepend(notice)
+
+        setTimeout(() => {
+            notice.remove()
+        }, 3000)
     }
 
     async readFiles(from = '') {
@@ -113,19 +131,21 @@ class Files {
         document.querySelector('.gdelete__from-pop').style.display = 'flex'
         document.querySelector('.gdelete__from-container').style.display = 'block'
 
-        files_.forEach((el, i) => {
-            fs.unlink(String(el.path), err => {
-                if (err) arr.push(el.name)
-                setCount--
-                document.querySelector(`.file__ctx-${el.id}`).remove()
-                document.querySelector('.gdelete div').innerHTML = `Осталось файлов ${setCount}`
-                if (setCount === 0) {
-                    document.querySelector('.gdelete__from-pop').style.display = 'none'
-                    document.querySelector('.gdelete__from-container').style.display = 'none'
-                    setTimeout(() => {
-                        alert('Файлы успешно удалены')
-                    }, 100)
-                }
+        files_.forEach(async (el, i) => {
+            await new Promise((resolve, reject) => {
+                fs.unlink(String(el.path), err => {
+                    if (err) arr.push(el.name)
+                    setCount--
+                    document.querySelector(`.file__ctx-${el.id}`).remove()
+                    document.querySelector('.gdelete div').innerHTML = `Осталось файлов ${setCount}`
+                    if (setCount === 0) {
+                        document.querySelector('.gdelete__from-pop').style.display = 'none'
+                        document.querySelector('.gdelete__from-container').style.display = 'none'
+                        setTimeout(() => {
+                            this.createNotice('Файлы успешно удалены')
+                        }, 100)
+                    }
+                })
             })
         })
     }
@@ -135,23 +155,25 @@ class Files {
 
         let setCount = files_.length
 
-        document.querySelector('.gcopy__from-pop').style.display = 'flex'
-        document.querySelector('.gcopy__from-container').style.display = 'block'
+         document.querySelector('.gcopy__from-pop').style.display = 'flex'
+         document.querySelector('.gcopy__from-container').style.display = 'block'
 
-        files_.forEach((el, i) => {
-            fs.copyFile(String(el.path), String(`${this.to}\\${el.name}`), COPYFILE_EXCL, err => {
-                if (err) arr.push(el.name)
-                setCount--
-                document.querySelector('.gcopy div').innerHTML = `Осталось файлов ${setCount}`
-                if (setCount === 0) {
-                    document.querySelector('.gcopy__from-pop').style.display = 'none'
-                    document.querySelector('.gcopy__from-container').style.display = 'none'
-                    setTimeout(() => {
-                        alert('Файлы успешно скопированы')
-                    }, 100)
-                }
-            });
-        })
+         files_.forEach(async (el, i) => {
+             await new Promise((resolve, reject) => {
+                 fs.copyFile(String(el.path), String(`${this.to}\\${el.name}`), COPYFILE_EXCL, err => {
+                     if (err) arr.push(el.name)
+                     setCount--
+                     document.querySelector('.gcopy div').innerHTML = `Осталось файлов ${setCount}`
+                     if (setCount === 0) {
+                         document.querySelector('.gcopy__from-pop').style.display = 'none'
+                         document.querySelector('.gcopy__from-container').style.display = 'none'
+                         setTimeout(() => {
+                             this.createNotice('Файлы успешно скопированы')
+                         }, 100)
+                     }
+                 });
+             })
+         })
     }
 
     renameFiles(files_) {
@@ -162,19 +184,21 @@ class Files {
         document.querySelector('.gtrasf__from-pop').style.display = 'flex'
         document.querySelector('.gtrasf__from-container').style.display = 'block'
 
-        files_.forEach((el, i) => {
-            fs.rename(String(el.path), String(`${this.to}\\${el.name}`), err => {
-                if (err) arr.push(el.name)
-                setCount--
-                document.querySelector(`.file__ctx-${el.id}`).remove()
-                document.querySelector('.gtrasf div').innerHTML = `Осталось файлов ${setCount}`
-                if (setCount === 0) {
-                    document.querySelector('.gtrasf__from-pop').style.display = 'none'
-                    document.querySelector('.gtrasf__from-container').style.display = 'none'
-                    setTimeout(() => {
-                        alert('Файлы успешно перемещены')
-                    }, 100)
-                }
+        files_.forEach(async (el, i) => {
+            await new Promise((resolve, reject) => {
+                fs.rename(String(el.path), String(`${this.to}\\${el.name}`), err => {
+                    if (err) arr.push(el.name)
+                    setCount--
+                    document.querySelector(`.file__ctx-${el.id}`).remove()
+                    document.querySelector('.gtrasf div').innerHTML = `Осталось файлов ${setCount}`
+                    if (setCount === 0) {
+                        document.querySelector('.gtrasf__from-pop').style.display = 'none'
+                        document.querySelector('.gtrasf__from-container').style.display = 'none'
+                        setTimeout(() => {
+                            this.createNotice('Файлы успешно перемещены')
+                        }, 100)
+                    }
+                })
             })
         })
     }

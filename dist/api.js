@@ -1,23 +1,9 @@
 'use strict'
 
-const { ipcRenderer, IpcRendererEvent } = require('electron'),
-      path = require('path'),
+const path = require('path'),
       fs = require('fs')
 
 const Files = require(path.join(__dirname, '/module/Files'))
-
-/* window.addEventListener('DOMContentLoaded', () => {
-    let pathFrom = document.querySelector('.bth__pathFrom'),
-        pathTo   = document.querySelector('.bth__pathTo')
-
-    pathFrom.addEventListener('click', (e) => {
-        ipcRenderer.send('showFolderDialog')
-    })
-
-    pathTo.addEventListener('click', (e) => {
-        ipcRenderer.send('showFolderDialog')
-    })
-}) */
 
 const rkey = i => {
     let rnd = ''
