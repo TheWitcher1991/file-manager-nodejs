@@ -17,7 +17,7 @@
     "package:linux": "electron-packager . litser --overwrite --asar --platform=linux --arch=x64 --app-version=1.0.0 --prune --out=build/linux --ignore=src  --icon=./dist/public/img/icon.ico"
   },
   "author": "github: TheWitcher1991 <alikzoy@gmail.com>",
-  "license": "MIT",
+  "license": "GNU GPL",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/TheWitcher1991/litser"
