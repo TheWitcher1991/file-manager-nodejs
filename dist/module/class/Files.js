@@ -203,9 +203,24 @@ class Files {
         })
     }
 
+    getConfig() {
+        for (let x in this.db) {
+            let tmp = String(Object.keys(this.db[x])[0])
+            for (let y in this.db[x]) {
+                if (tmp === this.preset) {
+                    return this.db[x][y]
+                }
+            }
+        }
+    }
+
     renderFiles(ul, el, act = 1) {
 
-        if (this.remember.includes(el.name) && act === 1) {
+        let config = this.getConfig()
+
+        let types = config.typeFiles.replace(/\s/g,'').split(/,|-/)
+
+        if (this.remember.includes(el.uri) && act === 1) {
             el.active = 1
         } else {
             el.active = 0
@@ -230,37 +245,44 @@ class Files {
 
         let low = el.type.toLowerCase()
 
-        let type = `<img src="${path.join(__dirname, '../public/img/png/file.png')}" />`
+        let type = `<img src="${path.join(__dirname, '../../public/img/png/file.png')}" />`
 
         if (low === '.docx' || low === '.doc' || low === '.docm' || low === 'dot' || low === '.rtf')
-            type = `<img src="${path.join(__dirname, '../public/img/png/word.png')}" />`
+            type = `<img src="${path.join(__dirname, '../../public/img/png/word.png')}" />`
 
         if (low === '.pdf')
-            type = `<img src="${path.join(__dirname, '../public/img/png/pdf.png')}" />`
+            type = `<img src="${path.join(__dirname, '../../public/img/png/pdf.png')}" />`
 
         if (low === '.pptx' || low === '.pptm' || low === 'ppt.ppt')
-            type = `<img src="${path.join(__dirname, '../public/img/png/powerpoint.png')}" />`
+            type = `<img src="${path.join(__dirname, '../../public/img/png/powerpoint.png')}" />`
 
         if (low === '.accdb' || low === '.mdb'|| low === '.crypt' || low === '.dat'
             || low === '.sdf' || low === '.mdf' || low === '.sqlite' || low === '.sqlite3')
-            type = `<img src="${path.join(__dirname, '../public/img/png/access.png')}" />`
+            type = `<img src="${path.join(__dirname, '../../public/img/png/access.png')}" />`
 
         if (low === '.sql' || low === '.db' || low === '.json')
-            type = `<img src="${path.join(__dirname, '../public/img/png/database.png')}" />`
+            type = `<img src="${path.join(__dirname, '../../public/img/png/database.png')}" />`
 
         if (low === '.xls' || el.type === '.xlsx' || low === '.xlsm' || low === '.xlsb' || low === '.xlsx')
-            type = `<img src="${path.join(__dirname, '../public/img/png/excel.png')}" />`
+            type = `<img src="${path.join(__dirname, '../../public/img/png/excel.png')}" />`
 
         if (low === '.zip' || low === '.7z' || low === '.cab' || low === '.tar' || low === '.deb' || low === '.ace' || low === '.pak' || low === '.rar')
-            type = `<img src="${path.join(__dirname, '../public/img/png/archive.png')}" />`
+            type = `<img src="${path.join(__dirname, '../../public/img/png/archive.png')}" />`
 
         if (low === '.png' || low === '.jpeg' || low === '.jpg' || low === '.ico' || el.type === '.pict' || el.type === '.gif' || low === '.bmp'
             || low === '.jfif' || low === '.webm' || low === '.tif')
-            type = `<img src="${path.join(__dirname, '../public/img/png/picture.png')}" />`
+            type = `<img src="${path.join(__dirname, '../../public/img/png/picture.png')}" />`
 
         if (low === '.mp3' || low === '.mp4' || low === '.m4a' || low === '.wav' || low === '.wma' || el.type === '.aif' || low === '.ac3'
             || low === '.amr' || low === '.avi' || low === '.mov')
-            type = `<img src="${path.join(__dirname, '../public/img/png/audio.png')}" />`
+            type = `<img src="${path.join(__dirname, '../../public/img/png/audio.png')}" />`
+
+        /*
+            (config.typeFiles.replace(/\s/g,'') !== '' && types.includes(low))
+            || (config.wordLeft.replace(/\s/g,'') !== '' && el.name.startsWith(config.wordLeft))
+            || (config.wordRight.replace(/\s/g,'') !== '' && el.name.endsWith(config.wordRight))
+            || ((el.size / 1000) <= config.sizeFiles)
+         */
 
         if (el.active === 1) {
             let label = document.createElement('label')
@@ -273,7 +295,8 @@ class Files {
              <div class="file__table-temp">
                         <div class="container">
                             <div class="sort__check"> 
-                                <input type="checkbox" class="files checkbox__files" name="file__${el.id}" id="file__${el.id}" value="${el.id}" 
+                                <div class="checkbox__wrap">
+                                    <input type="checkbox" class="files checkbox__files custom-checkbox" name="file__${el.id}" id="file__${el.id}" value="${el.id}
                                     data-id="${el.id}"
                                     data-path="${el.path}"
                                     data-name="${el.name}"
@@ -282,7 +305,10 @@ class Files {
                                     data-psize="${size}"
                                     data-time="${el.changed}"
                                     data-ptime="${time}"
-                                />
+                                    ${el.active === 1 ? 'checked' : ''}
+                                    />
+                                    <label class="checkbox__label" for="file__${el.id}"></label>
+                                </div>
                             </div>
                             <span class="sort__name">
                                 ${type}
@@ -306,8 +332,10 @@ class Files {
                   
                     <div class="file__table-temp">
                         <div class="container">
-                            <div class="sort__check"> 
-                                <input type="checkbox" class="files checkbox__files" name="file__${el.id}" id="file__${el.id}" value="${el.id}" 
+                        
+                             <div class="sort__check"> 
+                                <div class="checkbox__wrap">
+                                    <input type="checkbox" class="files checkbox__files custom-checkbox" name="file__${el.id}" id="file__${el.id}" value="${el.id}
                                     data-id="${el.id}"
                                     data-path="${el.path}"
                                     data-name="${el.name}"
@@ -316,9 +344,11 @@ class Files {
                                     data-psize="${size}"
                                     data-time="${el.changed}"
                                     data-ptime="${time}"
-                                    ${el.active === 1 ? 'checked' : ''}
-                                />
+                                    />
+                                    <label class="checkbox__label" for="file__${el.id}"></label>
+                                </div>
                             </div>
+                       
                             <span class="sort__name">
                                 ${type}
                                 ${this.mb_strimwidth(el.name, 0, 40, '...')}
@@ -615,8 +645,7 @@ class Files {
 
             } else {
                 files_.forEach((el, i) => {
-                    rem.push(el.name)
-                    console.log(el.name)
+                    rem.push(el.uri)
                     this.renderFiles(ul, el)
                 })
             }
@@ -624,6 +653,7 @@ class Files {
             let heed = []
 
             this.remember.forEach(el => {
+
                 if (!rem.includes(el)) {
                     heed.push(el)
                 }
@@ -669,6 +699,7 @@ class Files {
         document.querySelector('.preset__list').innerHTML = ''
         for (let x in this.db) {
             let tmp = String(Object.keys(this.db[x])[0])
+
             for (let y in this.db[x]) {
                 document.querySelector('.preset__list').innerHTML += `
                     <div class="preset__item-wrap">
@@ -678,6 +709,7 @@ class Files {
                                 data-to="${this.db[x][y].pathTo}"
                                 data-id="${tmp}"
                                 data-remember="${this.db[x][y].remember}"
+                                data-db=\'${JSON.stringify(this.db[x][y])}\'
                                 />
                             <span class="">${this.db[x][y].name}</span>
                         </label>

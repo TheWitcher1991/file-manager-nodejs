@@ -156,6 +156,7 @@
             </div>
             <div class="file__upload">
                 <div class="flex__file-form">
+                    <input type="text" name="preset-id" id="preset-id" style="display: none" />
                     <div class="fll__left">
                         <div class="form__label">
                             <span>Название</span>
@@ -182,34 +183,34 @@
                     </div>
                     <div class="fll__right">
                         <div class="form__label">
-                            <span>Тип файлов</span>
-                            <label class="label__block" for="preset-name">
-                                <i class="fa-duotone fa-question"></i>
-                                <input type="text" id="change-name" class="popup__input" placeholder="В формате .type" />
-                            </label>
-                        </div>
-                        <div class="form__label">
                             <span>Значение в начале названия</span>
                             <label class="label__block" for="preset-from">
                                 <i class="fa-duotone fa-hand-point-right"></i>
-                                <input type="text" id="change-from" class="popup__input" placeholder="Например, Архив" />
+                                <input type="text" id="change-name-from" class="popup__input" placeholder="Например, Архив" />
                             </label>
                         </div>
                         <div class="form__label">
                             <span>Значение в конце названия</span>
                             <label class="label__block" for="preset-to">
                                 <i class="fa-duotone fa-hand-point-left"></i>
-                                <input type="text" id="change-to" class="popup__input" placeholder="Например, Архив" />
+                                <input type="text" id="change-name-to" class="popup__input" placeholder="Например, Архив" />
                             </label>
                         </div>
                         <div class="form__label">
                             <span>Размер до</span>
                             <label class="label__block" for="preset-to">
                                 <i class="fa-duotone fa-scale-unbalanced-flip"></i>
-                                <input type="text" id="change-to" class="popup__input" placeholder="Значение в КБ" />
+                                <input type="text" id="change-size" class="popup__input" placeholder="Значение в КБ" />
                             </label>
                         </div>
                     </div>
+                </div>
+                <div class="form__label">
+                    <span>Типы файлов</span>
+                    <label class="label__block" for="preset-name">
+                        <i class="fa-duotone fa-question"></i>
+                        <input type="text" id="change-file" class="popup__input" placeholder="В формате .type через запятую" />
+                    </label>
                 </div>
                 <div class="form__bth form__bth-right">
                     <button type="button" class="form__cancel bth__change-cancel">Отмена</button>
@@ -300,10 +301,11 @@
 
     <section class="section__button">
         <div class="container top__button-container">
-            <label class="gbl__input" for="global__change">
-                <input type="checkbox" name="global__change" id="global__change" value="1" checked disabled>
-                <span>Читать файлы в подкаталогах</span>
-            </label>
+            <div class="checkbox__wrap">
+                <input type="checkbox" class="custom-checkbox" name="global__change" id="global__change" value="1" checked disabled>
+                <label class="checkbox__label" for="global__change">Читать файлы в подкаталогах</label>
+            </div>
+
             <div id="setting-button" class="setting-button"><i class="fa-regular fa-circle-info"></i></div>
         </div>
     </section>
@@ -397,7 +399,7 @@
                         <div class="tb__popup remember__popup" style="display:none;">
                             <label class="label__block-global" for="global__search">
                                 <i class="fa-duotone fa-bookmark"></i>
-                                <input class="global__remember" type="text" name="global__remember" id="global__remember" placeholder="Имя файла c типом, учитывая регистр..." />
+                                <input class="global__remember" type="text" name="global__remember" id="global__remember" placeholder="Имя файла, учитывая регистр, например, Архив-001" />
                             </label>
                             <span class="label__exp">для каждого пресета свои файлы</span>
                             <div class="remember__list">
@@ -447,7 +449,10 @@
                 <div class="file__thead">
                     <div class="container">
                         <div class="sort__check">
-                            <input type="checkbox" class="check__all" name="check__all" id="check__all" value="1" />
+                            <div class="checkbox__wrap">
+                                <input type="checkbox" class="check__all custom-checkbox" name="check__all" id="check__all" value="1" />
+                                <label class="checkbox__label" for="check__all"></label>
+                            </div>
                         </div>
                         <span class="sort__item sort__name sort__active">Имя <i class="fa-solid fa-caret-down sort__arrow"></i></span>
                         <span class="sort__item sort__size">Размер</span>
