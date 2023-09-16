@@ -18,7 +18,7 @@ module.exports = function () {
 
     document.querySelector('.loader').style.display = 'none'
 
+    $._fs.startPreset($.config.ActivePreset)
     $._fs.loadFiles()
-    $._fs.setPreset()
     $._fs.setTheme($.config.theme)
 }

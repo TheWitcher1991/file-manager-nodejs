@@ -1,0 +1,38 @@
+{
+  "preset": {
+    "ru": "Пресет",
+    "en": "Preset"
+  },
+  "filter": {
+    "ru": "Фильтр",
+    "en": "Filter"
+  },
+  "search": {
+    "ru": "Найти",
+    "en": "Search"
+  },
+  "remember": {
+    "ru": "Запомнить",
+    "en": "Remember"
+  },
+  "subfolder": {
+    "ru": "Читать файлы в подкаталогах",
+    "en": "Read files in subdirectories"
+  },
+  "delete": {
+    "ru": "Удалить",
+    "en": "Delete"
+  },
+  "attention": {
+    "ru": "Внимание",
+    "en": "Attention"
+  },
+  "relocate": {
+    "ru": "Перенсти",
+    "en": "Relocate"
+  },
+  "copy": {
+    "ru": "Копировать",
+    "en": "Copy"
+  }
+}

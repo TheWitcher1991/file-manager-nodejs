@@ -8,14 +8,22 @@ let $ = require(path.join(__dirname, '/config'))
 
 module.exports = function () {
     document.querySelector('.apply__danger-pop').addEventListener('click', function () {
-        $.db = []
-        $.files_ = []
-        $.tmpf_ = []
+        $.db.length = 0
+        $.files_.length = 0
+        $.tmpf_ = {}
+        $.config = {}
         $.size = 0
 
         $._fs.cleanBase()
 
         fs.writeFileSync(path.join(__dirname, rpath.db), JSON.stringify($.db));
+        fs.writeFileSync(path.join(__dirname, rpath.config), JSON.stringify({
+            "theme": "dark",
+            "FileDeleteNotice": 1,
+            "PresetDeleteNotice": 1,
+            "ReadSubfolders": 1,
+            "ActivePreset": "start"
+        }));
 
         document.querySelector('.delpreset__from-pop').style.display = 'none'
         document.querySelector('.delpreset__from-container').style.display = 'none'
@@ -43,6 +51,15 @@ module.exports = function () {
     })
 
     document.querySelector('.update__files').addEventListener('click', function () {
+
+        document.querySelector('#preset-id').value = ''
+        document.querySelector('#change-name').value = ''
+        document.querySelector('#change-from').value = ''
+        document.querySelector('#change-to').value = ''
+        document.querySelector('#change-file').value = ''
+        document.querySelector('#change-name-from').value = ''
+        document.querySelector('#change-name-to').value = ''
+        document.querySelector('#change-size').value = ''
 
         $.files_ = []
 

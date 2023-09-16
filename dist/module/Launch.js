@@ -31,6 +31,8 @@ module.exports = function () {
                 }]
             ])
 
+            $.db.length = 0
+
             $.db.push(Object.fromEntries(tmp))
 
             fs.writeFileSync(path.join(__dirname, rpath.db), JSON.stringify($.db));
@@ -55,8 +57,8 @@ module.exports = function () {
 
             document.querySelector('.loader').style.display = 'none'
 
+            $._fs.startPreset('start')
             $._fs.loadFiles()
-            $._fs.setPreset()
             $._fs.setTheme($.config.theme)
         }
     })

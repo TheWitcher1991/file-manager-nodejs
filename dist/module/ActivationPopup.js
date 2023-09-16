@@ -25,6 +25,16 @@ module.exports = function () {
     })
 
     document.querySelector('.bth__preset-cancel').addEventListener('click', function () {
+
+        document.querySelector('#preset-id').value = ''
+        document.querySelector('#change-name').value = ''
+        document.querySelector('#change-from').value = ''
+        document.querySelector('#change-to').value = ''
+        document.querySelector('#change-file').value = ''
+        document.querySelector('#change-name-from').value = ''
+        document.querySelector('#change-name-to').value = ''
+        document.querySelector('#change-size').value = ''
+
         document.querySelector('.preset__from-pop').style.display = 'none'
         document.querySelector('.preset__from-container').style.display = 'none'
     })

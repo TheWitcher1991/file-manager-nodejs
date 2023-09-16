@@ -141,7 +141,23 @@ module.exports = function () {
 
                 let inp = el.parentNode.parentNode.querySelector('input')
 
-                let arr = JSON.parse(inp.dataset.db)
+                let arr = {}
+
+                for (let x in $.db) {
+                    let tmp = String(Object.keys($.db[x])[0])
+                    for (let y in $.db[x]) {
+                        if (tmp === inp.dataset.id) {
+                            arr.name = $.db[x][y].name
+                            arr.pathFrom = $.db[x][y].pathFrom
+                            arr.pathTo = $.db[x][y].pathTo
+                            arr.typeFiles = $.db[x][y].typeFiles
+                            arr.sizeFiles = $.db[x][y].sizeFiles
+                            arr.wordLeft = $.db[x][y].wordLeft
+                            arr.wordRight = $.db[x][y].wordRight
+                            break
+                        }
+                    }
+                }
 
                 document.querySelector('#preset-id').value = inp.dataset.id
                 document.querySelector('#change-name').value = arr.name
@@ -179,9 +195,9 @@ module.exports = function () {
                     $.db[x][y].pathTo = to
                     $.db[x][y].typeFiles = file
                     $.db[x][y].sizeFiles = size
-                    $.db[x][y].wordLeft = nameTo
-                    $.db[x][y].wordRight = nameFrom
-                    $._fs.updateDB($.db)
+                    $.db[x][y].wordLeft = nameFrom
+                    $.db[x][y].wordRight = nameTo
+
                     fs.writeFileSync(path.join(__dirname, rpath.db), JSON.stringify($.db));
                     break
                 }
@@ -214,7 +230,10 @@ module.exports = function () {
                 $.tmpf['to'] = el.dataset.to
                 $.tmpf['remember'] = el.dataset.remember
 
+                $.config.ActivePreset = el.dataset.id
+
                 $._fs.setPreset($.tmpf['id'], $.tmpf['from'], $.tmpf['to'], $.tmpf['remember'])
+                fs.writeFileSync(path.join(__dirname, rpath.config), JSON.stringify($.config));
             }
         })
 

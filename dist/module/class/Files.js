@@ -5,8 +5,6 @@ const path = require('path'),
       { promisify } = require('util'),
       { resolve } = require('path')
 
-const $ = require(path.join(__dirname.replace('\class', '') + '/config'))
-
 const readdir = promisify(fs.readdir)
 const stat = promisify(fs.stat)
 
@@ -14,7 +12,7 @@ let { COPYFILE_EXCL } = fs.constants
 
 class Files {
 
-    constructor(db, selector, from = '', to = '', remember = [], count = 0, files = [], readSubfolders = 1, activeFiles = 0, activeList = []) {
+    constructor(db, selector, from = '', to = '', remember = [], count = 0, files = [], readSubfolders = 1, activeFiles = 0, activeList = [], countRender = 0) {
         this.db = db
         this.selector = selector
         this.from = from
@@ -27,6 +25,7 @@ class Files {
         this.readSubfolders = readSubfolders
         this.activeFiles = activeFiles
         this.activeList = activeList
+        this.countRender = countRender
     }
 
     mb_strwidth (str) {
@@ -97,6 +96,10 @@ class Files {
 
         let subfolders = await readdir(from)
 
+        let config = this.getConfig()
+
+        let types = config.typeFiles.replace(/\s/g,'').split(/,|-/)
+
         const files = await Promise.all(subfolders.map(async (subfolder) => {
 
             const res = resolve(from, subfolder),
@@ -105,7 +108,21 @@ class Files {
             if (stats.isDirectory() && this.readSubfolders === 1) {
                 return this.readFiles(res)
             } else {
-                this.count++
+
+
+                if (
+                    (config.typeFiles.replace(/\s/g,'') !== '' && !types.includes(path.extname(res).toLowerCase()))
+                    || (config.wordLeft.replace(/\s/g,'') !== '' && !subfolder.replace(/\.[^.]+$/, '').startsWith(config.wordLeft))
+                    || (config.wordRight.replace(/\s/g,'') !== '' && !subfolder.replace(/\.[^.]+$/, '').endsWith(config.wordRight))
+                    || (config.sizeFiles > 0 && ((stats.size / 1000) > config.sizeFiles))
+                ) {
+                    return true
+                } else {
+
+                }
+
+                this.count += 1
+
                 return {
                     id: this.count,
                     path: res,
@@ -220,82 +237,81 @@ class Files {
 
     renderFiles(ul, el, act = 1) {
 
-        let config = this.getConfig()
+        try {
 
-        let types = config.typeFiles.replace(/\s/g,'').split(/,|-/)
+            let config = this.getConfig()
 
-        if (this.remember.includes(el.uri) && act === 1) {
-            el.active = 1
-        } else {
-            el.active = 0
-        }
+            let types = config.typeFiles.replace(/\s/g,'').split(/,|-/)
 
-        let time = new Date(el.changed).toLocaleString('ru', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            timezone: 'UTC'
-        })
+            if (this.remember.includes(el.uri) && act === 1) {
+                el.active = 1
+            } else {
+                el.active = 0
+            }
 
-        let size = 0
+            let time = new Date(el.changed).toLocaleString('ru', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                timezone: 'UTC'
+            })
 
-        if ((el.size / 100) <= 100) {
-            size = `${this.mb_strimwidth(String((el.size / 100).toFixed(0)), 0, 15, '...')} КБ`
-        } else if ((el.size / 1000) <= 1000) {
-            size = `${this.mb_strimwidth(String((el.size / 1000).toFixed(0)), 0, 15, '...')} КБ`
-        } else {
-            size = `${this.mb_strimwidth(String((el.size / 1000 / 1000).toFixed(2)), 0, 15, '...')} МБ`
-        }
+            let size = 0
 
-        let low = el.type.toLowerCase()
+            if ((el.size / 100) <= 100) {
+                size = `${this.mb_strimwidth(String((el.size / 100).toFixed(0)), 0, 15, '...')} КБ`
+            } else if ((el.size / 1000) <= 1000) {
+                size = `${this.mb_strimwidth(String((el.size / 1000).toFixed(0)), 0, 15, '...')} КБ`
+            } else {
+                size = `${this.mb_strimwidth(String((el.size / 1000 / 1000).toFixed(2)), 0, 15, '...')} МБ`
+            }
 
-        let type = `<img src="${path.join(__dirname, '../../public/img/png/file.png')}" />`
+            let low = el.type.toLowerCase()
 
-        if (low === '.docx' || low === '.doc' || low === '.docm' || low === 'dot' || low === '.rtf')
-            type = `<img src="${path.join(__dirname, '../../public/img/png/word.png')}" />`
+            let type = `<img src="${path.join(__dirname, '../../public/img/png/file.png')}" />`
 
-        if (low === '.pdf')
-            type = `<img src="${path.join(__dirname, '../../public/img/png/pdf.png')}" />`
+            if (low === '.docx' || low === '.doc' || low === '.docm' || low === 'dot' || low === '.rtf')
+                type = `<img src="${path.join(__dirname, '../../public/img/png/word.png')}" />`
 
-        if (low === '.pptx' || low === '.pptm' || low === 'ppt.ppt')
-            type = `<img src="${path.join(__dirname, '../../public/img/png/powerpoint.png')}" />`
+            if (low === '.pdf')
+                type = `<img src="${path.join(__dirname, '../../public/img/png/pdf.png')}" />`
 
-        if (low === '.accdb' || low === '.mdb'|| low === '.crypt' || low === '.dat'
-            || low === '.sdf' || low === '.mdf' || low === '.sqlite' || low === '.sqlite3')
-            type = `<img src="${path.join(__dirname, '../../public/img/png/access.png')}" />`
+            if (low === '.pptx' || low === '.pptm' || low === 'ppt.ppt')
+                type = `<img src="${path.join(__dirname, '../../public/img/png/powerpoint.png')}" />`
 
-        if (low === '.sql' || low === '.db' || low === '.json')
-            type = `<img src="${path.join(__dirname, '../../public/img/png/database.png')}" />`
+            if (low === '.accdb' || low === '.mdb'|| low === '.crypt' || low === '.dat'
+                || low === '.sdf' || low === '.mdf' || low === '.sqlite' || low === '.sqlite3')
+                type = `<img src="${path.join(__dirname, '../../public/img/png/access.png')}" />`
 
-        if (low === '.xls' || el.type === '.xlsx' || low === '.xlsm' || low === '.xlsb' || low === '.xlsx')
-            type = `<img src="${path.join(__dirname, '../../public/img/png/excel.png')}" />`
+            if (low === '.sql' || low === '.db' || low === '.json')
+                type = `<img src="${path.join(__dirname, '../../public/img/png/database.png')}" />`
 
-        if (low === '.zip' || low === '.7z' || low === '.cab' || low === '.tar' || low === '.deb' || low === '.ace' || low === '.pak' || low === '.rar')
-            type = `<img src="${path.join(__dirname, '../../public/img/png/archive.png')}" />`
+            if (low === '.xls' || el.type === '.xlsx' || low === '.xlsm' || low === '.xlsb' || low === '.xlsx')
+                type = `<img src="${path.join(__dirname, '../../public/img/png/excel.png')}" />`
 
-        if (low === '.png' || low === '.jpeg' || low === '.jpg' || low === '.ico' || el.type === '.pict' || el.type === '.gif' || low === '.bmp'
-            || low === '.jfif' || low === '.webm' || low === '.tif')
-            type = `<img src="${path.join(__dirname, '../../public/img/png/picture.png')}" />`
+            if (low === '.zip' || low === '.7z' || low === '.cab' || low === '.tar' || low === '.deb' || low === '.ace' || low === '.pak' || low === '.rar')
+                type = `<img src="${path.join(__dirname, '../../public/img/png/archive.png')}" />`
 
-        if (low === '.mp3' || low === '.mp4' || low === '.m4a' || low === '.wav' || low === '.wma' || el.type === '.aif' || low === '.ac3'
-            || low === '.amr' || low === '.avi' || low === '.mov')
-            type = `<img src="${path.join(__dirname, '../../public/img/png/audio.png')}" />`
+            if (low === '.png' || low === '.jpeg' || low === '.jpg' || low === '.ico' || el.type === '.pict' || el.type === '.gif' || low === '.bmp'
+                || low === '.jfif' || low === '.webm' || low === '.tif')
+                type = `<img src="${path.join(__dirname, '../../public/img/png/picture.png')}" />`
 
-        /*
-            (config.typeFiles.replace(/\s/g,'') !== '' && types.includes(low))
-            || (config.wordLeft.replace(/\s/g,'') !== '' && el.name.startsWith(config.wordLeft))
-            || (config.wordRight.replace(/\s/g,'') !== '' && el.name.endsWith(config.wordRight))
-            || ((el.size / 1000) <= config.sizeFiles)
-         */
+            if (low === '.mp3' || low === '.mp4' || low === '.m4a' || low === '.wav' || low === '.wma' || el.type === '.aif' || low === '.ac3'
+                || low === '.amr' || low === '.avi' || low === '.mov')
+                type = `<img src="${path.join(__dirname, '../../public/img/png/audio.png')}" />`
 
-        if (el.active === 1) {
-            let label = document.createElement('label')
-            label.className = `file__table-ctx file__ctx-${el.id}`
-            label.for = `file__${el.id}`
-            label.dataset.id = el.id
-            label.dataset.name = el.name
-            label.dataset.path = el.path
-            label.innerHTML = `
+            this.countRender += 1
+
+            document.querySelector('.search__result').innerHTML = `Найдено ${this.countRender} файлов`
+
+            if (el.active === 1) {
+                let label = document.createElement('label')
+                label.className = `file__table-ctx file__ctx-${el.id}`
+                label.for = `file__${el.id}`
+                label.dataset.id = el.id
+                label.dataset.name = el.name
+                label.dataset.path = el.path
+                label.innerHTML = `
              <div class="file__table-temp">
                         <div class="container">
                             <div class="sort__check"> 
@@ -325,15 +341,16 @@ class Files {
                         </div>
                     </div>
             `
-            ul.prepend(label)
-            this.activeFiles = 1
-            this.activeList.push({
-                id: el.id,
-                name: el.name,
-                path: el.path,
-            })
-        } else {
-            ul.innerHTML += `
+                ul.prepend(label)
+                this.activeFiles = 1
+                this.activeList.push({
+                    id: el.id,
+                    name: el.name,
+                    path: el.path,
+                })
+
+            } else {
+                ul.innerHTML += `
                 <label class="file__table-ctx file__ctx-${el.id}" for="file__${el.id}" 
                 data-id="${el.id}"
                 data-name="${el.name}"
@@ -371,8 +388,10 @@ class Files {
                     </div>
                 </label>
             `
-        }
+            }
+        } catch (e) {
 
+        }
 
     }
 
@@ -399,6 +418,8 @@ class Files {
     }
 
     searchFiles (text, column, type) {
+
+        this.countRender = 0
 
         this.activeFiles = 0
         this.activeList = []
@@ -507,13 +528,13 @@ class Files {
 
     sortFiles(column, type) {
 
+        this.countRender = 0
+
         this.activeFiles = 0
         this.activeList = []
 
         let files_ = this.files,
             count = this.files.length
-
-        document.querySelector('.search__result').innerHTML = `Найдено ${count} файлов`
 
         let ul = document.querySelector(this.selector)
 
@@ -604,6 +625,8 @@ class Files {
 
     async updatePath () {
 
+        this.countRender = 0
+
         document.querySelector('.gload__from-pop').style.display = 'flex'
         document.querySelector('.gload__from-container').style.display = 'block'
 
@@ -615,10 +638,10 @@ class Files {
             document.querySelector('.gload__from-pop').style.display = 'none'
             document.querySelector('.gload__from-container').style.display = 'none'
 
-            let files_ = e,
+            let files_ = e.filter(x => typeof x === 'object'),
                 count = files_.length
 
-            this.files = e
+            this.files = files_
 
             let ul = document.querySelector(this.selector)
 
@@ -636,8 +659,6 @@ class Files {
 
             document.querySelector('.sort__name').classList.add('sort__active')
             document.querySelector('.sort__name').innerHTML += '<i class="fa-solid fa-caret-down sort__arrow"></i>'
-
-            document.querySelector('.search__result').innerHTML = `Найдено ${count} файлов`
 
             let rem = []
 
@@ -690,6 +711,8 @@ class Files {
                 document.querySelector('.global__button-tran').style.display = 'flex'
             }
         })
+
+
 
     }
 
@@ -751,6 +774,10 @@ class Files {
                 `
             }
         }
+    }
+
+    startPreset(preset = 'start') {
+        this.preset = preset
     }
 
     setPreset(id = '', from = '', to = '') {
@@ -848,7 +875,7 @@ class Files {
 
     }
 
-    loadFiles() {
+    async loadFiles() {
 
         this.count = 0
 
@@ -879,7 +906,9 @@ class Files {
 
         this.updateRemember()
         this.updatePreset()
-        this.updatePath()
+        await this.updatePath()
+
+
 
     }
 
