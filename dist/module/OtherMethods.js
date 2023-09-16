@@ -5,7 +5,6 @@ let { rpath, rkey  } = require(path.join(__dirname, '/config'))
 let $ = require(path.join(__dirname, '/config'))
 
 module.exports = function () {
-
     document.querySelector('.setting-button').addEventListener('click', function () {
 
         let $this = document.documentElement.getAttribute('theme')
@@ -205,10 +204,10 @@ module.exports = function () {
     })
 
     document.querySelector('.preset__list').addEventListener('click', function (event) {
-        const target = this.querySelectorAll('input');
-        if (!target) return false;
+        const targetPreset = this.querySelectorAll('input');
+        if (!targetPreset) return false;
 
-        [].forEach.call(target, el => {
+        [].forEach.call(targetPreset, el => {
             el.onclick = () => {
                 $.tmpf['id'] = el.dataset.id
                 $.tmpf['from'] = el.dataset.from
@@ -219,11 +218,45 @@ module.exports = function () {
             }
         })
 
+        const targetTrashPreset = this.querySelectorAll('.trash__preset');
+
+        [].forEach.call(targetTrashPreset, el => {
+            el.onclick = () => {
+                let preset = el.dataset.id,
+                    active = $._fs.getPreset()
+
+                let tmpdb = []
+
+                if (preset === active) {
+                    alert('Данный пресет активен')
+                } else {
+                    for (let x in $.db) {
+                        let tmp = String(Object.keys($.db[x]))
+                        if (tmp !== preset) {
+                            tmpdb.push($.db[x])
+                        }
+                    }
+
+                    $.db.length = 0
+
+                    $.db.push(...tmpdb)
+
+                    $._fs.updateDB($.db)
+                    $._fs.updatePreset()
+                    fs.writeFileSync(path.join(__dirname, rpath.db), JSON.stringify($.db));
+                }
+
+
+            }
+        })
+
     })
 
     document.querySelector('.file__thead input').addEventListener('click', function (event) {
 
         $.files_ = []
+
+        $._fs.cleanActiveList()
 
         let check = this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.querySelectorAll('.file__tbody input')
 
@@ -260,6 +293,8 @@ module.exports = function () {
     document.querySelector('.file__tbody').addEventListener('click', function (event) {
         const target = this.querySelectorAll('input')
         if (!target) return false
+
+        $._fs.cleanActiveList()
 
         let check =  document.querySelector('.file__table input')
 

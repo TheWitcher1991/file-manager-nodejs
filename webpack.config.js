@@ -1,7 +1,7 @@
 'use strict'
 
 const path = require('path'),
-    MiniCssExtractPlugin = require('mini-css-extract-plugin')
+      MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 const PATHS = {
     src: path.join(__dirname, './src'),
@@ -40,7 +40,6 @@ module.exports = {
             {
                 test: /\.(s[ac]|c)ss$/i,
                 use: [
-                    'style-loader',
                     MiniCssExtractPlugin.loader,
                     {
                         loader: 'css-loader',

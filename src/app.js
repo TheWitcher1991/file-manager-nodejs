@@ -5,8 +5,7 @@ const path = require('path'),
       morgan = require('morgan'),
       helmet = require('helmet'),
       bodyParser = require('body-parser'),
-      cookieParser = require('cookie-parser'),
-      expressHandlebars = require('express-handlebars')
+      cookieParser = require('cookie-parser')
 
 const baseRouter = require('./server/routes/baseRouter'),
       { csrfMiddleware } = require('./server/middleware/csrfMiddleware')
@@ -17,7 +16,7 @@ const app = express()
 
 app.set('port', GLOBAL.PORT)
 app.set('views', 'dist/views')
-app.set('view engine', 'hbs')
+app.set('view engine', 'ejs')
 
 if (process.env.NODE_ENV === 'dev')
     app.use(morgan('dev'))

@@ -5,6 +5,8 @@ const path = require('path'),
       { promisify } = require('util'),
       { resolve } = require('path')
 
+const $ = require(path.join(__dirname.replace('\class', '') + '/config'))
+
 const readdir = promisify(fs.readdir)
 const stat = promisify(fs.stat)
 
@@ -12,7 +14,7 @@ let { COPYFILE_EXCL } = fs.constants
 
 class Files {
 
-    constructor(db, selector, from = '', to = '', remember = [], count = 0, files = [], readSubfolders = 1) {
+    constructor(db, selector, from = '', to = '', remember = [], count = 0, files = [], readSubfolders = 1, activeFiles = 0, activeList = []) {
         this.db = db
         this.selector = selector
         this.from = from
@@ -23,6 +25,8 @@ class Files {
         this.count = count
         this.files = files
         this.readSubfolders = readSubfolders
+        this.activeFiles = activeFiles
+        this.activeList = activeList
     }
 
     mb_strwidth (str) {
@@ -136,7 +140,7 @@ class Files {
                 fs.unlink(String(el.path), err => {
                     if (err) arr.push(el.name)
                     setCount--
-                    document.querySelector(`.file__ctx-${el.id}`).remove()
+                    document.querySelector(`.file__ctx-${el.id}`)?.remove()
                     document.querySelector('.gdelete div').innerHTML = `Осталось файлов ${setCount}`
                     if (setCount === 0) {
                         document.querySelector('.gdelete__from-pop').style.display = 'none'
@@ -189,7 +193,7 @@ class Files {
                 fs.rename(String(el.path), String(`${this.to}\\${el.name}`), err => {
                     if (err) arr.push(el.name)
                     setCount--
-                    document.querySelector(`.file__ctx-${el.id}`).remove()
+                    document.querySelector(`.file__ctx-${el.id}`)?.remove()
                     document.querySelector('.gtrasf div').innerHTML = `Осталось файлов ${setCount}`
                     if (setCount === 0) {
                         document.querySelector('.gtrasf__from-pop').style.display = 'none'
@@ -322,6 +326,12 @@ class Files {
                     </div>
             `
             ul.prepend(label)
+            this.activeFiles = 1
+            this.activeList.push({
+                id: el.id,
+                name: el.name,
+                path: el.path,
+            })
         } else {
             ul.innerHTML += `
                 <label class="file__table-ctx file__ctx-${el.id}" for="file__${el.id}" 
@@ -389,6 +399,9 @@ class Files {
     }
 
     searchFiles (text, column, type) {
+
+        this.activeFiles = 0
+        this.activeList = []
 
         let files_ = this.files,
             all = this.files.length,
@@ -494,8 +507,13 @@ class Files {
 
     sortFiles(column, type) {
 
+        this.activeFiles = 0
+        this.activeList = []
+
         let files_ = this.files,
             count = this.files.length
+
+        document.querySelector('.search__result').innerHTML = `Найдено ${count} файлов`
 
         let ul = document.querySelector(this.selector)
 
@@ -589,6 +607,9 @@ class Files {
         document.querySelector('.gload__from-pop').style.display = 'flex'
         document.querySelector('.gload__from-container').style.display = 'block'
 
+        this.activeFiles = 0
+        this.activeList = []
+
         await this.readFiles(this.from).then((e) => {
 
             document.querySelector('.gload__from-pop').style.display = 'none'
@@ -663,6 +684,11 @@ class Files {
                 document.querySelector('.global__button-danger').style.display = 'block'
                 heed.forEach(el => document.querySelector('.need__block > div').innerHTML += `${el}; `)
             }
+
+            if (this.activeFiles === 1) {
+                document.querySelector('.search__result').innerHTML = `Выбрано ${this.activeList.length} файлов`
+                document.querySelector('.global__button-tran').style.display = 'flex'
+            }
         })
 
     }
@@ -703,19 +729,23 @@ class Files {
             for (let y in this.db[x]) {
                 document.querySelector('.preset__list').innerHTML += `
                     <div class="preset__item-wrap">
-                        <label class="preset__item" for="${tmp}">
-                            <input type="radio" class="preset" name="preset" id="${tmp}" value="${this.db[x][y].name}" ${tmp === this.preset ? 'checked' : ''}
-                                data-from="${this.db[x][y].pathFrom}"
-                                data-to="${this.db[x][y].pathTo}"
-                                data-id="${tmp}"
-                                data-remember="${this.db[x][y].remember}"
-                                data-db=\'${JSON.stringify(this.db[x][y])}\'
-                                />
-                            <span class="">${this.db[x][y].name}</span>
-                        </label>
+                        <div class="radio__wrap preset__item">
+                            <input type="radio" class="preset custom-radio" name="preset" id="${tmp}" value="${this.db[x][y].name}" ${tmp === this.preset ? 'checked' : ''}
+                                    data-from="${this.db[x][y].pathFrom}"
+                                    data-to="${this.db[x][y].pathTo}"
+                                    data-id="${tmp}"
+                                    data-remember="${this.db[x][y].remember}"
+                                    data-db=\'${JSON.stringify(this.db[x][y])}\'
+                                    />
+                            <label class="radio__label" for="${tmp}">${this.db[x][y].name}</label>
+                        </div>
+                 
                         <div>
+                            ${tmp !== 'start' ? `<i class="trash__preset fa-regular fa-trash trash__preset-${tmp}"
+                                data-id="${tmp}"
+                            ></i>` : ''}
                             <i class="fa-regular fa-wrench setting__preset-${tmp}"></i>
-                            ${tmp !== 'start' ? '<i class="fa-regular fa-trash"></i>' : ''}
+                           
                         </div>
                     </div>
                 `
@@ -740,6 +770,13 @@ class Files {
         this.db = db
     }
 
+    getActiveList () {
+        return {
+            active: this.activeFiles,
+            list: this.activeList
+        }
+    }
+
     getPreset() {
         return this.preset
     }
@@ -750,6 +787,11 @@ class Files {
 
     setRemember(files) {
         this.remember.push(String(files))
+    }
+
+    cleanActiveList () {
+        this.activeFiles = 0
+        this.activeList = []
     }
 
     setReadSubfolders(val) {
@@ -795,7 +837,7 @@ class Files {
         this.files = []
     }
 
-    setTheme(val = 'light') {
+    setTheme(val = 'dark') {
         document.documentElement.setAttribute('theme', val);
 
         if (val === 'light') {

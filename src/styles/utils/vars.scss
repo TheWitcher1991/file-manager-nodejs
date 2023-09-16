@@ -3,7 +3,7 @@
 $vendors  : "-webkit-", "-apple-", "-khtml-", "-moz-", "-rim-", "-xv-","-ms-", "-o-", "";
 
 :root {
-    --Nunito: 'Jost', sans-serif;
+    --Nunito: 'Circe Rounded', sans-serif;
 }
 
 :root[theme="light"] {
@@ -22,12 +22,16 @@ $vendors  : "-webkit-", "-apple-", "-khtml-", "-moz-", "-rim-", "-xv-","-ms-", "
     --black    : #111111;
     --bthFg    : #ffffff;
     --fg550    : #e6f1f8;
+    --noticeBg : #ffffff;
+    --checkNBg  : #e9ecef;
+    --checkNFg  : #e9ecef;
     --fg450    : rgb(34 34 34 / 60%);
 
     --rbg650   : rgb(0 35 63 / 95%);
 
     --boxPop   : 1px 3px 3px 0 rgb(0 0 0 / 20%), 1px 3px 15px 2px rgb(0 0 0 / 20%);
     --boxTb    : 0px 0px 50px 0px rgba(43, 40, 45, 0.15);
+    --noticBox : 0 4px 20px rgba(37,40,43,.15);
 }
 
 :root[theme="dark"] {
@@ -46,10 +50,14 @@ $vendors  : "-webkit-", "-apple-", "-khtml-", "-moz-", "-rim-", "-xv-","-ms-", "
     --black    : #f1f1f1;
     --bthFg    : #ffffff;
     --fg550    : #373e47;
+    --noticeBg : #101318;
+    --checkNBg  : #1c2128;
+    --checkNFg  : #373e47;
     --fg450    : rgba(42, 48, 55, 0.6);
 
     --rbg650   : rgba(99,110,123,0.4);
 
     --boxPop   : 1px 3px 3px 0 rgb(0 0 0 / 20%), 1px 3px 15px 2px rgb(0 0 0 / 20%);
     --boxTb    : 0 16px 32px rgba(28,33,40,0.85);
+    --noticBox : 0 16px 32px rgba(28,33,40,0.85);
 }

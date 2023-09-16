@@ -5,23 +5,18 @@ if (require.main !== module) {
         logger: require('electron-log')
     })
 }
-
-
-
-
-
-const fs = require('fs')
 const path = require('path')
 const { app, BrowserWindow, ipcMain, globalShortcut, dialog, autoUpdater } = require('electron')
+// const ejs = require('ejs-electron')
 const { spawn } = require('child_process')
 
-const log = require('electron-log');
+// const log = require('electron-log');
 
 const pjson = require('./package.json')
 
-log.transports.console.level = 'info'
-log.transports.file.level = 'info'
-log.info('App starting...')
+// log.transports.console.level = 'info'
+// log.transports.file.level = 'info'
+// log.info('App starting...')
 
 const appversion = pjson.version
 
@@ -30,6 +25,12 @@ const expressAppUrl = `http://localhost:8080`;
 const debug = /--debug/.test(process.argv[2])
 
 if (process.mas) app.setName(pjson.name)
+
+//ejs
+//    .data('title', pjson.name)
+//    .data('api', './api.js')
+//    .data('styles', './public/static/style.bundle.css')
+//    .options('debug', true)
 
 let mainWindow = null
 
@@ -80,7 +81,7 @@ function createWindow () {
     mainWindow.loadURL(path.join(__dirname, '/dist/index.html'))
     //mainWindow.loadURL('http://localhost:8080/')
 
-    log.info(mainWindow);
+    // log.info(mainWindow);
 
     if (debug) {
         mainWindow.webContents.openDevTools()

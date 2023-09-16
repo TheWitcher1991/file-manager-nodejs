@@ -1029,11 +1029,11 @@
         animation-fill-mode: both;
         animation-name: slip-top;
         display: inline-flex;
-        align-items: center;
-        background: #ffffff;
-        border-left: 4px solid #4bb24e;
+        align-items: baseline;
+        background: var(--noticeBg);
+        border-left: 4px solid #347d39;
         padding: 8px 0 8px 12px;
-        box-shadow: 0 4px 20px rgba(37,40,43,.15);
+        box-shadow: var(--noticBox);
         border-radius: 6px;
         font-size: 13px;
         font-weight: 400;
@@ -1119,8 +1119,80 @@
 
     /* стили для чекбокса, находящегося в состоянии disabled */
     .custom-checkbox:disabled+label::before {
+        background-color: var( --checkNBg);
+        border-color: var( --checkNFg);
+    }
+
+}
+
+.radio__wrap {
+    position: relative;
+    display: flex;
+    cursor: pointer;
+
+    label {
+        color: var(--mainFg);
+        font-weight: 400;
+        font-size: 15px;
+        display: block;
+        cursor: pointer;
+    }
+
+    .custom-radio {
+        position: absolute;
+        z-index: -1;
+        opacity: 0;
+    }
+
+    .custom-radio + label {
+        display: inline-flex;
+        align-items: center;
+        user-select: none;
+    }
+
+    .custom-radio + label::before {
+        content: '';
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 15px;
+        height: 15px;
+        flex-shrink: 0;
+        flex-grow: 0;
+        border: 1px solid var(--fg200);
+        border-radius: 50%;
+        margin-right: 6px;
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: 50% 50%;
+    }
+
+    /* стили при наведении курсора на checkbox */
+    .custom-radio:not(:disabled):not(:checked) + label:hover::before {
+        border-color: var(--fg350);
+    }
+
+    /* стили для активного чекбокса (при нажатии на него) */
+    .custom-radio:not(:disabled):active + label::before {
         background-color: var(--fg500);
         border-color: var(--fg350);
     }
 
+    /* стили для чекбокса, находящегося в фокусе и не находящегося в состоянии checked */
+    .custom-radio:focus:not(:checked) + label::before {
+        border-color: var(--fg350);
+    }
+
+    /* стили для чекбокса, находящегося в состоянии checked */
+    .custom-radio:checked + label::before {
+        border-color: var(--activeFg);
+        background-color: var(--activeFg);
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e");
+    }
+
+    /* стили для чекбокса, находящегося в состоянии disabled */
+    .custom-radio:disabled + label::before {
+        background-color: var(--checkNBg);
+        border-color: var(--checkNFg);
+    }
 }
