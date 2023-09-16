@@ -1,26 +1,10 @@
 const path = require('path')
 const fs = require('fs')
 
-let { rpath, rkey  } = require(path.join(__dirname, '/config'))
-let $ = require(path.join(__dirname, '/config'))
+let { rpath, rkey  } = require('./config')
+let $ = require('./config')
 
 module.exports = function () {
-
-    document.querySelector('.setting-button').addEventListener('click', function () {
-
-        let $this = document.documentElement.getAttribute('theme')
-
-        if ($this === 'dark') {
-            $._fs.setTheme('light')
-            $.config.theme = 'light'
-        } else {
-            $._fs.setTheme('dark')
-            $.config.theme = 'dark'
-        }
-
-        fs.writeFileSync(path.join(__dirname, rpath.config), JSON.stringify($.config));
-    })
-
     document.querySelector('.remember__list').addEventListener('click', function () {
         const target = this.querySelectorAll('button')
         if (!target) return false

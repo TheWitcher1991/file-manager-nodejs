@@ -8,8 +8,6 @@ const path = require('path'),
 const readdir = promisify(fs.readdir)
 const stat = promisify(fs.stat)
 
-let { COPYFILE_EXCL } = fs.constants
-
 class Files {
 
     constructor(db, selector, from = '', to = '', remember = [], count = 0, files = [], readSubfolders = 1) {
@@ -120,6 +118,8 @@ class Files {
             document.querySelector('.gload div').innerHTML = `Прочитано файлов ${this.count}`
         }
 
+        console.log(files)
+
         return files.reduce((a, f) => a.concat(f), [])
     }
 
@@ -160,7 +160,7 @@ class Files {
 
          files_.forEach(async (el, i) => {
              await new Promise((resolve, reject) => {
-                 fs.copyFile(String(el.path), String(`${this.to}\\${el.name}`), COPYFILE_EXCL, err => {
+                 fs.copyFile(String(el.path), String(`${this.to}\\${el.name}`), fs.constants.COPYFILE_EXCL, err => {
                      if (err) arr.push(el.name)
                      setCount--
                      document.querySelector('.gcopy div').innerHTML = `Осталось файлов ${setCount}`
@@ -795,18 +795,9 @@ class Files {
         this.files = []
     }
 
-    setTheme(val = 'light') {
-        document.documentElement.setAttribute('theme', val);
-
-        if (val === 'light') {
-            document.querySelector('.setting-button').innerHTML = '<i class="fa-regular fa-brightness"></i>'
-        } else if (val === 'dark') {
-            document.querySelector('.setting-button').innerHTML = '<i class="fa-regular fa-moon-stars"></i>'
-        }
-
-    }
-
     loadFiles() {
+
+        console.log('loadfiles')
 
         this.count = 0
 

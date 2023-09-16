@@ -5,9 +5,11 @@
     <title>LitSer</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;0,1000;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900;1,1000&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
 
     <link rel="stylesheet" type="text/css" href="./libs/FontAwesome/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="./public/font/CirceRounded/CirceRounded.css">
     <link rel="stylesheet" type="text/css" href="./public/static/style.bundle.css">
 </head>
 <body>
@@ -22,14 +24,14 @@
                 <div class="form__label">
                     <span>Полный путь до папки с файлами</span>
                     <label class="label__block label__path-from" for="path-from">
-                        <i class="fa-duotone fa-house"></i>
+                        <i class="fa-regular fa-house"></i>
                         <input type="text" id="path-from" class="popup__input" />
                     </label>
                 </div>
                 <div class="form__label">
                     <span>Полный путь до папки переноса</span>
                     <label class="label__block" for="path-to">
-                        <i class="fa-duotone fa-upload"></i>
+                        <i class="fa-regular fa-upload"></i>
                         <input type="text" id="path-to" class="popup__input" />
                     </label>
                 </div>
@@ -52,21 +54,21 @@
                 <div class="form__label">
                     <span>Название</span>
                     <label class="label__block" for="preset-name">
-                        <i class="fa-duotone fa-registered"></i>
+                        <i class="fa-regular fa-registered"></i>
                         <input type="text" id="preset-name" class="popup__input" />
                     </label>
                 </div>
                 <div class="form__label">
                     <span>Полный путь до папки с файлами</span>
                     <label class="label__block" for="preset-from">
-                        <i class="fa-duotone fa-house"></i>
+                        <i class="fa-regular fa-house"></i>
                         <input type="text" id="preset-from" class="popup__input" />
                     </label>
                 </div>
                 <div class="form__label">
                     <span>Полный путь до папки переноса</span>
                     <label class="label__block" for="preset-to">
-                        <i class="fa-duotone fa-upload"></i>
+                        <i class="fa-regular fa-upload"></i>
                         <input type="text" id="preset-to" class="popup__input" />
                     </label>
                 </div>
@@ -84,10 +86,10 @@
         <form enctype="multipart/form-data" method="post" action="">
             <div class="form__title">
                 <span class="form__span">О приложении</span>
-                <i class="fa-duotone fa-xmark close__info"></i>
+                <i class="fa-regular fa-xmark close__info"></i>
             </div>
             <div class="file__upload info__block">
-                <i class="fa-light fa-atom-simple"></i>
+                <img src="./public/img/icon.ico" alt="">
                 <span>litser</span>
                 <p>Build: #1.0.0 01.09.2023</p>
                 <div>
@@ -137,7 +139,7 @@
         <form enctype="multipart/form-data" method="post" action="">
             <div class="form__title">
                 <span class="form__span">Внимание</span>
-                <i class="fa-duotone fa-xmark close__need"></i>
+                <i class="fa-regular fa-xmark close__need"></i>
             </div>
             <div class="file__upload need__block">
                 <span>Не найдены обязательные файлы:</span>
@@ -161,21 +163,21 @@
                         <div class="form__label">
                             <span>Название</span>
                             <label class="label__block" for="preset-name">
-                                <i class="fa-duotone fa-registered"></i>
+                                <i class="fa-regular fa-registered"></i>
                                 <input type="text" id="change-name" class="popup__input" />
                             </label>
                         </div>
                         <div class="form__label">
                             <span>Полный путь до папки с файлами</span>
                             <label class="label__block" for="preset-from">
-                                <i class="fa-duotone fa-house"></i>
+                                <i class="fa-regular fa-house"></i>
                                 <input type="text" id="change-from" class="popup__input" />
                             </label>
                         </div>
                         <div class="form__label">
                             <span>Полный путь до папки переноса</span>
                             <label class="label__block" for="preset-to">
-                                <i class="fa-duotone fa-upload"></i>
+                                <i class="fa-regular fa-upload"></i>
                                 <input type="text" id="change-to" class="popup__input" />
                             </label>
                         </div>
@@ -185,21 +187,21 @@
                         <div class="form__label">
                             <span>Значение в начале названия</span>
                             <label class="label__block" for="preset-from">
-                                <i class="fa-duotone fa-hand-point-right"></i>
+                                <i class="fa-regular fa-hand-point-right"></i>
                                 <input type="text" id="change-name-from" class="popup__input" placeholder="Например, Архив" />
                             </label>
                         </div>
                         <div class="form__label">
                             <span>Значение в конце названия</span>
                             <label class="label__block" for="preset-to">
-                                <i class="fa-duotone fa-hand-point-left"></i>
+                                <i class="fa-regular fa-hand-point-left"></i>
                                 <input type="text" id="change-name-to" class="popup__input" placeholder="Например, Архив" />
                             </label>
                         </div>
                         <div class="form__label">
                             <span>Размер до</span>
                             <label class="label__block" for="preset-to">
-                                <i class="fa-duotone fa-scale-unbalanced-flip"></i>
+                                <i class="fa-regular fa-scale-unbalanced-flip"></i>
                                 <input type="text" id="change-size" class="popup__input" placeholder="Значение в КБ" />
                             </label>
                         </div>
@@ -208,7 +210,7 @@
                 <div class="form__label">
                     <span>Типы файлов</span>
                     <label class="label__block" for="preset-name">
-                        <i class="fa-duotone fa-question"></i>
+                        <i class="fa-regular fa-question"></i>
                         <input type="text" id="change-file" class="popup__input" placeholder="В формате .type через запятую" />
                     </label>
                 </div>
@@ -225,7 +227,7 @@
     <div class="popup__container load__from-container">
         <form enctype="multipart/form-data" method="post" action="">
             <div class="file__upload load__block">
-                <i class="fa-duotone fa-spinner fa-spin"></i>
+                <i class="fa-regular fa-spinner fa-spin"></i>
                 <span>Рендер списка файлов...</span>
                 <p>Файлов слишком много, подождите пока мы их отрендерим</p>
                 <div></div>
@@ -238,7 +240,7 @@
     <div class="popup__container gload__from-container" style="display: block">
         <form enctype="multipart/form-data" method="post" action="">
             <div class="file__upload load__block gload">
-                <i class="fa-duotone fa-spinner fa-spin"></i>
+                <i class="fa-regular fa-spinner fa-spin"></i>
                 <span>Идёт чтение файлов...</span>
                 <p></p>
                 <div></div>
@@ -251,7 +253,7 @@
     <div class="popup__container gdelete__from-container">
         <form enctype="multipart/form-data" method="post" action="">
             <div class="file__upload load__block gdelete">
-                <i class="fa-duotone fa-spinner fa-spin"></i>
+                <i class="fa-regular fa-spinner fa-spin"></i>
                 <span>Идёт удаление файлов...</span>
                 <p></p>
                 <div></div>
@@ -264,7 +266,7 @@
     <div class="popup__container gcopy__from-container">
         <form enctype="multipart/form-data" method="post" action="">
             <div class="file__upload load__block gcopy">
-                <i class="fa-duotone fa-spinner fa-spin"></i>
+                <i class="fa-regular fa-spinner fa-spin"></i>
                 <span>Идёт копирование файлов...</span>
                 <p></p>
                 <div></div>
@@ -277,7 +279,7 @@
     <div class="popup__container gtrasf__from-container">
         <form enctype="multipart/form-data" method="post" action="">
             <div class="file__upload load__block gtrasf">
-                <i class="fa-duotone fa-spinner fa-spin"></i>
+                <i class="fa-regular fa-spinner fa-spin"></i>
                 <span>Идёт перемещение файлов...</span>
                 <p></p>
                 <div></div>
@@ -291,6 +293,7 @@
 <main id="wrapper">
 
     <div class="window__button" style="-webkit-app-region: drag">
+        <div style="-webkit-app-region: no-drag;font-size: 15px" class="info-button top-bth-f"><i class="fa-regular fa-circle-info"></i></div>
         <div style="-webkit-app-region: no-drag" id="minimize-button" class="minimize-button top-bth-f"><i class="fa-solid fa-window-minimize"></i></div>
         <div style="-webkit-app-region: no-drag" id="close-button" class="close-button top-bth-f"><i class="fa-solid fa-xmark"></i></div>
     </div>
@@ -306,7 +309,7 @@
                 <label class="checkbox__label" for="global__change">Читать файлы в подкаталогах</label>
             </div>
 
-            <div id="setting-button" class="setting-button"><i class="fa-regular fa-circle-info"></i></div>
+            <div id="setting-button" class="setting-button"></div>
         </div>
     </section>
 
@@ -318,25 +321,25 @@
             <input type="text" value="" style="display: none" class="global__remember">
             <div class="global__input">
                 <div class="gi__left">
-                    <i class="fa-duotone fa-house"></i>
+                    <i class="fa-regular fa-folder-open"></i>
                     <span class="home__path">
 
                     </span>
                 </div>
                 <div class="gi__right update__files">
-                    <i class="fa-duotone fa-arrows-rotate"></i>
+                    <i class="fa-regular fa-arrows-rotate"></i>
                 </div>
             </div>
 
             <div class="global__input">
                 <div class="gi__left">
-                    <i class="fa-duotone fa-upload"></i>
+                    <i class="fa-regular fa-upload"></i>
                     <span class="home__to">
-                        <!-- C <i class="fa-duotone fa-angle-right"></i>
-                        Users <i class="fa-duotone fa-angle-right"></i>
-                        Public <i class="fa-duotone fa-angle-right"></i>
-                        Documents <i class="fa-duotone fa-angle-right"></i>
-                        IISExpress <i class="fa-duotone fa-angle-right"></i>
+                        <!-- C <i class="fa-regular fa-angle-right"></i>
+                        Users <i class="fa-regular fa-angle-right"></i>
+                        Public <i class="fa-regular fa-angle-right"></i>
+                        Documents <i class="fa-regular fa-angle-right"></i>
+                        IISExpress <i class="fa-regular fa-angle-right"></i>
                         Logs -->
                     </span>
                 </div>
@@ -345,19 +348,19 @@
             <div class="app__button">
                 <div class="top__button">
                     <div class="kit__button tb__bth">
-                        <span class="tb__span kit__button-span"><i class="fa-duotone fa-filter-list"></i> Пресеты</span>
+                        <span class="tb__span kit__button-span"><i class="fa-regular fa-filter-list"></i> Пресеты</span>
                         <div class="tb__popup kit__popup" style="display:none;">
                             <div class="preset__list">
 
                             </div>
                             <div class="tb__button flex__space">
-                                <button type="button" class="delete__preset"><i class="fa-duotone fa-trash-can-list"></i></button>
+                                <button type="button" class="delete__preset"><i class="fa-regular fa-trash-can-list"></i></button>
                                 <button type="button" class="create__preset tb__apply">Добавить</button>
                             </div>
                         </div>
                     </div>
                     <div class="new__button tb__bth">
-                        <span class="tb__span new__button-span"><i class="fa-duotone fa-sliders-up"></i> Фильтр</span>
+                        <span class="tb__span new__button-span"><i class="fa-regular fa-sliders-up"></i> Фильтр</span>
                         <div class="tb__popup new__popup" style="display:none;">
                             <div class="sort__list">
                                 <label for="sort__column">
@@ -383,10 +386,10 @@
                         </div>
                     </div>
                     <div class="search__button tb__bth">
-                        <span class="tb__span search__button-span"><i class="fa-duotone fa-magnifying-glass"></i> Найти</span>
+                        <span class="tb__span search__button-span"><i class="fa-regular fa-magnifying-glass"></i> Найти</span>
                         <div class="tb__popup search__popup" style="display:none;">
                             <label class="label__block-global" for="global__search">
-                                <i class="fa-duotone fa-magnifying-glass"></i>
+                                <i class="fa-regular fa-magnifying-glass"></i>
                                 <input class="global__search" type="text" name="global__search" id="global__search" placeholder="Название файла..." />
                             </label>
                             <div class="tb__button">
@@ -395,10 +398,10 @@
                         </div>
                     </div>
                     <div class="remember__button tb__bth">
-                        <span class="tb__span remember__button-span"><i class="fa-duotone fa-folder-bookmark"></i> Запомнить</span>
+                        <span class="tb__span remember__button-span"><i class="fa-regular fa-folder-bookmark"></i> Запомнить</span>
                         <div class="tb__popup remember__popup" style="display:none;">
                             <label class="label__block-global" for="global__search">
-                                <i class="fa-duotone fa-bookmark"></i>
+                                <i class="fa-regular fa-bookmark"></i>
                                 <input class="global__remember" type="text" name="global__remember" id="global__remember" placeholder="Имя файла, учитывая регистр, например, Архив-001" />
                             </label>
                             <span class="label__exp">для каждого пресета свои файлы</span>
@@ -414,19 +417,19 @@
 
                 <div class="global__button-wrap">
                     <div>
-                        <button type="button" class="global__button-tran delete__button"><i class="fa-duotone fa-trash"></i></button>
+                        <button type="button" class="global__button-tran delete__button"><i class="fa-regular fa-trash"></i></button>
                         <span>Удалить</span>
                     </div>
                     <div>
-                        <button type="button" class="global__button-danger danger__button"><i class="fa-duotone fa-triangle-exclamation"></i></button>
+                        <button type="button" class="global__button-danger danger__button"><i class="fa-regular fa-triangle-exclamation"></i></button>
                         <span>Внимание</span>
                     </div>
                     <div>
-                        <button type="button" class="global__button transfer__button"><i class="fa-duotone fa-up-from-line"></i></button>
+                        <button type="button" class="global__button transfer__button"><i class="fa-regular fa-up-from-line"></i></button>
                         <span>Перенести</span>
                     </div>
                     <div>
-                        <button type="button" class="global__button copy__button"><i class="fa-duotone fa-copy"></i></button>
+                        <button type="button" class="global__button copy__button"><i class="fa-regular fa-copy"></i></button>
                         <span>Копировать</span>
                     </div>
                 </div>
@@ -442,7 +445,7 @@
             <span class="search__result">
 
             </span>
-                <!--<button type="button" class="global__delete"><i class="fa-duotone fa-trash"></i> Удалить</button>-->
+                <!--<button type="button" class="global__delete"><i class="fa-regular fa-trash"></i> Удалить</button>-->
             </div>
 
             <div class="file__table">

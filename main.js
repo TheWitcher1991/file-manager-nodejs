@@ -6,18 +6,22 @@ if (require.main !== module) {
     })
 }
 
+
+
+
+
 const fs = require('fs')
 const path = require('path')
-const { app, BrowserWindow, ipcMain, globalShortcut, dialog } = require('electron')
+const { app, BrowserWindow, ipcMain, globalShortcut, dialog, autoUpdater } = require('electron')
 const { spawn } = require('child_process')
 
-// const log = require('electron-log');
+const log = require('electron-log');
 
 const pjson = require('./package.json')
 
-// log.transports.console.level = 'info'
-// log.transports.file.level = 'info'
-// log.info('App starting...')
+log.transports.console.level = 'info'
+log.transports.file.level = 'info'
+log.info('App starting...')
 
 const appversion = pjson.version
 
@@ -34,7 +38,7 @@ let mainWindow = null
     mainWindow?.webContents.send('message', text, ver)
 } */
 
-function registerGlobalShortcuts() {
+const registerGlobalShortcuts = () => {
     globalShortcut.register('CommandOrControl+Shift+L', () => {
         mainWindow?.webContents.send('show-server-log');
     })
@@ -44,7 +48,6 @@ function createWindow () {
     // const expressAppProcess = spawn(pjson.name, [expressPath])
 
     const windowOptions = {
-
         minWidth: 960,
         minHeight: 660,
         center: true,
@@ -57,6 +60,7 @@ function createWindow () {
         icon: path.join(__dirname, '/dist/public/img/icon.ico'),
         webPreferences: {
             nodeIntegration: true,
+            nodeIntegrationInWorker: true,
             contextIsolation: false,
             enableRemoteModule: true,
             // webSecurity: false,
@@ -71,12 +75,12 @@ function createWindow () {
 
     mainWindow = new BrowserWindow(windowOptions)
     mainWindow.setMenuBarVisibility(false)
-    mainWindow.setProgressBar(0.5)
+    mainWindow.setProgressBar(0)
     // mainWindow.webContents.openDevTools()
     mainWindow.loadURL(path.join(__dirname, '/dist/index.html'))
     //mainWindow.loadURL('http://localhost:8080/')
 
-    // log.info(mainWindow);
+    log.info(mainWindow);
 
     if (debug) {
         mainWindow.webContents.openDevTools()
@@ -105,7 +109,7 @@ function createWindow () {
         mainWindow.close();
     });
 
-    ipcMain.on('showFolderDialog', e => {
+    /* ipcMain.on('showFolderDialog', e => {
         let fileSelectionPromise = dialog.showOpenDialog({ properties: ['openFile', 'openDirectory', 'multiSelections'] });
         fileSelectionPromise.then(obj => {
             e.sender.send('selectedfolders', obj.filePaths)
@@ -126,7 +130,7 @@ function createWindow () {
                     return true
                 })
         })
-    })
+    }) */
 
     ipcMain.handle('get-express-app-url', () => {
         return expressAppUrl

@@ -5,6 +5,7 @@
   "bin": "./cli.js",
   "private": true,
   "expressPort": 8080,
+  "type": "module",
   "basePath": "./dist",
   "scripts": {
     "test": "jest",
@@ -13,8 +14,8 @@
     "dev": "electron . --debug",
     "build": "webpack --mode production",
     "watch": "webpack --mode production -w",
-    "package:win": "electron-packager . litser --overwrite --asar --platform=win32 --arch=x64 --app-version=1.0.0 --prune --out=build/win --ignore=src --icon=./dist/public/img/icon.ico",
-    "package:linux": "electron-packager . litser --overwrite --asar --platform=linux --arch=x64 --app-version=1.0.0 --prune --out=build/linux --ignore=src  --icon=./dist/public/img/icon.ico"
+    "package:win": "electron-packager . litser --overwrite --asar --platform=win32 --arch=x64 --app-version=1.0.0 --prune --out=desktop/win --ignore=src --icon=./dist/public/img/icon.ico",
+    "package:linux": "electron-packager . litser --overwrite --asar --platform=linux --arch=x64 --app-version=1.0.0 --prune --out=desktop/linux --ignore=src  --icon=./dist/public/img/icon.ico"
   },
   "author": "github: TheWitcher1991 <alikzoy@gmail.com>",
   "license": "GNU GPL",
@@ -57,6 +58,7 @@
     "style-loader": "^3.3.3",
     "tilde-path": "^3.0.0",
     "update-electron-app": "^2.0.1",
+    "util": "^0.12.5",
     "webpack": "^5.88.2",
     "webpack-cli": "^5.1.4"
   },

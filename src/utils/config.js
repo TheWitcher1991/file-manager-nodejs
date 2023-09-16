@@ -2,7 +2,7 @@ let GLOBAL = {
 
     PORT: process.env.PORT || 8080,
 
-    API_BASE_URL: `http://localhost:${process.env.PORT || 8080}/`,
+    API_BASE_URL: `http://localhost:${this.PORT}/`,
 
     ROUTES: {
         index: {

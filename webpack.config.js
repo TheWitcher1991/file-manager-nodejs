@@ -3,19 +3,17 @@
 const path = require('path'),
     MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
-// import 'idempotent-babel-polyfill'
-
 const PATHS = {
     src: path.join(__dirname, './src'),
     build: path.join(__dirname, '/dist')
 };
 
-const mode = process.env.NODE_ENV || 'development'
+const mode = process.env.NODE_ENV || 'node'
 const target = process.env.NODE_ENV === 'production' ? 'browserslist' : 'web'
 
 module.exports = {
     entry: [
-        // `${PATHS.src}/scripts/index.js`,
+        //`${PATHS.src}/scripts/api.js`,
         `${PATHS.src}/styles/index.scss`
     ],
     output: {

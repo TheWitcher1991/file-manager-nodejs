@@ -1,24 +1,55 @@
 @use "sass:list";
 
-//Font
-$Karla    : 'Karla', sans-serif;
-$Nunito   : 'Nunito', sans-serif;
-
-// COLORS
-$mainBg   : #ffffff;
-$mainFg   : #1b364a;
-$activeFg : #2977B5;
-$actHover : #19619a;
-$fg500    : #F5F6F8;
-$fg400    : #83899F;
-$fg300    : #E8EBEF;
-$hover300 : #e9f6ff;
-$check    : #29B572;
-$word     : #30599a;
-$black    : #111111;
-
-$rbg650   : rgb(0 35 63 / 95%);
-
-$boxPop   : 1px 3px 3px 0 rgb(0 0 0 / 20%), 1px 3px 15px 2px rgb(0 0 0 / 20%);
-
 $vendors  : "-webkit-", "-apple-", "-khtml-", "-moz-", "-rim-", "-xv-","-ms-", "-o-", "";
+
+:root {
+    --Nunito: 'Jost', sans-serif;
+}
+
+:root[theme="light"] {
+    --mainBg   : #ffffff;
+    --mainFg   : #1b364a;
+    --activeFg : #2977B5;
+    --actHover : #19619a;
+    --fg500    : #F5F6F8;
+    --fg400    : #83899F;
+    --fg300    : #E8EBEF;
+    --fg200    : #adb5bd;
+    --fg350    : #b3d7ff;
+    --hover300 : #e9f6ff;
+    --check    : #29B572;
+    --word     : #30599a;
+    --black    : #111111;
+    --bthFg    : #ffffff;
+    --fg550    : #e6f1f8;
+    --fg450    : rgb(34 34 34 / 60%);
+
+    --rbg650   : rgb(0 35 63 / 95%);
+
+    --boxPop   : 1px 3px 3px 0 rgb(0 0 0 / 20%), 1px 3px 15px 2px rgb(0 0 0 / 20%);
+    --boxTb    : 0px 0px 50px 0px rgba(43, 40, 45, 0.15);
+}
+
+:root[theme="dark"] {
+    --mainBg   : #22272e;
+    --mainFg   : #ADBAC8;
+    --activeFg : #347d39;
+    --actHover : #296e2e;
+    --fg500    : #1c2128;
+    --fg400    : #768390;
+    --fg300    : #373e47;
+    --fg350    : #373e47;
+    --fg200    : #444c56;
+    --hover300 : #2a3037;
+    --check    : #29B572;
+    --word     : #30599a;
+    --black    : #f1f1f1;
+    --bthFg    : #ffffff;
+    --fg550    : #373e47;
+    --fg450    : rgba(42, 48, 55, 0.6);
+
+    --rbg650   : rgba(99,110,123,0.4);
+
+    --boxPop   : 1px 3px 3px 0 rgb(0 0 0 / 20%), 1px 3px 15px 2px rgb(0 0 0 / 20%);
+    --boxTb    : 0 16px 32px rgba(28,33,40,0.85);
+}

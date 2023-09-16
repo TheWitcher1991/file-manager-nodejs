@@ -20,10 +20,10 @@
     justify-content: right;
     position: relative;
     margin: 0 0 16px 0;
-    background: $fg500;
+    background: var(--fg500);
 
     div {
-        color: $mainFg;
+        color: var(--mainFg);
         font-size: 12px;
         cursor: pointer;
         height: 28px;
@@ -40,8 +40,8 @@
 }
 
 .top-bth-f:hover {
-    color: $activeFg;
-    background: $mainBg;
+    color: var(--activeFg);
+    background: var(--mainBg);
 }
 
 .container {
@@ -65,10 +65,10 @@
     position: relative;
 
     > span {
-        color: $mainFg;
+        color: var(--mainFg);
         align-items: center;
         margin: 0 16px 0 0;
-        font-weight: 700;
+        font-weight: 400;
         font-size: 14px;
         padding: 4px 8px;
         border-radius: 8px;
@@ -78,12 +78,12 @@
         display: flex;
 
         &:hover {
-            background: $fg500;
+            background: var(--fg500);
         }
     }
 
     > span.tb__bth-active {
-        background: $fg500;
+        background: var(--fg500);
     }
 
     i {
@@ -94,18 +94,18 @@
 }
 
 .search__result {
-    color: $mainFg;
+    color: var(--mainFg);
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 400;
 }
 
 .setting-button {
-    color: $mainFg;
+    color: var(--mainFg);
     font-size: 19px;
     cursor: pointer;
 
     &:hover {
-        color: $activeFg
+        color: var(--activeFg)
     }
 }
 
@@ -113,7 +113,8 @@
     display: flex;
     align-items: center;
     width: 100%;
-    background: #f5f6f8;
+    background: var(--fg500);
+    color: var(--mainFg);
     padding: 10px 8px;
     border-radius: 6px;
     border: 1px solid rgba(0,0,0,0);
@@ -122,7 +123,7 @@
 
     &:hover {
         background: transparent;
-        border-color: $activeFg;
+        border-color: var(--activeFg);
     }
 
     i {
@@ -135,6 +136,7 @@
         border: 0;
         height: 100%;
         background: rgba(0,0,0,0);
+        color: var(--mainFg);
     }
 }
 
@@ -148,9 +150,9 @@
     }
 
     span {
-        color: $mainFg;
+        color: var(--mainFg);
         margin: 1px 0 0 6px;
-        font-weight: 700;
+        font-weight: 400;
         font-size: 14px;
         display: block;
     }
@@ -159,8 +161,8 @@
 .tb__popup {
     position: absolute;
     display: none;
-    background: #fff;
-    box-shadow: 0px 0px 50px 0px rgba(82,63,105,.15);
+    background: var(--mainBg);
+    box-shadow: var(--boxTb);
     top: 35px;
     border-radius: 10px;
     right: 0;
@@ -179,7 +181,7 @@
         align-items: center;
         justify-content: center;
         width: 100%;
-        border-bottom: 1px solid $fg300;
+        border-bottom: 1px solid var(--fg300);
         padding: 8px 0 8px 0;
         margin: 0 0 8px 0;
 
@@ -194,7 +196,7 @@
                 margin: 0 0 0 12px;
 
                 &:hover {
-                    color: $activeFg;
+                    color: var(--activeFg);
                 }
             }
         }
@@ -210,13 +212,13 @@
         width: 100%;
 
         &:active {
-            background: $fg300;
+            background: var(--fg300);
         }
 
         span {
-            color: $mainFg;
+            color: var(--mainFg);
             margin: 1px 0 0 6px;
-            font-weight: 700;
+            font-weight: 400;
             font-size: 13px;
             display: block;
         }
@@ -235,9 +237,9 @@
     }
 
     .delete__preset {
-        color: $mainFg;
-        background: $mainBg;
-        border: 1px solid $fg300;
+        color: var(--mainFg);
+        background: var(--mainBg);
+        border: 1px solid var(--fg300);
         width: 40px;
         height: 34px;
         display: flex;
@@ -255,7 +257,7 @@
 
         &:hover {
             background: #b51308;
-            color: $mainBg;
+            color: var(--bthFg);
             border-color: #b51308;
         }
     }
@@ -264,21 +266,21 @@
         border-radius: 6px;
         display: flex;
         justify-content: center;
-        color: $mainBg;
+        color: var(--bthFg);
         align-items: center;
         padding: 8px 16px;
         margin: 0 0 0 16px;
-        font-weight: 500;
+        font-weight: 400;
         font-size: 13px;
-        background: $activeFg;
+        background: var(--activeFg);
         cursor: pointer;
         border: 0;
         transition: all .2s linear;
         outline: none;
-        font-family: $Nunito;
+        font-family: var(--Nunito);
 
         &:hover {
-            background: $actHover;
+            background: var(--actHover);
         }
     }
 }
@@ -303,8 +305,8 @@
 
         > span {
             position: absolute;
-            background: rgb(34 34 34 / 60%);
-            color: $mainBg;
+            background: var(--fg450);
+            color: var(--bthFg);
             text-align: center;
             top: 40px;
             backdrop-filter: blur(5px);
@@ -337,18 +339,18 @@
     width: 80px;
     display: flex;
     justify-content: center;
-    color: $mainBg;
+    color: var(--bthFg);
     align-items: center;
-    font-weight: 500;
+    font-weight: 400;
     font-size: 15px;
-    background: $activeFg;
+    background: var(--activeFg);
     cursor: pointer;
     border: 0;
     transition: all .2s linear;
     outline: none;
 
     &:hover {
-        background: $actHover;
+        background: var(--actHover);
     }
 }
 
@@ -358,19 +360,19 @@
     width: 80px;
     display: none;
     justify-content: center;
-    color: $mainFg;
+    color: var(--mainFg);
     align-items: center;
-    font-weight: 500;
+    font-weight: 400;
     font-size: 17px;
-    background: $mainBg;
+    background: var(--mainBg);
     cursor: pointer;
     transition: all .2s linear;
-    border: 1px solid $fg300;
+    border: 1px solid var(--fg300);
     outline: none;
 
     &:hover {
         background: #d1c616;
-        color: $mainBg;
+        color: var(--bthFg);
         border-color: #d1c616;
     }
 }
@@ -381,20 +383,19 @@
     width: 80px;
     display: none;
     justify-content: center;
-    color: $mainFg;
+    color: var(--mainFg);
     align-items: center;
-    font-weight: 500;
+    font-weight: 400;
     font-size: 15px;
-    background: $mainBg;
+    background: var(--mainBg);
     cursor: pointer;
-    border: 0;
     transition: all .2s linear;
-    border: 1px solid $fg300;
+    border: 1px solid var(--fg300);
     outline: none;
 
     &:hover {
         background: #b51308;
-        color: $mainBg;
+        color: var(--bthFg);
         border-color: #b51308;
     }
 }
@@ -410,13 +411,13 @@
     padding: 0 12px;
     position: relative;
     margin: 0 0 10px 0;
-    background: $fg500;
-    border: 1px solid $fg500;
+    background: var(--fg500);
+    border: 1px solid var(--fg500);
     transition: all 0.2s ease-in-out 0s;
 
     &:hover {
         background: transparent;
-        border-color: $activeFg;
+        border-color: var(--activeFg);
     }
 }
 
@@ -434,14 +435,14 @@
     align-items: center;
 
     > i {
-        color: $mainFg;
+        color: var(--mainFg);
         font-size: 15px;
     }
 
     span {
         display: block;
         font-size: 15px;
-        font-weight: 600;
+        font-weight: 400;
         margin: 0 0 0 10px;
         white-space: nowrap;
         overflow: hidden;
@@ -455,7 +456,7 @@
 }
 
 .gi__right {
-    color: $mainFg;
+    color: var(--mainFg);
     font-size: 17px;
     cursor: pointer;
     position: absolute;
@@ -468,7 +469,7 @@
 }
 
 .gi__right:hover i {
-    color: $activeFg;
+    color: var(--activeFg);
 }
 
 .section__table input{
@@ -478,13 +479,13 @@
 
 .file__thead {
     width: 100%;
-    color: $fg400;
-    font-weight: 700;
+    color: var(--fg400);
+    font-weight: 400;
     margin: 12px 0 0 0;
     font-size: 15px;
     position: relative;
     padding: 0 0 10px 0;
-    border-bottom: 1px solid $fg300;
+    border-bottom: 1px solid var(--fg300);
 
     .container {
         display: flex;
@@ -520,7 +521,7 @@
     .sort__size {
         display: flex;
         align-items: center;
-        border-left: 1px solid $fg300;
+        border-left: 1px solid var(--fg300);
         flex: 0 1 150px;
         padding: 2px 0 2px 20px;
         white-space: nowrap;
@@ -531,7 +532,7 @@
         text-align: center;
         display: flex;
         align-items: center;
-        border-left: 1px solid $fg300;
+        border-left: 1px solid var(--fg300);
         padding: 2px 0 2px 20px;
         white-space: nowrap;
     }
@@ -540,7 +541,7 @@
         display: flex;
         align-items: center;
         flex: 0 1 155px;
-        border-left: 1px solid $fg300;
+        border-left: 1px solid var(--fg300);
         padding: 2px 0 2px 20px;
         white-space: nowrap;
     }
@@ -554,13 +555,13 @@
     }
 
     .sort__active {
-        color: $mainFg
+        color: var(--mainFg)
     }
 }
 
 .file__table-ctx {
-    color: $fg400;
-    font-weight: 600;
+    color: var(--fg400);
+    font-weight: 400;
     font-size: 14px;
     position: relative;
     cursor: pointer;
@@ -577,7 +578,7 @@
     }
 
     .fa-file-word {
-        color: $word;
+        color: var(--word);
     }
 
     .fa-file-pdf {
@@ -599,7 +600,7 @@
     .sort__check {
         display: flex;
         align-items: center;
-        color: $check ;
+        color: var(--check);
         width: 50px;
         white-space: nowrap;
 
@@ -611,7 +612,7 @@
     .sort__name {
         display: flex;
         align-items: center;
-        color: $mainFg;
+        color: var(--mainFg);
         flex: 1 1 350px;
         white-space: nowrap;
 
@@ -675,11 +676,11 @@
 }
 
 .file__table-temp:hover {
-    background: $hover300;
+    background: var(--hover300);
 }
 
 .file__table-ctx > .checkbox__files:checked ~ * {
-    background: $hover300;
+    background: var(--hover300);
 }
 
 .file__tbody {
@@ -707,7 +708,7 @@
     height: 50px;
 
     .path {
-        stroke: $activeFg;
+        stroke: var(--activeFg);
         stroke-linecap: round;
         animation: dash 1.5s ease-in-out infinite;
     }
@@ -728,9 +729,9 @@
 }
 
 .container__table-title button {
-    color: $mainFg;
+    color: var(--mainFg);
     align-items: center;
-    font-weight: 700;
+    font-weight: 400;
     display: none;
     font-size: 13px;
     padding: 4px 8px;
@@ -738,14 +739,14 @@
     transition: all .2s linear;
     cursor: pointer;
     background: transparent;
-    background: $mainBg;
-    font-family: $Nunito ;
+    background: var(--mainBg);
+    font-family: var(--Nunito) ;
     margin: 0 0 0 16px;
-    border: 1px solid $fg300;
+    border: 1px solid var(--fg300);
 
     &:hover {
         background: #b51308;
-        color: $mainBg;
+        color: var(--mainBg);
         border-color: #b51308;
     }
 
@@ -758,7 +759,7 @@
     position: sticky;
     top: 0;
     z-index: 111;
-    background: $mainBg;
+    background: var(--mainBg);
 }
 
 .preset__list {
@@ -778,8 +779,8 @@
         margin: 0 0 16px 0;
 
         > span {
-            color: $mainFg;
-            font-weight: 700;
+            color: var(--mainFg);
+            font-weight: 400;
             font-size: 14px;
             padding: 0 0 4px 0;
             display: block;
@@ -787,17 +788,23 @@
 
         > select {
             width: 100%;
-            background: $fg500;
+            background: var(--fg500);
+            color: var(--mainFg);
             padding: 8px 10px;
             border-radius: 6px;
             border: 1px solid rgba(0,0,0,0);
             transition: all .2s ease-in 0s;
             outline: 0;
-            font-family: $Nunito;
+            font-family: var(--Nunito);
             appearance: none;
 
+            > option {
+                background: var(--fg500);
+                color: var(--mainFg);
+            }
+
             &:hover {
-                border-color: $activeFg;
+                border-color: var(--activeFg);
                 background: transparent;
             }
         }
@@ -808,7 +815,7 @@
     > span {
         display: block;
         margin: 0 0 6px 0;
-        font-weight: 700;
+        font-weight: 400;
         font-size: 16px;
     }
 
@@ -824,18 +831,22 @@
 
     > i {
         font-size: 38px;
-        color: $activeFg;
+        color: var(--activeFg);
+    }
+
+    > img {
+        height: 65px;
     }
 
     > span {
         display: block;
         margin: 3px 0 2px 0;
-        font-weight: 700;
+        font-weight: 400;
         font-size: 17px;
     }
 
     > p {
-        color: $fg400;
+        color: var(--fg400);
         font-size: 14px;
         padding: 0;
         margin: 0 0 4px 0;
@@ -843,14 +854,14 @@
 
     > div span {
         display: block;
-        color: $fg400;
+        color: var(--fg400);
         font-size: 14px;
     }
 }
 
 .label__exp {
     font-size: 13px;
-    color: $fg400;
+    color: var(--fg400);
     display: block;
     margin: 2px 0 0 0;
 }
@@ -865,7 +876,7 @@
     flex-wrap: wrap;
 
     .remember__item {
-        background-color: #e6f1f8;
+        background-color: var(--fg550);
         font-size: 14px;
         margin: 0 8px 8px 0;
         padding: 0;
@@ -895,8 +906,8 @@
             transition: all 0.1s linear;
 
             &:hover {
-                color: $mainBg;
-                background: $activeFg;
+                color: var(--bthFg);
+                background: var(--activeFg);
             }
 
             i {
@@ -913,14 +924,14 @@
     padding: 16px;
 
     > i {
-        color: $activeFg;
+        color: var(--activeFg);
         font-size: 50px;
     }
 
     span {
         display: block;
         font-size: 18px;
-        font-weight: 700;
+        font-weight: 400;
         margin: 18px 0 3px 0;
     }
 
@@ -929,12 +940,12 @@
         display: block;
         padding: 0px 0 6px 0;
         margin: 0;
-        font-weight: 600;
+        font-weight: 400;
     }
 
      div {
          font-size: 14px;
-         font-weight: 500;
+         font-weight: 400;
      }
 }
 
@@ -950,7 +961,7 @@
     > span {
         display: block;
         font-size: 18px;
-        font-weight: 700;
+        font-weight: 400;
         margin: 18px 0 6px 0;
     }
 
@@ -959,7 +970,7 @@
         display: block;
         padding: 0px 0 6px 0;
         margin: 0;
-        font-weight: 600;
+        font-weight: 400;
     }
 
     > div {
@@ -977,15 +988,16 @@
             align-items: center;
             justify-content: center;
             font-size: 14px;
-            font-family: $Nunito;
+            font-family: var(--Nunito);
             margin: 0 6px;
             border-radius: 4px;
+            color: var(--bthFg);
             transition: all 0.2s linear;
         }
 
         .cancel__danger-pop, .apply__file-pop {
             background: #b51308;
-            color: $mainBg;
+            color: var(--bthFg);
 
             &:hover {
                 background: #8f0d04;
@@ -993,11 +1005,11 @@
         }
 
         .apply__danger-pop, .cancel__file-pop {
-            background: $activeFg;
-            color: $mainBg;
+            background: var(--activeFg);
+            color: var(--bthFg);
 
             &:hover {
-                background: $actHover;
+                background: var(--actHover);
             }
         }
     }
@@ -1024,7 +1036,7 @@
         box-shadow: 0 4px 20px rgba(37,40,43,.15);
         border-radius: 6px;
         font-size: 13px;
-        font-weight: 700;
+        font-weight: 400;
         z-index: 1000000;
         margin: 0 0 16px 0;
         width: 100%;
@@ -1046,8 +1058,8 @@
     cursor: pointer;
 
     label {
-        color: $mainFg;
-        font-weight: 700;
+        color: var(--mainFg);
+        font-weight: 400;
         font-size: 14px;
         display: block;
         cursor: pointer;
@@ -1074,7 +1086,7 @@
         height: 15px;
         flex-shrink: 0;
         flex-grow: 0;
-        border: 1px solid #adb5bd;
+        border: 1px solid var(--fg200);
         border-radius: 0.25em;
         margin-right: 6px;
         background-repeat: no-repeat;
@@ -1084,31 +1096,31 @@
 
     /* стили при наведении курсора на checkbox */
     .custom-checkbox:not(:disabled):not(:checked)+label:hover::before {
-        border-color: #b3d7ff;
+        border-color: var(--fg350);
     }
 
     /* стили для активного чекбокса (при нажатии на него) */
     .custom-checkbox:not(:disabled):active+label::before {
-        background-color: #b3d7ff;
-        border-color: #b3d7ff;
+        background-color: var(--fg500);
+        border-color: var(--fg350);
     }
 
     /* стили для чекбокса, находящегося в фокусе и не находящегося в состоянии checked */
     .custom-checkbox:focus:not(:checked)+label::before {
-        border-color: #80bdff;
+        border-color: var(--fg350);
     }
 
     /* стили для чекбокса, находящегося в состоянии checked */
     .custom-checkbox:checked+label::before {
-        border-color: $activeFg;
-        background-color: $activeFg;
+        border-color: var(--activeFg);
+        background-color: var(--activeFg);
         background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3e%3c/svg%3e");
     }
 
     /* стили для чекбокса, находящегося в состоянии disabled */
     .custom-checkbox:disabled+label::before {
-        background-color: #e9ecef;
-        border-color: #e9ecef;
+        background-color: var(--fg500);
+        border-color: var(--fg350);
     }
 
 }

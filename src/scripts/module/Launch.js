@@ -1,8 +1,8 @@
 const path = require('path')
 const fs = require('fs')
 
-const { Files, config, rpath  } = require(path.join(__dirname, '/config'))
-let $ = require(path.join(__dirname, '/config'))
+const { Files, config, rpath  } = require('./config')
+let $ = require('./config')
 
 module.exports = function () {
     document.querySelector('.gload__from-pop').style.display = 'none'
@@ -57,7 +57,6 @@ module.exports = function () {
 
             $._fs.loadFiles()
             $._fs.setPreset()
-            $._fs.setTheme($.config.theme)
         }
     })
 }

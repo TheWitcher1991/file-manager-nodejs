@@ -3,11 +3,11 @@
 }
 
 ::-webkit-scrollbar-thumb {
-    background: $activeFg;
+    background: var(--activeFg);
 }
 
 ::-webkit-scrollbar-track {
-    background-color: $mainBg;
+    background-color: var(--mainBg);
 }
 
 aside, details, main, figcaption, figure, footer, header, hgroup, menu, nav, section {
@@ -47,6 +47,10 @@ progress {
     @include prefix(box-sizing, border-box);
 }
 
+input, button, select, option {
+    font-family: var(--Nunito);
+}
+
 ul, menu {
     list-style: none;
 }
@@ -63,9 +67,10 @@ body {
     padding: 0;
     display: flex;
     position: relative;
-    background: $mainBg;
-    color: $mainFg;
-    font: normal 16px $Nunito;
+    background: var(--mainBg);
+    color: var(--mainFg);
+    font: normal 16px var(--Nunito);
+    line-height: 1.4;
     flex-direction: column;
     overscroll-behavior: none;
     -webkit-text-size-adjust: 100%;

@@ -8,20 +8,20 @@
     left: 0;
     right: 0;
     z-index: 10000000;
-    background: $rbg650;
+    background: var(--rbg650);
 }
 
 .popup__container {
     min-width: 400px;
     max-width: 860px;
-    background: $mainBg;
+    background: var(--mainBg);
     border-radius: 6px;
     display: none;
     transition: cubic-bezier(.4, 0, .2, 1) .26s transform;
     transform: translateY(40px);
     animation-duration: .26s;
     animation-fill-mode: both;
-    box-shadow: $boxPop;
+    box-shadow: var(--boxPop);
     animation-name: animation-open-popup;
     padding: 20px 30px;
 }
@@ -33,8 +33,8 @@
     margin: 0 0 16px 0;
 
     span {
-        color: $black;
-        font-weight: 700;
+        color: var(--black);
+        font-weight: 400;
         font-size: 20px;
         display: block;
     }
@@ -45,7 +45,7 @@
         transition: all 0.1s linear;
 
         &:hover {
-            color: $actHover;
+            color: var(--actHover);
         }
     }
 }
@@ -62,31 +62,31 @@
         border: 0;
         margin: 0 0 0 16px;
         border-radius: 6px;
-        font-family: $Nunito;
+        font-family: var(--Nunito);
         cursor: pointer;
     }
 
     .form__cancel {
         background: transparent;
-        color: $black;
+        color: var(--black);
         padding: 8px 12px;
         transition: all 0.2s linear;
     }
 
     .form__save {
-        background: $activeFg;
-        color: $mainBg;
+        background: var(--activeFg);
+        color: var(--bthFg);
         padding: 8px 24px;
         transition: all 0.2s linear;
     }
 }
 
 .form__cancel:hover {
-    background: $fg500;
+    background: var(--fg500);
 }
 
 .form__save:hover {
-    background: $actHover;
+    background: var(--actHover);
 }
 
 .form__bth-right {
@@ -98,8 +98,8 @@
     span {
         margin: 0 0 6px 0;
         font-size: 14px;
-        color: $black;
-        font-weight: 500;
+        color: var(--black);
+        font-weight: 400;
         display: block;
     }
 
@@ -109,7 +109,7 @@
     display: flex;
     align-items: center;
     width: 100%;
-    background: $fg500;
+    background: var(--fg500);
     padding: 10px 8px;
     border-radius: 6px;
     border: 1px solid transparent;
@@ -127,10 +127,11 @@
         height: 100%;
         margin: 0 0 0 10px;
         background: transparent;
+        color: var(--mainFg);
     }
 }
 
 .label__block:hover {
-    background: $mainBg;
-    border-color: $activeFg ;
+    background: var(--mainBg);
+    border-color: var(--activeFg);
 }

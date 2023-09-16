@@ -13,11 +13,7 @@ const API = () => {
           Launch              = require(path.join(__dirname, '/module/Launch')),
           Reset               = require(path.join(__dirname, '/module/Reset'))
 
-    if ($.size <= 0) {
-        Launch()
-    } else {
-        Reset()
-    }
+    $.size <= 0 ? Launch() : Reset()
 
     document.addEventListener('DOMContentLoaded', function () {
         SwitchingOperations()
