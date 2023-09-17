@@ -117,8 +117,10 @@ class Files {
                     || (config.sizeFiles > 0 && ((stats.size / 1000) > config.sizeFiles))
                 ) {
                     return true
-                } else {
+                }
 
+                if (subfolder.replace(/\.[^.]+$/, '').replace(/\s/g,'') === '' || path.extname(res).replace(/\s/g,'') === '') {
+                    return true
                 }
 
                 this.count += 1
@@ -305,14 +307,15 @@ class Files {
             document.querySelector('.search__result').innerHTML = `Найдено ${this.countRender} файлов`
 
             if (el.active === 1) {
-                let label = document.createElement('label')
-                label.className = `file__table-ctx file__ctx-${el.id}`
-                label.for = `file__${el.id}`
-                label.dataset.id = el.id
-                label.dataset.name = el.name
-                label.dataset.path = el.path
-                label.innerHTML = `
-             <div class="file__table-temp">
+
+
+                let html = `
+                <label class="file__table-ctx file__ctx-${el.id}" for="file__${el.id}" 
+                data-id="${el.id}"
+                data-name="${el.name}"
+                data-path="${el.path}"
+                >
+                <div class="file__table-temp">
                         <div class="container">
                             <div class="sort__check"> 
                                 <div class="checkbox__wrap">
@@ -340,17 +343,20 @@ class Files {
                             <span class="sort__more"></span>
                         </div>
                     </div>
-            `
-                ul.prepend(label)
+                </label>
+                `
                 this.activeFiles = 1
                 this.activeList.push({
                     id: el.id,
                     name: el.name,
                     path: el.path,
                 })
-
+                return {
+                    html: html,
+                    active: 1
+                }
             } else {
-                ul.innerHTML += `
+                let html = `
                 <label class="file__table-ctx file__ctx-${el.id}" for="file__${el.id}" 
                 data-id="${el.id}"
                 data-name="${el.name}"
@@ -388,6 +394,11 @@ class Files {
                     </div>
                 </label>
             `
+
+                return {
+                    html: html,
+                    active: 0
+                }
             }
         } catch (e) {
 
@@ -417,7 +428,7 @@ class Files {
         return files_
     }
 
-    searchFiles (text, column, type) {
+    async searchFiles (text, column, type) {
 
         this.countRender = 0
 
@@ -482,51 +493,20 @@ class Files {
 
         this.activeFiles = []
 
-        let setCount = all
-
-        if (all > 250) {
-
-            files_.forEach(async (el, i) => {
-                await new Promise((resolve, reject) => {
-                    resolve(setTimeout(() => {
-                        if (el.name.toLowerCase().search(text.toLowerCase()) !== -1) {
-                            this.activeFiles.push(el)
-                            count++
-                            setCount--
-                            document.querySelector('.load__block div').innerHTML = `Осталось файлов ${setCount}`
-                            this.renderFiles(ul, el, 0)
-                            if (setCount === 0) {
-                                document.querySelector('.load__from-pop').style.display = 'none'
-                                document.querySelector('.load__from-container').style.display = 'none'
-                            }
-                        }
-                    }, 50))
-
-                })
-
-
-            })
-        } else {
-            files_.forEach((el, i) => {
-
-                if (el.name.toLowerCase().search(text.toLowerCase()) !== -1) {
-
-                    this.activeFiles.push(el)
-
-                    count++
-
-                    this.renderFiles(ul, el, 0)
-                }
-
-            })
-        }
-
+        await Promise
+            .all(files_.map(async (el) => {
+                if (el.name.toLowerCase().search(text.toLowerCase()) === -1)
+                    return false
+                this.activeFiles.push(el)
+                count++
+                return this.renderFiles(ul, el, 0)
+            }))
+            .then(e => ul.innerHTML = e.reduce((a, f) => a.concat(f), []).map(el => el.html).join(''))
 
         document.querySelector('.search__result').innerHTML = `Найдено ${this.activeFiles.length} файлов по запросу ${text}`
-
     }
 
-    sortFiles(column, type) {
+    async sortFiles(column, type) {
 
         this.countRender = 0
 
@@ -591,36 +571,9 @@ class Files {
             }
         }
 
-        let setCount = count
-
-        if (count > 250) {
-            document.querySelector('.load__from-pop').style.display = 'flex'
-            document.querySelector('.load__from-container').style.display = 'block'
-
-            files_.forEach(async (el, i) => {
-                await new Promise((resolve, reject) => {
-                    resolve(setTimeout(() => {
-                        setCount--
-                        document.querySelector('.load__block div').innerHTML = `Осталось файлов ${setCount}`
-
-                        this.renderFiles(ul, el, 0)
-
-                        if (setCount === 0) {
-                            document.querySelector('.load__from-pop').style.display = 'none'
-                            document.querySelector('.load__from-container').style.display = 'none'
-                        }
-                    }, 50))
-                })
-            })
-
-        } else {
-            files_.forEach((el) => {
-
-                this.renderFiles(ul, el, 0)
-
-            })
-        }
-
+        await Promise
+            .all(files_.map(async (el) => this.renderFiles(ul, el, 0)))
+            .then(e => ul.innerHTML = e.reduce((a, f) => a.concat(f), []).map(el => el.html).join(''))
     }
 
     async updatePath () {
@@ -633,7 +586,8 @@ class Files {
         this.activeFiles = 0
         this.activeList = []
 
-        await this.readFiles(this.from).then((e) => {
+
+        await this.readFiles(this.from).then(async (e) => {
 
             document.querySelector('.gload__from-pop').style.display = 'none'
             document.querySelector('.gload__from-container').style.display = 'none'
@@ -664,33 +618,19 @@ class Files {
 
             let setCount = count
 
-            if (count > 250) {
+            document.querySelector('.load__from-pop').style.display = 'flex'
+            document.querySelector('.load__from-container').style.display = 'block'
 
-                document.querySelector('.load__from-pop').style.display = 'flex'
-                document.querySelector('.load__from-container').style.display = 'block'
-
-                files_.forEach(async (el, i) => {
-                    await new Promise((resolve, reject) => {
-                        resolve(setTimeout(() => {
-                            setCount--
-                            document.querySelector('.load__block div').innerHTML = `Осталось файлов ${setCount}`
-                            rem.push(el.name)
-                            this.renderFiles(ul, el)
-                            if (setCount === 0) {
-                                document.querySelector('.load__from-pop').style.display = 'none'
-                                document.querySelector('.load__from-container').style.display = 'none'
-                            }
-                        }, 50))
-                    })
-
-                })
-
-            } else {
-                files_.forEach((el, i) => {
-                    rem.push(el.uri)
-                    this.renderFiles(ul, el)
-                })
-            }
+            await Promise.all(files_.map(async (el) => {
+                setCount--
+                document.querySelector('.load__block div').innerHTML = `Осталось файлов ${setCount}`
+                rem.push(el.uri)
+                if (setCount === 0) {
+                    document.querySelector('.load__from-pop').style.display = 'none'
+                    document.querySelector('.load__from-container').style.display = 'none'
+                }
+                return this.renderFiles(ul, el)
+            })).then(e => ul.innerHTML = e.reduce((a, f) => a.concat(f), []).sort(x => x.active === 1 ? -1 : 1).map(el => el.html).join(''))
 
             let heed = []
 
@@ -876,7 +816,6 @@ class Files {
     }
 
     async loadFiles() {
-
         this.count = 0
 
         let path = '',
@@ -907,9 +846,6 @@ class Files {
         this.updateRemember()
         this.updatePreset()
         await this.updatePath()
-
-
-
     }
 
 }

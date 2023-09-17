@@ -1,6 +1,6 @@
 {
   "name": "litser",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "main": "./main.js",
   "bin": "./cli.js",
   "private": true,
@@ -14,8 +14,8 @@
     "dev": "electron . --debug",
     "build": "webpack --mode production",
     "watch": "webpack --mode production -w",
-    "package:win": "electron-packager . litser --overwrite --asar --platform=win32 --arch=x64 --app-version=1.0.0 --prune --out=desktop/win --ignore=src --icon=./dist/public/img/icon.ico",
-    "package:linux": "electron-packager . litser --overwrite --asar --platform=linux --arch=x64 --app-version=1.0.0 --prune --out=desktop/linux --ignore=src  --icon=./dist/public/img/icon.ico"
+    "package:win": "electron-packager . litser --overwrite --asar --platform=win32 --arch=x64 --app-version=2.0.0 --prune --out=desktop/win --ignore=src --icon=./dist/public/img/icon.ico",
+    "package:linux": "electron-packager . litser --overwrite --asar --platform=linux --arch=x64 --app-version=2.0.0 --prune --out=desktop/linux --ignore=src  --icon=./dist/public/img/icon.ico"
   },
   "author": "github: TheWitcher1991 <alikzoy@gmail.com>",
   "license": "GNU GPL",
