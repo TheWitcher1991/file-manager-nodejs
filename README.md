@@ -1,5 +1,7 @@
 # Folder parser `LITSER`
 
+`Clear file dist\db\db.json — Write an empty array in it: []`
+
 Clone the repository in a suitable folder
 ```bash
 git clone https://github.com/TheWitcher1991/litser.git

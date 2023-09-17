@@ -507,7 +507,6 @@ class Files {
     }
 
     async sortFiles(column, type) {
-
         this.countRender = 0
 
         this.activeFiles = 0
