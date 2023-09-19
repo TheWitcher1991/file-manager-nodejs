@@ -1,4 +1,5 @@
 module.exports = function () {
+
     document.querySelector('.info-button').addEventListener('click', function () {
         document.querySelector('.info__from-pop').style.display = 'flex'
         document.querySelector('.info__from-container').style.display = 'block'

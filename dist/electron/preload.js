@@ -23,6 +23,10 @@ window.addEventListener('DOMContentLoaded', () => {
         ipcRenderer.send('close-window');
     })
 
+    document.querySelector('.bth__letter-cancel').addEventListener('click', () => {
+        ipcRenderer.send('close-window');
+    })
+
     const replaceText = (selector, text) => {
         const element = document.getElementById(selector);
         if (element) element.innerText = text;

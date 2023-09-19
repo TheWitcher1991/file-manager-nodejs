@@ -1,5 +1,24 @@
 module.exports = function () {
+
+    document.querySelectorAll('.popup__wrap').forEach(function (el) {
+        el.addEventListener('click', function (e) {
+            if (e.target.closest('.popup__container') === null) {
+                this.style.display = 'none'
+                this.querySelector('.popup__container').style.display = 'none'
+            }
+        })
+    })
+
+    document.addEventListener('mouseup', function (event) {
+        let e = document.querySelectorAll('.tb__popup');
+        e.forEach(el => {
+            if (!el.contains(event.target)) el.style.display = 'none'
+        })
+        document.querySelectorAll('.tb__span').forEach(el => el.classList.remove('tb__bth-active'))
+    })
+
     const a = (main, tmp) => {
+
         document.querySelector(main).addEventListener('click', function () {
             if (tmp === '.kit__popup') {
                 document.querySelector('.new__popup').style.display = 'none';

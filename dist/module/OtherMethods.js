@@ -5,6 +5,75 @@ let { rpath, rkey  } = require(path.join(__dirname, '/config'))
 let $ = require(path.join(__dirname, '/config'))
 
 module.exports = function () {
+    document.querySelector('.gil__to').addEventListener('dblclick', function () {
+        this.style.display = 'none'
+        document.querySelector('.gih__to').style.display = 'flex'
+    })
+
+    document.querySelector('.gil__from').addEventListener('dblclick', function () {
+        this.style.display = 'none'
+        document.querySelector('.gih__from').style.display = 'flex'
+    })
+
+    document.querySelector('#gih__to').addEventListener('dblclick', e => {
+        for (let x in $.db) {
+            let tmp = String(Object.keys($.db[x])),
+                preset = String($._fs.getPreset())
+            if (tmp === preset) {
+                for (let y in $.db[x]) {
+
+                    document.querySelector('.gih__to').style.display = 'none'
+                    document.querySelector('.gil__to').style.display = 'flex'
+
+                    if (document.querySelector('#gih__to').value.replace(/\s/g,'') === '') {
+                        $._fs.createNotice('Поле не должно быть пустым')
+                        document.querySelector('#gih__to').value = ''
+                        return false
+                    }
+
+                    $.db[x][y].pathTo = document.querySelector('#gih__to').value
+                    $._fs.setPathTo(document.querySelector('#gih__to').value)
+                    $._fs.updateDB($.db)
+                    fs.writeFileSync(path.join(__dirname, rpath.db), JSON.stringify($.db));
+                    document.querySelector('.home__to').innerHTML = document.querySelector('#gih__to').value
+                    document.querySelector('.global__to').value = document.querySelector('#gih__to').value
+                    document.querySelector('#gih__to').value = ''
+                    return false
+                }
+            }
+        }
+    });
+
+    document.querySelector('#gih__from').addEventListener('dblclick', e => {
+        for (let x in $.db) {
+            let tmp = String(Object.keys($.db[x])),
+                preset = String($._fs.getPreset())
+            if (tmp === preset) {
+                for (let y in $.db[x]) {
+
+                    document.querySelector('.gih__from').style.display = 'none'
+                    document.querySelector('.gil__from').style.display = 'flex'
+
+                    if (document.querySelector('#gih__from').value.replace(/\s/g,'') === '') {
+                        $._fs.createNotice('Поле не должно быть пустым')
+                        document.querySelector('#gih__from').value = ''
+                        return false
+                    }
+
+                    $.db[x][y].pathFrom = document.querySelector('#gih__from').value
+                    $._fs.setPathFrom(document.querySelector('#gih__from').value)
+                    $._fs.updateDB($.db)
+                    fs.writeFileSync(path.join(__dirname, rpath.db), JSON.stringify($.db));
+                    document.querySelector('.home__path').innerHTML = document.querySelector('#gih__from').value
+                    document.querySelector('.global__from').value = document.querySelector('#gih__from').value
+                    document.querySelector('#gih__from').value = ''
+                    $._fs.loadFiles()
+                    return false
+                }
+            }
+        }
+    });
+
     document.querySelector('.setting-button').addEventListener('click', function () {
 
         let $this = document.documentElement.getAttribute('theme')
@@ -168,6 +237,9 @@ module.exports = function () {
                 document.querySelector('#change-name-to').value = arr.wordRight
                 document.querySelector('#change-size').value = arr.sizeFiles
 
+                document.querySelectorAll('.tb__popup').forEach(el => el.style.display = 'none')
+                document.querySelectorAll('.tb__span').forEach(el => el.classList.remove('tb__bth-active'))
+
                 document.querySelector('.change__from-pop').style.display = 'flex'
                 document.querySelector('.change__from-container').style.display = 'block'
             }
@@ -217,6 +289,30 @@ module.exports = function () {
         document.querySelector('#change-name-from').value = ''
         document.querySelector('#change-name-to').value = ''
         document.querySelector('#change-size').value = ''
+    })
+
+    document.querySelector('.bth__letter-save').addEventListener('click', function (e) {
+        e.preventDefault()
+
+        let from = document.querySelector('#preset__letter-from').value
+
+        let preset = $._fs.getPreset()
+
+        for (let x in $.db) {
+            let tmp = String(Object.keys($.db[x])[0])
+            for (let y in $.db[x]) {
+                if (tmp === preset) {
+                    $.db[x][y].pathFrom = from
+                    document.querySelector('#preset__letter-name').value = ''
+                    document.querySelector('.preset__letter-pop').style.display = 'none'
+                    document.querySelector('.preset__letter-container').style.display = 'none'
+                    fs.writeFileSync(path.join(__dirname, rpath.db), JSON.stringify($.db));
+                    $._fs.loadFiles()
+                    return false
+                }
+            }
+        }
+
     })
 
     document.querySelector('.preset__list').addEventListener('click', function (event) {

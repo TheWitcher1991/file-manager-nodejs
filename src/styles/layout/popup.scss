@@ -11,6 +11,19 @@
     background: var(--rbg650);
 }
 
+.popup__wrap-non {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 10000000;
+    background: var(--rbg650);
+}
+
 .popup__container {
     min-width: 400px;
     max-width: 860px;

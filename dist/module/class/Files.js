@@ -26,6 +26,113 @@ class Files {
         this.activeFiles = activeFiles
         this.activeList = activeList
         this.countRender = countRender
+
+        this.typeFiles = [
+            {
+                img: `<img src="${path.join(__dirname, '../../public/img/png/html.png')}" />`,
+                type: ['.html', '.htm', '.htb', '.htx', '.htg']
+            },
+            {
+                img: `<img src="${path.join(__dirname, '../../public/img/png/js.png')}" />`,
+                type: ['.js', '.jsx', '.cjs']
+            },
+            {
+                img: `<img src="${path.join(__dirname, '../../public/img/png/java.png')}" />`,
+                type: ['.java', '.jar']
+            },
+            {
+                img: `<img src="${path.join(__dirname, '../../public/img/png/python.png')}" />`,
+                type: ['.py']
+            },
+            {
+                img: `<img src="${path.join(__dirname, '../../public/img/png/cpp.png')}" />`,
+                type: ['.cpp', '.bsc', '.cur', '.dbp']
+            },
+            {
+                img: `<img src="${path.join(__dirname, '../../public/img/png/c.png')}" />`,
+                type: ['.c', '.h']
+            },
+            {
+                img: `<img src="${path.join(__dirname, '../../public/img/png/csharp.png')}" />`,
+                type: ['.cs']
+            },
+            {
+                img: `<img src="${path.join(__dirname, '../../public/img/png/swift.png')}" />`,
+                type: ['.swift']
+            },
+            {
+                img: `<img src="${path.join(__dirname, '../../public/img/png/svg.png')}" />`,
+                type: ['.svg']
+            },
+            {
+                img: `<img src="${path.join(__dirname, '../../public/img/png/php.png')}" />`,
+                type: ['.php']
+            },
+            {
+                img: `<img src="${path.join(__dirname, '../../public/img/png/ejs.png')}" />`,
+                type: ['.ejs']
+            },
+            {
+                img: `<img src="${path.join(__dirname, '../../public/img/png/bash.png')}" />`,
+                type: ['.sh', '.cmd']
+            },
+            {
+                img: `<img src="${path.join(__dirname, '../../public/img/png/json.png')}" />`,
+                type: ['.json']
+            },
+            {
+                img: `<img src="${path.join(__dirname, '../../public/img/png/graphql.png')}" />`,
+                type: ['.graphql', '.agq']
+            },
+            {
+                img: `<img src="${path.join(__dirname, '../../public/img/png/css.png')}" />`,
+                type: ['.css']
+            },
+            {
+                img: `<img src="${path.join(__dirname, '../../public/img/png/sass.png')}" />`,
+                type: ['.sass', '.scss']
+            },
+            {
+                img: `<img src="${path.join(__dirname, '../../public/img/png/ts.png')}" />`,
+                type: ['.ts', '.tsx']
+            },
+            {
+                img: `<img src="${path.join(__dirname, '../../public/img/png/word.png')}" />`,
+                type: ['.docx', '.doc', '.docm', '.dot', '.rtf']
+            },
+            {
+                img: `<img src="${path.join(__dirname, '../../public/img/png/pdf.png')}" />`,
+                type: ['.pdf']
+            },
+            {
+                img: `<img src="${path.join(__dirname, '../../public/img/png/powerpoint.png')}" />`,
+                type: ['.pptx', '.pptm', '.ppt']
+            },
+            {
+                img: `<img src="${path.join(__dirname, '../../public/img/png/access.png')}" />`,
+                type: ['.accdb', '.mdb', '.dat', '.sdf', '.mdf']
+            },
+            {
+                img: `<img src="${path.join(__dirname, '../../public/img/png/database.png')}" />`,
+                type: ['.sql', '.db', '.sqlite', '.sqlite3', '.crypt']
+            },
+            {
+                img: `<img src="${path.join(__dirname, '../../public/img/png/excel.png')}" />`,
+                type: ['.xls', '.xlsx', '.xlsm', '.xlsb', '.xlsx']
+            },
+            {
+                img: `<img src="${path.join(__dirname, '../../public/img/png/archive.png')}" />`,
+                type: ['.zip', '.7z', '.cab', '.tar', '.deb', '.ace', '.pak', '.rar']
+            },
+            {
+                img: `<img src="${path.join(__dirname, '../../public/img/png/picture.png')}" />`,
+                type: ['.png', '.jpeg', '.jpg', '.ico', '.pict', '.gif', '.bmp', '.jfif', '.webm', '.tif']
+            },
+            {
+                img: `<img src="${path.join(__dirname, '../../public/img/png/audio.png')}" />`,
+                type: ['.mp3', '.mp4', '.m4a', '.wav', '.wma', '.aif', '.ac3', '.mov', '.avi', '.amr']
+            },
+        ]
     }
 
     mb_strwidth (str) {
@@ -94,62 +201,66 @@ class Files {
 
     async readFiles(from = '') {
 
-        let subfolders = await readdir(from)
-
         let config = this.getConfig()
 
         let types = config.typeFiles.replace(/\s/g,'').split(/,|-/)
 
-        const files = await Promise.all(subfolders.map(async (subfolder) => {
+        try {
+            let subfolders = await readdir(from)
 
-            const res = resolve(from, subfolder),
-                  stats = await stat(res)
+            const files = await Promise.all(subfolders.map(async (subfolder) => {
 
-            if (stats.isDirectory() && this.readSubfolders === 1) {
-                return this.readFiles(res)
-            } else {
+                const res = resolve(from, subfolder),
+                    stats = await stat(res)
 
+                if (stats.isDirectory() && this.readSubfolders === 1) {
+                    return this.readFiles(res)
+                } else {
 
-                if (
-                    (config.typeFiles.replace(/\s/g,'') !== '' && !types.includes(path.extname(res).toLowerCase()))
-                    || (config.wordLeft.replace(/\s/g,'') !== '' && !subfolder.replace(/\.[^.]+$/, '').startsWith(config.wordLeft))
-                    || (config.wordRight.replace(/\s/g,'') !== '' && !subfolder.replace(/\.[^.]+$/, '').endsWith(config.wordRight))
-                    || (config.sizeFiles > 0 && ((stats.size / 1000) > config.sizeFiles))
-                ) {
-                    return true
+                    if (
+                        (config.typeFiles.replace(/\s/g,'') !== '' && !types.includes(path.extname(res).toLowerCase()))
+                        || (config.wordLeft.replace(/\s/g,'') !== '' && !subfolder.replace(/\.[^.]+$/, '').startsWith(config.wordLeft))
+                        || (config.wordRight.replace(/\s/g,'') !== '' && !subfolder.replace(/\.[^.]+$/, '').endsWith(config.wordRight))
+                        || (config.sizeFiles > 0 && ((stats.size / 1000) > config.sizeFiles))
+                    ) {
+                        return true
+                    }
+
+                    if (subfolder.replace(/\.[^.]+$/, '').replace(/\s/g,'') === '' || path.extname(res).replace(/\s/g,'') === '') {
+                        return true
+                    }
+
+                    this.count += 1
+
+                    return {
+                        id: this.count,
+                        path: res,
+                        name: subfolder,
+                        uri: subfolder.replace(/\.[^.]+$/, ''),
+                        size: stats.size,
+                        type: path.extname(res),
+                        changed: stats.ctime,
+                        active: 0,
+                        stats: stats,
+                    }
                 }
+            }));
 
-                if (subfolder.replace(/\.[^.]+$/, '').replace(/\s/g,'') === '' || path.extname(res).replace(/\s/g,'') === '') {
-                    return true
-                }
-
-                this.count += 1
-
-                return {
-                    id: this.count,
-                    path: res,
-                    name: subfolder,
-                    uri: subfolder.replace(/\.[^.]+$/, ''),
-                    size: stats.size,
-                    type: path.extname(res),
-                    changed: stats.ctime,
-                    active: 0,
-                    stats: stats,
-                }
+            if (this.count > 0) {
+                document.querySelector('.gload div').innerHTML = `Прочитано файлов ${this.count}`
             }
-        }));
 
-        if (this.count > 0) {
-            document.querySelector('.gload div').innerHTML = `Прочитано файлов ${this.count}`
+            return files.reduce((a, f) => a.concat(f), [])
+        } catch (error) {
+            return 'Не найдена дирректория'
         }
-
-        return files.reduce((a, f) => a.concat(f), [])
     }
 
     trashFiles(files_) {
         let arr = []
 
-        let setCount = files_.length
+        let setCount = files_.length,
+            count = files_.length
 
         document.querySelector('.gdelete__from-pop').style.display = 'flex'
         document.querySelector('.gdelete__from-container').style.display = 'block'
@@ -157,7 +268,16 @@ class Files {
         files_.forEach(async (el, i) => {
             await new Promise((resolve, reject) => {
                 fs.unlink(String(el.path), err => {
-                    if (err) arr.push(el.name)
+                    if (err) {
+                        arr.push(el.name)
+                        setCount--
+                        if (arr.length === count) {
+                            alert('Произошла ошибка. Файлы не были удалены')
+                            document.querySelector('.gdelete__from-pop').style.display = 'none'
+                            document.querySelector('.gdelete__from-container').style.display = 'none'
+                        }
+                        return false
+                    }
                     setCount--
                     document.querySelector(`.file__ctx-${el.id}`)?.remove()
                     document.querySelector('.gdelete div').innerHTML = `Осталось файлов ${setCount}`
@@ -176,7 +296,8 @@ class Files {
     copyFiles(files_) {
         let arr = []
 
-        let setCount = files_.length
+        let setCount = files_.length,
+            count = files_.length
 
          document.querySelector('.gcopy__from-pop').style.display = 'flex'
          document.querySelector('.gcopy__from-container').style.display = 'block'
@@ -184,7 +305,16 @@ class Files {
          files_.forEach(async (el, i) => {
              await new Promise((resolve, reject) => {
                  fs.copyFile(String(el.path), String(`${this.to}\\${el.name}`), COPYFILE_EXCL, err => {
-                     if (err) arr.push(el.name)
+                     if (err) {
+                         arr.push(el.name)
+                         setCount--
+                         if (arr.length === count) {
+                             alert('Произошла ошибка. Файлы не были копированы')
+                             document.querySelector('.gcopy__from-pop').style.display = 'none'
+                             document.querySelector('.gcopy__from-container').style.display = 'none'
+                         }
+                         return false
+                     }
                      setCount--
                      document.querySelector('.gcopy div').innerHTML = `Осталось файлов ${setCount}`
                      if (setCount === 0) {
@@ -202,7 +332,8 @@ class Files {
     renameFiles(files_) {
         let arr = []
 
-        let setCount = files_.length
+        let setCount = files_.length,
+            count = files_.length
 
         document.querySelector('.gtrasf__from-pop').style.display = 'flex'
         document.querySelector('.gtrasf__from-container').style.display = 'block'
@@ -210,7 +341,16 @@ class Files {
         files_.forEach(async (el, i) => {
             await new Promise((resolve, reject) => {
                 fs.rename(String(el.path), String(`${this.to}\\${el.name}`), err => {
-                    if (err) arr.push(el.name)
+                    if (err) {
+                        arr.push(el.name)
+                        setCount--
+                        if (arr.length === count) {
+                            alert('Произошла ошибка. Файлы не были перемещены')
+                            document.querySelector('.gtrasf__from-pop').style.display = 'none'
+                            document.querySelector('.gtrasf__from-container').style.display = 'none'
+                        }
+                        return false
+                    }
                     setCount--
                     document.querySelector(`.file__ctx-${el.id}`)?.remove()
                     document.querySelector('.gtrasf div').innerHTML = `Осталось файлов ${setCount}`
@@ -240,7 +380,6 @@ class Files {
     renderFiles(ul, el, act = 1) {
 
         try {
-
             let config = this.getConfig()
 
             let types = config.typeFiles.replace(/\s/g,'').split(/,|-/)
@@ -272,35 +411,10 @@ class Files {
 
             let type = `<img src="${path.join(__dirname, '../../public/img/png/file.png')}" />`
 
-            if (low === '.docx' || low === '.doc' || low === '.docm' || low === 'dot' || low === '.rtf')
-                type = `<img src="${path.join(__dirname, '../../public/img/png/word.png')}" />`
-
-            if (low === '.pdf')
-                type = `<img src="${path.join(__dirname, '../../public/img/png/pdf.png')}" />`
-
-            if (low === '.pptx' || low === '.pptm' || low === 'ppt.ppt')
-                type = `<img src="${path.join(__dirname, '../../public/img/png/powerpoint.png')}" />`
-
-            if (low === '.accdb' || low === '.mdb'|| low === '.crypt' || low === '.dat'
-                || low === '.sdf' || low === '.mdf' || low === '.sqlite' || low === '.sqlite3')
-                type = `<img src="${path.join(__dirname, '../../public/img/png/access.png')}" />`
-
-            if (low === '.sql' || low === '.db' || low === '.json')
-                type = `<img src="${path.join(__dirname, '../../public/img/png/database.png')}" />`
-
-            if (low === '.xls' || el.type === '.xlsx' || low === '.xlsm' || low === '.xlsb' || low === '.xlsx')
-                type = `<img src="${path.join(__dirname, '../../public/img/png/excel.png')}" />`
-
-            if (low === '.zip' || low === '.7z' || low === '.cab' || low === '.tar' || low === '.deb' || low === '.ace' || low === '.pak' || low === '.rar')
-                type = `<img src="${path.join(__dirname, '../../public/img/png/archive.png')}" />`
-
-            if (low === '.png' || low === '.jpeg' || low === '.jpg' || low === '.ico' || el.type === '.pict' || el.type === '.gif' || low === '.bmp'
-                || low === '.jfif' || low === '.webm' || low === '.tif')
-                type = `<img src="${path.join(__dirname, '../../public/img/png/picture.png')}" />`
-
-            if (low === '.mp3' || low === '.mp4' || low === '.m4a' || low === '.wav' || low === '.wma' || el.type === '.aif' || low === '.ac3'
-                || low === '.amr' || low === '.avi' || low === '.mov')
-                type = `<img src="${path.join(__dirname, '../../public/img/png/audio.png')}" />`
+            this.typeFiles.forEach(el => {
+                if (el.type.includes(low))
+                    type = el.img
+            })
 
             this.countRender += 1
 
@@ -576,7 +690,6 @@ class Files {
     }
 
     async updatePath () {
-
         this.countRender = 0
 
         document.querySelector('.gload__from-pop').style.display = 'flex'
@@ -585,11 +698,33 @@ class Files {
         this.activeFiles = 0
         this.activeList = []
 
+        this.count = 0
 
         await this.readFiles(this.from).then(async (e) => {
 
             document.querySelector('.gload__from-pop').style.display = 'none'
             document.querySelector('.gload__from-container').style.display = 'none'
+
+            if (typeof e !== 'object'){
+                let name = ''
+                for (let x in this.db) {
+                    let tmp = String(Object.keys(this.db[x])[0])
+                    for (let y in this.db[x]) {
+                        if (tmp === this.getPreset()) {
+                            name = this.db[x][y].name
+                            break
+                        }
+                    }
+                }
+
+                document.querySelector('#preset__letter-name').value = name
+
+                document.querySelector('.preset__letter-pop').style.display = 'flex'
+                document.querySelector('.preset__letter-container').style.display = 'block'
+
+                return false
+            }
+
 
             let files_ = e.filter(x => typeof x === 'object'),
                 count = files_.length
@@ -753,6 +888,14 @@ class Files {
 
     setRemember(files) {
         this.remember.push(String(files))
+    }
+
+    setPathTo(val) {
+        this.to = val
+    }
+
+    setPathFrom(val) {
+        this.from = val
     }
 
     cleanActiveList () {

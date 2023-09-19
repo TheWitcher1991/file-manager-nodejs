@@ -92,12 +92,18 @@ module.exports = function () {
             column = document.querySelector('#sort__column'),
             type   = document.querySelector('#sort__type')
 
+        document.querySelector('.search__popup').style.display = 'none';
+        document.querySelector('.search__button-span').classList.remove('tb__bth-active')
+
         $._fs.searchFiles(text.value, Number(column.value), Number(type.value))
     })
 
     document.querySelector('.new__apply').addEventListener('click', function () {
         let column = document.querySelector('#sort__column'),
             type   = document.querySelector('#sort__type')
+
+        document.querySelector('.new__popup').style.display = 'none';
+        document.querySelector('.new__button-span').classList.remove('tb__bth-active')
 
         $._fs.sortFiles(Number(column.value), Number(type.value))
     })

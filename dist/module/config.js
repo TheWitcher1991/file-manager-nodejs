@@ -5,7 +5,9 @@ module.exports = {
 
     rpath: {
         db: '../db/db.json',
-        config: '../db/config.json'
+        config: '../db/config.json',
+        launchDB: '/db/db.json',
+        launchConfig: 'db/config.json'
     },
 
     files_: [],
@@ -20,11 +22,20 @@ module.exports = {
     },
 
     get db () {
-        return require(path.join(__dirname, this.rpath.db))
+        try {
+            return require(path.join(__dirname, this.rpath.db))
+        } catch (e) {
+            return undefined
+        }
+
     },
 
     get config () {
-        return require(path.join(__dirname, this.rpath.config))
+        try {
+            return require(path.join(__dirname, this.rpath.config))
+        } catch (e) {
+            return undefined
+        }
     },
 
     get size () {

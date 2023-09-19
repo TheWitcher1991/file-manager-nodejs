@@ -23,7 +23,7 @@
                 <div class="form__label">
                     <span>Полный путь до папки с файлами</span>
                     <label class="label__block label__path-from" for="path-from">
-                        <i class="fa-regular fa-house"></i>
+                        <i class="fa-regular fa-folder-open"></i>
                         <input type="text" id="path-from" class="popup__input" />
                     </label>
                 </div>
@@ -53,14 +53,14 @@
                 <div class="form__label">
                     <span>Название</span>
                     <label class="label__block" for="preset-name">
-                        <i class="fa-regular fa-registered"></i>
+                        <i class="fa-regular fa-hashtag"></i>
                         <input type="text" id="preset-name" class="popup__input" />
                     </label>
                 </div>
                 <div class="form__label">
                     <span>Полный путь до папки с файлами</span>
                     <label class="label__block" for="preset-from">
-                        <i class="fa-regular fa-house"></i>
+                        <i class="fa-regular fa-folder-open"></i>
                         <input type="text" id="preset-from" class="popup__input" />
                     </label>
                 </div>
@@ -80,6 +80,37 @@
     </div>
 </div>
 
+<div class="preset__letter-pop popup__wrap-non">
+    <div class="popup__container preset__letter-container">
+        <form enctype="multipart/form-data" method="post" action="">
+            <div class="form__title">
+                <span class="form__span">Изменить пресет</span>
+            </div>
+            <div class="file__upload">
+                <span> Указанная вами папка не найдена, пожалуйства, укажите новую папку</span>
+                <div class="form__label">
+                    <span>Название</span>
+                    <label class="label__block" for="preset__letter-name">
+                        <i class="fa-regular fa-hashtag"></i>
+                        <input type="text" id="preset__letter-name" class="popup__input" disabled/>
+                    </label>
+                </div>
+                <div class="form__label">
+                    <span>Полный путь до папки с файлами</span>
+                    <label class="label__block" for="preset__letter-from">
+                        <i class="fa-regular fa-folder-open"></i>
+                        <input type="text" id="preset__letter-from" class="popup__input" />
+                    </label>
+                </div>
+                <div class="form__bth form__bth-right">
+                    <button type="button" class="form__cancel bth__letter-cancel">Отмена</button>
+                    <button type="button" class="form__save bth__letter-save">Изменить</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
 <div class="info__from-pop popup__wrap">
     <div class="popup__container info__from-container">
         <form enctype="multipart/form-data" method="post" action="">
@@ -89,13 +120,17 @@
             </div>
             <div class="file__upload info__block">
                 <img src="./public/img/icon.ico" alt="">
-                <span>litser</span>
-                <p>Build: #2.0.0 17.09.2023</p>
                 <div>
-                    <span>Electron: ^25.5.0</span>
-                    <span>Express: ^4.18.2</span>
-                    <span>Npm: 9.6.2</span>
+                    <span>litser</span>
+                    <p>build: #2.0.0 18.09.2023</p>
+                    <div>
+                        <span>electron: ^25.5.0</span>
+                        <span>electron-packager: ^17.1.1</span>
+                        <span>npm: 9.6.2</span>
+                    </div>
+                    <span class="copyright">Copyright <i class="fa-regular fa-copyright"></i> 2023 github.com/TheWitcher1991</span>
                 </div>
+
             </div>
         </form>
     </div>
@@ -162,14 +197,14 @@
                         <div class="form__label">
                             <span>Название</span>
                             <label class="label__block" for="change-name">
-                                <i class="fa-regular fa-registered"></i>
+                                <i class="fa-regular fa-hashtag"></i>
                                 <input type="text" id="change-name" class="popup__input" />
                             </label>
                         </div>
                         <div class="form__label">
                             <span>Полный путь до папки с файлами</span>
                             <label class="label__block" for="change-from">
-                                <i class="fa-regular fa-house"></i>
+                                <i class="fa-regular fa-folder-open"></i>
                                 <input type="text" id="change-from" class="popup__input" />
                             </label>
                         </div>
@@ -306,7 +341,11 @@
                 <label style="cursor: no-drop;" class="checkbox__label" for="global__change">Читать файлы в подкаталогах</label>
             </div>
 
-            <div id="setting-button" class="setting-button"></div>
+            <div class="top__set">
+                <div id="lang-button" class="lang-button"><img src="./public/img/ru.png" /></div>
+                <div id="setting-button" class="setting-button"></div>
+            </div>
+
         </div>
     </section>
 
@@ -316,8 +355,14 @@
             <input type="text" value="" style="display: none" class="global__from">
             <input type="text" value="" style="display: none" class="global__preset">
             <input type="text" value="" style="display: none" class="global__remember">
-            <div class="global__input">
-                <div class="gi__left">
+            <div class="global__input gli__from">
+
+                <label class="gi__hidden gih__from" for="gih__from">
+                    <i class="fa-regular fa-folder-open"></i>
+                    <input type="text" name="gih__from" id="gih__from">
+                </label>
+
+                <div class="gi__left gil__from">
                     <i class="fa-regular fa-folder-open"></i>
                     <span class="home__path">
 
@@ -328,8 +373,14 @@
                 </div>
             </div>
 
-            <div class="global__input">
-                <div class="gi__left">
+            <div class="global__input gli__to">
+                
+                <label class="gi__hidden gih__to" for="gih__to">
+                    <i class="fa-regular fa-upload"></i>
+                    <input type="text" name="gih__to" id="gih__to">
+                </label>
+                
+                <div class="gi__left gil__to">
                     <i class="fa-regular fa-upload"></i>
                     <span class="home__to">
                         <!-- C <i class="fa-regular fa-angle-right"></i>
@@ -406,7 +457,7 @@
 
                             </div>
                             <div class="tb__button">
-                                <button type="button" class="remember__apply tb__apply">Сохранить</button>
+                                <button type="button" class="remember__apply tb__apply">Добавить</button>
                             </div>
                         </div>
                     </div>
@@ -418,7 +469,7 @@
                         <span>Удалить</span>
                     </div>
                     <div>
-                        <button type="button" class="global__button-danger danger__button"><i class="fa-regular fa-triangle-exclamation"></i></button>
+                        <button type="button" class="global__button-danger danger__button"><i class="fa-sharp fa-regular fa-radiation"></i></button>
                         <span>Внимание</span>
                     </div>
                     <div>

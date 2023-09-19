@@ -1,9 +1,11 @@
-const path = require('path')
+const path = require('path'),
+      fs = require('fs')
 
-let { Files } = require(path.join(__dirname, '/config'))
+let { Files, rpath } = require(path.join(__dirname, '/config'))
 let $ = require(path.join(__dirname, '/config'))
 
 module.exports = function () {
+
     $._fs = new Files($.db, '.file__tbody')
 
     if ($.config.ReadSubfolders === 1) {
@@ -21,4 +23,6 @@ module.exports = function () {
     $._fs.startPreset($.config.ActivePreset)
     $._fs.loadFiles()
     $._fs.setTheme($.config.theme)
+
+
 }

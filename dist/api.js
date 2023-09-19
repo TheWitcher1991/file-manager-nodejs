@@ -1,7 +1,8 @@
 'use strict'
 
 const API = () => {
-    const path = require('path')
+    const path = require('path'),
+          fs = require('fs')
 
     let $ = require(path.join(__dirname, '/module/config'))
 
@@ -12,6 +13,12 @@ const API = () => {
           OtherMethods        = require(path.join(__dirname, '/module/OtherMethods')),
           Launch              = require(path.join(__dirname, '/module/Launch')),
           Reset               = require(path.join(__dirname, '/module/Reset'))
+
+    if ($.db === undefined) {
+        fs.writeFileSync(path.join(__dirname, $.rpath.launchDB), JSON.stringify([]));
+        Launch()
+        return false
+    }
 
     $.size <= 0 ? Launch() : Reset()
 

@@ -372,8 +372,12 @@
 
     &:hover {
         background: #d1c616;
-        color: var(--bthFg);
+        color: #000;
         border-color: #d1c616;
+    }
+
+    i {
+        margin: 2px 0 0 0;
     }
 }
 
@@ -401,6 +405,7 @@
 }
 
 .global__input {
+    position: relative;
     width: 100%;
     border-radius: 8px;
     display: flex;
@@ -409,7 +414,6 @@
     height: 38px;
     flex: 1 1 0;
     padding: 0 12px;
-    position: relative;
     margin: 0 0 10px 0;
     background: var(--fg500);
     border: 1px solid var(--fg500);
@@ -418,6 +422,36 @@
     &:hover {
         background: transparent;
         border-color: var(--activeFg);
+    }
+}
+
+.gi__hidden {
+    display: none;
+    position: absolute;
+    border-radius: 8px;
+    align-items: center;
+    justify-content: space-between;
+    height: 36px;
+    width: 100%;
+    padding: 0 12px;
+    left: 0;
+    top: 0;
+    margin: 0 0 10px 0;
+    background: var(--fg500);
+    border: 1px solid var(--fg500);
+    transition: all 0.2s ease-in-out 0s;
+
+
+    input {
+        width: 100%;
+        outline: 0;
+        border: 0;
+        height: 100%;
+        background: rgba(0,0,0,0);
+        color: var(--mainFg);
+        padding: 0 0 0 10px;
+        font-size: 15px;
+        font-weight: 400;
     }
 }
 
@@ -457,7 +491,7 @@
 
 .gi__right {
     color: var(--mainFg);
-    font-size: 17px;
+    font-size: 15px;
     cursor: pointer;
     position: absolute;
     right: 12px;
@@ -827,7 +861,7 @@
 }
 
 .info__block {
-    text-align: center;
+    display: flex;
 
     > i {
         font-size: 38px;
@@ -836,27 +870,39 @@
 
     > img {
         height: 65px;
+        margin: 0 20px 0 0;
     }
 
-    > span {
-        display: block;
-        margin: 3px 0 2px 0;
-        font-weight: 400;
-        font-size: 17px;
+    > div {
+        > span {
+            display: block;
+            margin: 3px 0 2px 0;
+            font-weight: 400;
+            font-size: 17px;
+        }
+
+        > p {
+            color: var(--fg400);
+            font-size: 14px;
+            padding: 0;
+            margin: 0 0 4px 0;
+        }
+
+        > div span {
+            display: block;
+            color: var(--fg400);
+            font-size: 14px;
+        }
+
+        > span.copyright {
+            color: var(--fg400);
+            font-size: 14px;
+            padding: 0;
+            margin: 8px 0 0 0;
+        }
     }
 
-    > p {
-        color: var(--fg400);
-        font-size: 14px;
-        padding: 0;
-        margin: 0 0 4px 0;
-    }
 
-    > div span {
-        display: block;
-        color: var(--fg400);
-        font-size: 14px;
-    }
 }
 
 .label__exp {
@@ -1195,4 +1241,29 @@
         background-color: var(--checkNBg);
         border-color: var(--checkNFg);
     }
+}
+
+.top__set {
+    display: flex;
+    align-items: center;
+
+    .lang-button img {
+        width: 28px;
+        height: 28px;
+        margin: 0 20px 0 0;
+        object-fit: cover;
+        cursor: pointer;
+        transition: all 0.1s linear;
+
+        &:hover {
+            transform: scale(1.1);
+        }
+    }
+}
+
+.file__upload > span {
+    display: block;
+    margin: 0 0 16px 0;
+    font-size: 14px;
+    width: 375px;
 }
