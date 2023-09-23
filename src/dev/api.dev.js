@@ -33,5 +33,5 @@ module.exports = (() => {
     SpecialOperations()
     BasicOperations()
 
-    fs.appendFileSync(path.join(__dirname, $.rpath.log), `\n[${new Date()}] | Launch`, 'utf-8')
+    // fs.appendFileSync(path.join(__dirname, $.rpath.log), `\n[${new Date()}] | Launch`, 'utf-8')
 })(0)

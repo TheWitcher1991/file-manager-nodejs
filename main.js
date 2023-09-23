@@ -52,8 +52,8 @@ function createWindow () {
             nodeIntegrationInWorker: true,
             contextIsolation: false,
             enableRemoteModule: true,
+            v8CacheOptions: 'code',
             // webSecurity: false,
-            worldSafeExecuteJavaScript: true,
             preload: path.join(__dirname, '/dist/electron/preload.js')
         }
     }
@@ -65,8 +65,8 @@ function createWindow () {
     mainWindow = new BrowserWindow(windowOptions)
     mainWindow.setMenuBarVisibility(false)
     mainWindow.setProgressBar(0)
-    mainWindow.webContents.openDevTools()
-    mainWindow.loadURL(path.join(__dirname, '/src/dev/index.dev.html'))
+    // mainWindow.webContents.openDevTools()
+    let promise = mainWindow.loadURL(path.join(__dirname, '/src/dev/index.dev.html'))
 
     // log.info(mainWindow);
 

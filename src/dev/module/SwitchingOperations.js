@@ -9,6 +9,11 @@ module.exports = function () {
     })
 
     document.addEventListener('mouseup', function (event) {
+        if (!event.srcElement.classList.value.includes('user-select-none')) {
+            this.querySelectorAll('.context__file').forEach(el => el.style.cssText = 'display:none')
+            this.querySelectorAll('.file__table-ctx').forEach(el => el.classList.remove('context__active'))
+        }
+
         const e = document.querySelectorAll('.tb__popup')
         e.forEach(el => {
             if (!el.contains(event.target)) el.style.display = 'none'

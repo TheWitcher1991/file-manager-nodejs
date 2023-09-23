@@ -1,16 +1,25 @@
 'use strict'
 
-const path = require('path'),
-      fs   = require('fs'),
-      { promisify } = require('util'),
-      { resolve } = require('path')
+const path = require('path')
+const fs = require('fs')
+const { resolve } = require('path')
+
+function promisify (fn) {
+    return function () {
+        return new Promise(
+            (resolve, reject) => fn(
+                ...Array.from(arguments),
+                (err, data) => err ? reject(err) : resolve(data)
+            )
+        )
+    }
+}
 
 const readdir = promisify(fs.readdir)
 const stat = promisify(fs.stat)
 
 class Files {
-
-    constructor(db, selector, from = '', to = '', remember = [], count = 0, files = [], readSubfolders = 1, activeFiles = 0, activeList = [], countRender = 0) {
+    constructor (db, selector, from = '', to = '', remember = [], count = 0, files = [], readSubfolders = 1, activeFiles = 0, activeList = [], countRender = 0) {
         this.db = db
         this.selector = selector
         this.from = from
@@ -29,147 +38,173 @@ class Files {
         this.typeFiles = [
             {
                 img: `<img src="${path.join(__dirname, '../../public/img/png/html.png')}" />`,
+                path: '../../public/img/png/html.png',
                 type: ['.html', '.htm', '.htb', '.htx', '.htg']
             },
             {
                 img: `<img src="${path.join(__dirname, '../../public/img/png/js.png')}" />`,
+                path: '../../public/img/png/js.png',
                 type: ['.js', '.jsx', '.cjs']
             },
             {
                 img: `<img src="${path.join(__dirname, '../../public/img/png/java.png')}" />`,
+                path: '../../public/img/png/java.png',
                 type: ['.java', '.jar']
             },
             {
                 img: `<img src="${path.join(__dirname, '../../public/img/png/python.png')}" />`,
+                path: '../../public/img/png/python.png',
                 type: ['.py']
             },
             {
                 img: `<img src="${path.join(__dirname, '../../public/img/png/cpp.png')}" />`,
+                path: '../../public/img/png/cpp.png',
                 type: ['.cpp', '.bsc', '.cur', '.dbp']
             },
             {
                 img: `<img src="${path.join(__dirname, '../../public/img/png/c.png')}" />`,
+                path: '../../public/img/png/c.png',
                 type: ['.c', '.h']
             },
             {
                 img: `<img src="${path.join(__dirname, '../../public/img/png/csharp.png')}" />`,
+                path: '../../public/img/png/csharp.png',
                 type: ['.cs']
             },
             {
                 img: `<img src="${path.join(__dirname, '../../public/img/png/swift.png')}" />`,
+                path: '../../public/img/png/swift.png',
                 type: ['.swift']
             },
             {
                 img: `<img src="${path.join(__dirname, '../../public/img/png/svg.png')}" />`,
+                path: '../../public/img/png/svg.png',
                 type: ['.svg']
             },
             {
                 img: `<img src="${path.join(__dirname, '../../public/img/png/php.png')}" />`,
+                path: '../../public/img/png/php.png',
                 type: ['.php']
             },
             {
                 img: `<img src="${path.join(__dirname, '../../public/img/png/ejs.png')}" />`,
+                path: '../../public/img/png/ejs.png',
                 type: ['.ejs']
             },
             {
                 img: `<img src="${path.join(__dirname, '../../public/img/png/bash.png')}" />`,
+                path: '../../public/img/png/bash.png',
                 type: ['.sh', '.cmd']
             },
             {
                 img: `<img src="${path.join(__dirname, '../../public/img/png/json.png')}" />`,
+                path: '../../public/img/png/json.png',
                 type: ['.json']
             },
             {
                 img: `<img src="${path.join(__dirname, '../../public/img/png/graphql.png')}" />`,
+                path: '../../public/img/png/graphql.png',
                 type: ['.graphql', '.agq']
             },
             {
                 img: `<img src="${path.join(__dirname, '../../public/img/png/css.png')}" />`,
+                path: '../../public/img/png/css.png',
                 type: ['.css']
             },
             {
                 img: `<img src="${path.join(__dirname, '../../public/img/png/sass.png')}" />`,
+                path: '../../public/img/png/sass.png',
                 type: ['.sass', '.scss']
             },
             {
                 img: `<img src="${path.join(__dirname, '../../public/img/png/ts.png')}" />`,
+                path: '../../public/img/png/ts.png',
                 type: ['.ts', '.tsx']
             },
             {
                 img: `<img src="${path.join(__dirname, '../../public/img/png/word.png')}" />`,
+                path: '../../public/img/png/word.png',
                 type: ['.docx', '.doc', '.docm', '.dot', '.rtf']
             },
             {
                 img: `<img src="${path.join(__dirname, '../../public/img/png/pdf.png')}" />`,
+                path: '../../public/img/png/pdf.png',
                 type: ['.pdf']
             },
             {
                 img: `<img src="${path.join(__dirname, '../../public/img/png/powerpoint.png')}" />`,
+                path: '../../public/img/png/powerpoint.png',
                 type: ['.pptx', '.pptm', '.ppt']
             },
             {
                 img: `<img src="${path.join(__dirname, '../../public/img/png/access.png')}" />`,
+                path: '../../public/img/png/access.png',
                 type: ['.accdb', '.mdb', '.dat', '.sdf', '.mdf']
             },
             {
                 img: `<img src="${path.join(__dirname, '../../public/img/png/database.png')}" />`,
+                path: '../../public/img/png/database.png',
                 type: ['.sql', '.db', '.sqlite', '.sqlite3', '.crypt']
             },
             {
                 img: `<img src="${path.join(__dirname, '../../public/img/png/excel.png')}" />`,
+                path: '../../public/img/png/excel.png',
                 type: ['.xls', '.xlsx', '.xlsm', '.xlsb', '.xlsx']
             },
             {
                 img: `<img src="${path.join(__dirname, '../../public/img/png/archive.png')}" />`,
+                path: '../../public/img/png/archive.png',
                 type: ['.zip', '.7z', '.cab', '.tar', '.deb', '.ace', '.pak', '.rar']
             },
             {
                 img: `<img src="${path.join(__dirname, '../../public/img/png/picture.png')}" />`,
+                path: '../../public/img/png/picture.png',
                 type: ['.png', '.jpeg', '.jpg', '.ico', '.pict', '.gif', '.bmp', '.jfif', '.webm', '.tif']
             },
             {
                 img: `<img src="${path.join(__dirname, '../../public/img/png/audio.png')}" />`,
+                path: '../../public/img/png/audio.png',
                 type: ['.mp3', '.mp4', '.m4a', '.wav', '.wma', '.aif', '.ac3', '.mov', '.avi', '.amr']
-            },
+            }
         ]
     }
 
     mb_strwidth (str) {
-        let i = 0,
-            l = str.length,
-            c = '',
-            length = 0;
-        for(; i < l; i++){
-            c = str.charCodeAt(i);
-            if (0x0000 <= c && c <= 0x0019) {
-                length += 0;
-            } else if (0x0020 <= c && c <= 0x1FFF){
-                length += 1;
-            } else if (0x2000 <= c && c <= 0xFF60){
-                length += 2;
-            } else if (0xFF61 <= c && c <= 0xFF9F){
-                length += 1;
-            } else if (0xFFA0 <= c){
-                length += 2;
+        let i = 0
+        let l = str.length
+        let c = ''
+        let length = 0
+        for (; i < l; i++) {
+            c = str.charCodeAt(i)
+            if (c >= 0x0000 && c <= 0x0019) {
+                length += 0
+            } else if (c >= 0x0020 && c <= 0x1FFF) {
+                length += 1
+            } else if (c >= 0x2000 && c <= 0xFF60) {
+                length += 2
+            } else if (c >= 0xFF61 && c <= 0xFF9F) {
+                length += 1
+            } else if (c >= 0xFFA0) {
+                length += 2
             }
         }
-        return length;
+        return length
     };
 
     mb_strimwidth (str, start, width, trimmarker) {
-        if (typeof trimmarker === 'undefined') trimmarker = '';
-        let trimmakerWidth = this.mb_strwidth(trimmarker),
-            i = start,
-            l = str.length,
-            trimmedLength = 0,
-            trimmedStr = ''
+        if (typeof trimmarker === 'undefined') trimmarker = ''
+        let trimmakerWidth = this.mb_strwidth(trimmarker)
+        let i = start
+        let l = str.length
+        let trimmedLength = 0
+        let trimmedStr = ''
 
-        for( ; i < l; i++){
-            let charCode = str.charCodeAt(i),
-                c = str.charAt(i),
-                charWidth = this.mb_strwidth(c),
-                next = str.charAt(i + 1),
-                nextWidth = this.mb_strwidth(next)
+        for (; i < l; i++) {
+            let charCode = str.charCodeAt(i)
+            let c = str.charAt(i)
+            let charWidth = this.mb_strwidth(c)
+            let next = str.charAt(i + 1)
+            let nextWidth = this.mb_strwidth(next)
             trimmedLength += charWidth
             trimmedStr += c
             if (trimmedLength + trimmakerWidth + nextWidth > width) {
@@ -180,7 +215,7 @@ class Files {
         return trimmedStr
     }
 
-    createNotice(text, time = 3000) {
+    createNotice (text, time = 3000) {
         const notice = document.createElement('div')
         notice.className = 'alert__block'
         notice.id = `alert-${Math.floor(Math.random() * 100)}`
@@ -200,34 +235,31 @@ class Files {
         }, time)
     }
 
-    async readFiles(from = '') {
-
+    async readFiles (from = '') {
         let config = this.getConfig()
 
-        let types = config.typeFiles.replace(/\s/g,'').split(/,|-/)
+        let types = config.typeFiles.replace(/\s/g, '').split(/,|-/)
 
         try {
             let subfolders = await readdir(from)
 
             const files = await Promise.all(subfolders.map(async (subfolder) => {
-
-                const res = resolve(from, subfolder),
-                    stats = await stat(res)
+                const res = resolve(from, subfolder)
+                const stats = await stat(res)
 
                 if (stats.isDirectory() && this.readSubfolders === 1) {
                     return this.readFiles(res)
                 } else {
-
                     if (
-                        (config.typeFiles.replace(/\s/g,'') !== '' && !types.includes(path.extname(res).toLowerCase()))
-                        || (config.wordLeft.replace(/\s/g,'') !== '' && !subfolder.replace(/\.[^.]+$/, '').startsWith(config.wordLeft))
-                        || (config.wordRight.replace(/\s/g,'') !== '' && !subfolder.replace(/\.[^.]+$/, '').endsWith(config.wordRight))
-                        || (config.sizeFiles > 0 && ((stats.size / 1000) > config.sizeFiles))
+                        (config.typeFiles.replace(/\s/g, '') !== '' && !types.includes(path.extname(res).toLowerCase())) ||
+                        (config.wordLeft.replace(/\s/g, '') !== '' && !subfolder.replace(/\.[^.]+$/, '').startsWith(config.wordLeft)) ||
+                        (config.wordRight.replace(/\s/g, '') !== '' && !subfolder.replace(/\.[^.]+$/, '').endsWith(config.wordRight)) ||
+                        (config.sizeFiles > 0 && ((stats.size / 1000) > config.sizeFiles))
                     ) {
                         return true
                     }
 
-                    if (subfolder.replace(/\.[^.]+$/, '').replace(/\s/g,'') === '' || path.extname(res).replace(/\s/g,'') === '') {
+                    if (subfolder.replace(/\.[^.]+$/, '').replace(/\s/g, '') === '' || path.extname(res).replace(/\s/g, '') === '') {
                         return true
                     }
 
@@ -242,12 +274,14 @@ class Files {
                         type: path.extname(res),
                         dir: path.dirname(res),
                         dirName: path.dirname(res).split('\\').at(-1),
-                        changed: stats.ctime,
+                        changed: stats.mtime,
+                        create: stats.birthtime,
+                        open: stats.ctime,
                         active: 0,
-                        stats: stats,
+                        stats
                     }
                 }
-            }));
+            }))
 
             if (this.count > 0) {
                 document.querySelector('.gload div').innerHTML = `Прочитано файлов ${this.count}`
@@ -259,11 +293,11 @@ class Files {
         }
     }
 
-    trashFiles(files_) {
+    trashFiles (files_) {
         let arr = []
 
-        let setCount = files_.length,
-            count = files_.length
+        let setCount = files_.length
+        let count = files_.length
 
         document.querySelector('.gdelete__from-pop').style.display = 'flex'
         document.querySelector('.gdelete__from-container').style.display = 'block'
@@ -284,7 +318,7 @@ class Files {
                 return false
             }
 
-            document.querySelector(`.file__ctx-${el.id}`)?.remove()
+            document.querySelector(`.file__div-${el.id}`)?.remove()
             document.querySelector('.gdelete div').innerHTML = `Осталось файлов ${setCount}`
             if (setCount === 0) {
                 document.querySelector('.gdelete__from-pop').style.display = 'none'
@@ -294,11 +328,11 @@ class Files {
         })
     }
 
-    copyFiles(files_) {
+    copyFiles (files_) {
         let arr = []
 
-        let setCount = files_.length,
-            count = files_.length
+        let setCount = files_.length
+        let count = files_.length
 
         document.querySelector('.gcopy__from-pop').style.display = 'flex'
         document.querySelector('.gcopy__from-container').style.display = 'block'
@@ -328,11 +362,11 @@ class Files {
         })
     }
 
-    renameFiles(files_) {
+    renameFiles (files_) {
         let arr = []
 
-        let setCount = files_.length,
-            count = files_.length
+        let setCount = files_.length
+        let count = files_.length
 
         document.querySelector('.gtrasf__from-pop').style.display = 'flex'
         document.querySelector('.gtrasf__from-container').style.display = 'block'
@@ -353,7 +387,7 @@ class Files {
                 return
             }
 
-            document.querySelector(`.file__ctx-${el.id}`)?.remove()
+            document.querySelector(`.file__div-${el.id}`)?.remove()
             document.querySelector('.gtrasf div').innerHTML = `Осталось файлов ${setCount}`
             if (setCount === 0) {
                 document.querySelector('.gtrasf__from-pop').style.display = 'none'
@@ -363,7 +397,7 @@ class Files {
         })
     }
 
-    getConfig() {
+    getConfig () {
         for (let x in this.db) {
             let tmp = String(Object.keys(this.db[x])[0])
             for (let y in this.db[x]) {
@@ -374,14 +408,13 @@ class Files {
         }
     }
 
-    renderFiles(ul, el, act = 1) {
-
+    renderFiles (ul, el, act = 1) {
         this.baseDir = this.from.split('\\').at(-1)
 
         try {
             let config = this.getConfig()
 
-            let types = config.typeFiles.replace(/\s/g,'').split(/,|-/)
+            let types = config.typeFiles.replace(/\s/g, '').split(/,|-/)
 
             if (this.remember.includes(el.uri) && act === 1) {
                 el.active = 1
@@ -410,17 +443,41 @@ class Files {
 
             let type = `<img src="${path.join(__dirname, '../../public/img/png/file.png')}" />`
 
+            let img = path.join(__dirname, '../../public/img/png/file.png')
+
             this.typeFiles.forEach(el => {
-                if (el.type.includes(low))
+                if (el.type.includes(low)) {
                     type = el.img
+                    img = path.join(__dirname, el.path)
+                }
             })
 
             this.countRender += 1
 
             document.querySelector('.search__result').innerHTML = `Найдено ${this.countRender} файлов`
 
+            let context = `
+            <div class="user-select-none context__file context__${el.id}">
+                <div class="user-select-none context__list context__list-sub">
+                    <div class="user-select-none context__item-none">${this.mb_strimwidth(el.name, 0, 50, '...')}</div>
+                </div>
+                <div class="user-select-none context__list">
+                    <div class="context__item"><i class="fa-regular fa-ban"></i> Снять выделение</div>
+                    <div class="context__item"><i class="fa-regular fa-hashtag"></i> Переименовать</div>
+                    <div class="context__item context__del"><i class="fa-regular fa-trash"></i> Удалить</div>
+                </div>
+                <div class="user-select-none context__list context__list-sub">
+                    <div class="context__item create__props"><i class="fa-regular fa-gear"></i> Свойства</div>
+                    
+                </div>
+            </div>
+            `
+
             if (el.active === 1) {
                 let html = `
+            <div class="file__div file__div-${el.id}">
+                <div class="file__parent file__parent-${el.id}">
+                ${context}
                 <label class="file__table-ctx file__ctx-${el.id}" for="file__${el.id}" 
                 data-id="${el.id}"
                 data-name="${el.name}"
@@ -436,9 +493,14 @@ class Files {
                                     data-name="${el.name}"
                                     data-type="${el.type}"
                                     data-size="${el.size}"
+                                    data-dir="${el.dir}"
+                                    data-create="${el.create}"
+                                    data-open="${el.open}"
                                     data-psize="${size}"
                                     data-time="${el.changed}"
-                                    data-ptime="${time}"
+                                    data-ptime="${time}
+                                    data-asize="${size}"
+                                    data-img="${img}"
                                     ${el.active === 1 ? 'checked' : ''}
                                     />
                                     <label class="checkbox__label" for="file__${el.id}"></label>
@@ -455,19 +517,26 @@ class Files {
                         </div>
                     </div>
                 </label>
+                </div>
+            
+                
+            </div>
                 `
                 this.activeFiles = 1
                 this.activeList.push({
                     id: el.id,
                     name: el.name,
-                    path: el.path,
+                    path: el.path
                 })
                 return {
-                    html: html,
+                    html,
                     active: 1
                 }
             } else {
                 let html = `
+            <div class="file__div file__div-${el.id}">
+                <div class="file__parent file__parent-${el.id}">
+                ${context}
                 <label class="file__table-ctx file__ctx-${el.id}" for="file__${el.id}" 
                 data-id="${el.id}"
                 data-name="${el.name}"
@@ -485,9 +554,14 @@ class Files {
                                     data-name="${el.name}"
                                     data-type="${el.type}"
                                     data-size="${el.size}"
+                                    data-dir="${el.dir}"
+                                    data-create="${el.create}"
+                                    data-open="${el.open}"
                                     data-psize="${size}"
                                     data-time="${el.changed}"
-                                    data-ptime="${time}"
+                                    data-ptime="${time}
+                                    data-asize="${size}"
+                                    data-img="${img}"
                                     />
                                     <label class="checkbox__label" for="file__${el.id}"></label>
                                 </div>
@@ -504,38 +578,41 @@ class Files {
                         </div>
                     </div>
                 </label>
+                </div>
+            
+            
+                
+            </div>       
             `
                 return {
-                    html: html,
+                    html,
                     active: 0
                 }
             }
         } catch (e) {
 
         }
-
     }
 
     async searchFiles (text, column, type) {
-
         this.countRender = 0
 
         this.activeFiles = 0
         this.activeList = []
 
-        let files_ = this.files,
-            all = this.files.length,
-            count = 0
+        let files_ = this.files
+        let all = this.files.length
+        let count = 0
 
         let ul = document.querySelector(this.selector)
 
         ul.innerHTML = ''
 
         if ((column >= 1 && column <= 4) && (type >= 1 && type <= 2)) {
-            let name = document.querySelector('.sort__name'),
-                size = document.querySelector('.sort__size'),
-                file = document.querySelector('.sort__type'),
-                time = document.querySelector('.sort__time')
+            let name = document.querySelector('.sort__name')
+            let size = document.querySelector('.sort__size')
+            let file = document.querySelector('.sort__type')
+            let time = document.querySelector('.sort__time')
 
             document.querySelectorAll('.sort__item').forEach(el => {
                 el.classList.remove('sort__active')
@@ -583,8 +660,7 @@ class Files {
 
         await Promise
             .all(files_.map(async (el) => {
-                if (el.name.toLowerCase().search(text.toLowerCase()) === -1)
-                    return false
+                if (el.name.toLowerCase().search(text.toLowerCase()) === -1) { return false }
                 this.activeFiles.push(el)
                 count++
                 return this.renderFiles(ul, el, 0)
@@ -594,27 +670,26 @@ class Files {
         document.querySelector('.search__result').innerHTML = `Найдено ${this.activeFiles.length} файлов по запросу ${text}`
     }
 
-    async sortFiles(column, type) {
+    async sortFiles (column, type) {
         this.countRender = 0
 
         this.activeFiles = 0
         this.activeList = []
 
-        let files_ = this.files,
-            count = this.files.length
+        let files_ = this.files
+        let count = this.files.length
 
         let ul = document.querySelector(this.selector)
 
         ul.innerHTML = ''
 
-        if (this.activeFiles.length > 0)
-            files_ = this.activeFiles
+        if (this.activeFiles.length > 0) { files_ = this.activeFiles }
 
         if ((column >= 1 && column <= 4) && (type >= 1 && type <= 2)) {
-            let name = document.querySelector('.sort__name'),
-                size = document.querySelector('.sort__size'),
-                file = document.querySelector('.sort__type'),
-                time = document.querySelector('.sort__time')
+            let name = document.querySelector('.sort__name')
+            let size = document.querySelector('.sort__size')
+            let file = document.querySelector('.sort__type')
+            let time = document.querySelector('.sort__time')
 
             document.querySelectorAll('.sort__item').forEach(el => {
                 el.classList.remove('sort__active')
@@ -677,13 +752,12 @@ class Files {
         console.time('ReadFiles')
 
         await this.readFiles(this.from).then(async (e) => {
-
             console.timeEnd('ReadFiles')
 
             document.querySelector('.gload__from-pop').style.display = 'none'
             document.querySelector('.gload__from-container').style.display = 'none'
 
-            if (typeof e !== 'object'){
+            if (typeof e !== 'object') {
                 let name = ''
                 for (let x in this.db) {
                     let tmp = String(Object.keys(this.db[x])[0])
@@ -703,9 +777,8 @@ class Files {
                 return false
             }
 
-
-            let files_ = e.filter(x => typeof x === 'object'),
-                count = files_.length
+            let files_ = e.filter(x => typeof x === 'object')
+            let count = files_.length
 
             this.files = files_
 
@@ -766,12 +839,9 @@ class Files {
                 document.querySelector('.global__button-tran').style.display = 'flex'
             }
         })
-
-
-
     }
 
-    updateRemember() {
+    updateRemember () {
         document.querySelector('.remember__list').innerHTML = ''
         let id = 0
         for (let x in this.db) {
@@ -793,13 +863,12 @@ class Files {
                         </div>
                     `
                     })
-
                 }
             }
         }
     }
 
-    updatePreset() {
+    updatePreset () {
         document.querySelector('.preset__list').innerHTML = ''
         for (let x in this.db) {
             let tmp = String(Object.keys(this.db[x])[0])
@@ -819,9 +888,11 @@ class Files {
                         </div>
                  
                         <div>
-                            ${tmp !== 'start' ? `<i class="trash__preset fa-regular fa-trash trash__preset-${tmp}"
+                            ${tmp !== 'start'
+        ? `<i class="trash__preset fa-regular fa-trash trash__preset-${tmp}"
                                 data-id="${tmp}"
-                            ></i>` : ''}
+                            ></i>`
+        : ''}
                             <i class="fa-regular fa-wrench setting__preset-${tmp}"></i>
                            
                         </div>
@@ -831,24 +902,20 @@ class Files {
         }
     }
 
-    startPreset(preset = 'start') {
+    startPreset (preset = 'start') {
         this.preset = preset
     }
 
-    setPreset(id = '', from = '', to = '') {
-
-        if (id.trim() === '')
-            this.preset = 'start'
-        else {
+    setPreset (id = '', from = '', to = '') {
+        if (id.trim() === '') { this.preset = 'start' } else {
             this.preset = id
             this.from = from
             this.to = to
             this.loadFiles()
         }
-
     }
 
-    updateDB(db) {
+    updateDB (db) {
         this.db = db
     }
 
@@ -859,23 +926,23 @@ class Files {
         }
     }
 
-    getPreset() {
+    getPreset () {
         return this.preset
     }
 
-    getCountFiles() {
+    getCountFiles () {
         return this.files.length
     }
 
-    setRemember(files) {
+    setRemember (files) {
         this.remember.push(String(files))
     }
 
-    setPathTo(val) {
+    setPathTo (val) {
         this.to = val
     }
 
-    setPathFrom(val) {
+    setPathFrom (val) {
         this.from = val
     }
 
@@ -884,11 +951,11 @@ class Files {
         this.activeList = []
     }
 
-    setReadSubfolders(val) {
+    setReadSubfolders (val) {
         this.readSubfolders = val
     }
 
-    cleanBase() {
+    cleanBase () {
         document.querySelector(this.selector).innerHTML = ''
         document.querySelector('.remember__list').innerHTML = ''
         document.querySelector('.preset__list').innerHTML = ''
@@ -926,34 +993,32 @@ class Files {
         this.files = []
     }
 
-    setTheme(val = 'dark') {
-        document.documentElement.setAttribute('theme', val);
+    setTheme (val = 'dark') {
+        document.documentElement.setAttribute('theme', val)
 
         if (val === 'light') {
             document.querySelector('.setting-button').innerHTML = '<i class="fa-regular fa-brightness"></i>'
         } else if (val === 'dark') {
-            document.querySelector('.setting-button').innerHTML = '<i class="fa-regular fa-moon-stars"></i>'
+            document.querySelector('.setting-button').innerHTML = '<i class="fa-light fa-moon-cloud"></i>'
         }
-
     }
 
-    setLang(val = 'ru') {
-        document.documentElement.setAttribute('lang', val);
+    setLang (val = 'ru') {
+        document.documentElement.setAttribute('lang', val)
 
         if (val === 'ru') {
             document.querySelector('.lang-button').innerHTML = '<span>RU</span>'
         } else if (val === 'en') {
             document.querySelector('.lang-button').innerHTML = '<span>EN</span>'
         }
-
     }
 
-    async loadFiles() {
+    async loadFiles () {
         this.count = 0
 
-        let path = '',
-            to = '',
-            preset = ''
+        let path = ''
+        let to = ''
+        let preset = ''
 
         for (let x in this.db) {
             for (let y in this.db[x]) {
@@ -980,7 +1045,6 @@ class Files {
         this.updatePreset()
         await this.updatePath()
     }
-
 }
 
 module.exports = Files

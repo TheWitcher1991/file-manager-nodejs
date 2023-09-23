@@ -16,15 +16,15 @@ module.exports = function () {
 
         $._fs.cleanBase()
 
-        fs.writeFileSync(path.join(__dirname, rpath.db), JSON.stringify($.db));
+        fs.writeFileSync(path.join(__dirname, rpath.db), JSON.stringify($.db))
         fs.writeFileSync(path.join(__dirname, rpath.config), JSON.stringify({
-            "theme": "dark",
-            "lang": "ru",
-            "FileDeleteNotice": 1,
-            "PresetDeleteNotice": 1,
-            "ReadSubfolders": 1,
-            "ActivePreset": "start"
-        }));
+            theme: 'dark',
+            lang: 'ru',
+            FileDeleteNotice: 1,
+            PresetDeleteNotice: 1,
+            ReadSubfolders: 1,
+            ActivePreset: 'start'
+        }))
 
         document.querySelector('.delpreset__from-pop').style.display = 'none'
         document.querySelector('.delpreset__from-container').style.display = 'none'
@@ -33,7 +33,6 @@ module.exports = function () {
     })
 
     document.querySelector('#global__change').addEventListener('change', function () {
-
         if (!this.checked) {
             this.removeAttribute('checked')
             this.checked = false
@@ -52,7 +51,6 @@ module.exports = function () {
     })
 
     document.querySelector('.update__files').addEventListener('click', function () {
-
         document.querySelector('#preset-id').value = ''
         document.querySelector('#change-name').value = ''
         document.querySelector('#change-from').value = ''
@@ -89,27 +87,27 @@ module.exports = function () {
     })
 
     document.querySelector('.search__apply').addEventListener('click', function () {
-        let text = document.querySelector('#global__search'),
-            column = document.querySelector('#sort__column'),
-            type   = document.querySelector('#sort__type')
+        const text = document.querySelector('#global__search')
+        const column = document.querySelector('#sort__column')
+        const type = document.querySelector('#sort__type')
 
         document.querySelector('.check__all').checked = false
         document.querySelector('.check__all').setAttribute('checked', '')
 
-        document.querySelector('.search__popup').style.display = 'none';
+        document.querySelector('.search__popup').style.display = 'none'
         document.querySelector('.search__button-span').classList.remove('tb__bth-active')
 
         $._fs.searchFiles(text.value, Number(column.value), Number(type.value))
     })
 
     document.querySelector('.new__apply').addEventListener('click', function () {
-        let column = document.querySelector('#sort__column'),
-            type   = document.querySelector('#sort__type')
+        const column = document.querySelector('#sort__column')
+        const type = document.querySelector('#sort__type')
 
         document.querySelector('.check__all').checked = false
         document.querySelector('.check__all').setAttribute('checked', '')
 
-        document.querySelector('.new__popup').style.display = 'none';
+        document.querySelector('.new__popup').style.display = 'none'
         document.querySelector('.new__button-span').classList.remove('tb__bth-active')
 
         $._fs.sortFiles(Number(column.value), Number(type.value))

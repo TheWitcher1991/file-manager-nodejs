@@ -15,6 +15,56 @@
 </head>
 <body>
 
+<div class="infofile__from-pop popup__wrap">
+    <div class="popup__container infofile__from-container">
+        <form enctype="multipart/form-data" method="post" action="">
+            <div class="form__title">
+                <span class="form__span">Свойство</span>
+                <i class="fa-regular fa-xmark close__infofile"></i>
+            </div>
+            <div class="file__upload infofile__block">
+                <div class="ino__block ino__title">
+                    <span class="ino__img ino-img">
+                        <img src="../../dist/public/img/png/file.png" alt="">
+                    </span>
+                    <span class="ino__name ino-name">
+
+                    </span>
+                </div>
+                <div class="ino__block info__type">
+                    <div class="ino__flex">
+                        <span class="ino__flex-l">Расположение:</span>
+                        <input class="ino-path" type="text" readonly>
+                    </div>
+                    <div class="ino__flex">
+                        <span class="ino__flex-l">Тип файла:</span>
+                        <span class="ino__flex-r ino-type"></span>
+                    </div>
+                    <div class="ino__flex">
+                        <span class="ino__flex-l">Размер:</span>
+                        <span class="ino__flex-r ino-size"></span>
+                    </div>
+                </div>
+                <div class="ino__block info__time">
+                    <div class="ino__flex">
+                        <span class="ino__flex-l">Создан:</span>
+                        <span class="ino__flex-r ino-create"></span>
+                    </div>
+                    <div class="ino__flex">
+                        <span class="ino__flex-l">Изменён:</span>
+                        <span class="ino__flex-r ino-changed"></span>
+                    </div>
+                    <div class="ino__flex">
+                        <span class="ino__flex-l">Открыт:</span>
+                        <span class="ino__flex-r ino-open"></span>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
 <div class="path__from-pop popup__wrap-non">
     <div class="popup__container path__from-container">
         <form enctype="multipart/form-data" method="post" action="">
@@ -518,24 +568,26 @@
 
         </div>
 
-
-
-        <div class="file__tbody" id="file__tbody">
-            <div class="loader">
-                <div class="sk-circle-bounce">
-                    <div class="loading-chat">
-                        <svg class="spinner" viewBox="0 0 50 50">
-                            <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
-                        </svg>
+        <div class="file__wrapper">
+            <div class="file__tbody" id="file__tbody">
+                <div class="loader">
+                    <div class="sk-circle-bounce">
+                        <div class="loading-chat">
+                            <svg class="spinner" viewBox="0 0 50 50">
+                                <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+                            </svg>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+
+
     </section>
 
 </main>
 
-<script crossorigin src="api.dev.js"></script>
+<script crossorigin src="./api.dev.js"></script>
 
 
 </body>

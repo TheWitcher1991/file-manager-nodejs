@@ -1,7 +1,7 @@
 const path = require('path')
 
 const { Files } = require(path.join(__dirname, '/config'))
-const $ = require(path.join(__dirname, '/config'))
+let $ = require(path.join(__dirname, '/config'))
 
 module.exports = async function () {
     $._fs = new Files($.db, '.file__tbody')

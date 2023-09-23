@@ -9,7 +9,6 @@
 
 .section__table {
     flex: 1 1 0;
-    position: relative;
     display: flex;
     flex-direction: column;
 }
@@ -59,6 +58,14 @@
 .top__button {
     display: flex;
     align-items: center;
+}
+
+.tb__span {
+    i {
+        margin: 0 8px 0 0;
+        font-size: 16px;
+        color: var(--icon);
+    }
 }
 
 .tb__bth {
@@ -194,6 +201,7 @@
                 cursor: pointer;
                 transition: all 0.1s linear;
                 margin: 0 0 0 12px;
+                color: var(--icon);
 
                 &:hover {
                     color: var(--activeFg);
@@ -257,7 +265,7 @@
 
         &:hover {
             background: #b51308;
-            color: var(--bthFg);
+            color: #fff;
             border-color: #b51308;
         }
     }
@@ -469,7 +477,7 @@
     align-items: center;
 
     > i {
-        color: var(--mainFg);
+        color: var(--icon);
         font-size: 15px;
     }
 
@@ -499,6 +507,7 @@
 
     i {
         transition: all 0.2s linear;
+        color: var(--icon);
     }
 }
 
@@ -717,10 +726,13 @@
     background: var(--hover300);
 }
 
-.file__tbody {
-    position: relative;
+.file__wrapper {
     flex: 1 1 0;
     overflow-x: auto;
+}
+
+.file__tbody {
+    height: fit-content;
 }
 
 .loader {
@@ -956,9 +968,14 @@
                 background: var(--activeFg);
             }
 
+            &:hover > i {
+                color: var(--bthFg);
+            }
+
             i {
                 margin: 0;
                 font-size: 13px;
+                color: var(--icon);
             }
         }
     }
@@ -1251,7 +1268,7 @@
 
         > span {
             display: block;
-            margin: 2px 20px 0 0;
+            margin: 1px 20px 0 0;
             font-size: 15px;
             padding: 0;
             cursor: pointer;
@@ -1284,4 +1301,122 @@
     margin: 0 0 16px 0;
     font-size: 14px;
     width: 375px;
+}
+
+.context__active {
+    background: var(--hover300);
+}
+
+
+.context__file {
+    display: none;
+    position: absolute;
+    width: 230px;
+    height: auto;
+    box-shadow: var(--cntBox);
+    background: var(--cntWrap);
+    border-radius: 6px;
+    border: var(--cntBor);
+    z-index: 111;
+    user-select: none;
+
+    .context__list {
+        padding: 8px;
+        cursor: pointer;
+        display: block;
+
+        .context__item {
+            display: flex;
+            align-items: baseline;
+            padding: 6px 8px 4px 8px;
+            border-radius: 8px;
+            position: relative;
+            font-size: 13.5px;
+            transition: all 0.1s linear;
+
+            i {
+                font-size: 14px;
+                width: 22px;
+                text-align: left;
+                color: var(--icon);
+            }
+
+            &:hover {
+                background: var(--cntHov);
+
+                i {
+                    color: var(--mainFg);
+                }
+            }
+        }
+
+        .context__item-none {
+            display: flex;
+            align-items: baseline;
+            padding: 6px 8px 4px 8px;
+            border-radius: 6px;
+            position: relative;
+            font-size: 13.5px;
+
+        }
+
+        .context__del {
+            &:hover {
+                color: #e5534b;
+
+                i {
+                    color: #e5534b;
+                }
+            }
+        }
+
+
+    }
+
+    .context__list + .context__list {
+        border-top: var(--cntTBor);
+    }
+}
+
+.ino__title {
+    display: flex;
+    align-items: center;
+
+    img {
+        height: 35px;
+        object-fit: cover;
+        margin: 0 10px 0 0;
+    }
+}
+
+.ino__block {
+    padding: 12px 0 12px 0;
+    font-size: 14px;
+
+    .ino__flex {
+        display: flex;
+        align-items: center;
+        margin: 0 0 12px 0;
+
+        &:last-of-type {
+            margin: 0;
+        }
+    }
+
+    .ino__flex-l {
+        width: 110px;
+    }
+
+    input {
+        font-size: 14px;
+        background: transparent;
+        border: 0;
+        outline: 0;
+        width: 270px;
+        color: var(--mainFg);
+    }
+}
+
+.ino__block + .ino__block {
+    border-top: var(--cntTBor);
 }

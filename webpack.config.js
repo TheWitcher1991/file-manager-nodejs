@@ -1,19 +1,19 @@
 'use strict'
 
-const path = require('path'),
-      MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const path = require('path')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 const PATHS = {
     src: path.join(__dirname, './src'),
     build: path.join(__dirname, '/dist')
-};
+}
 
 const mode = process.env.NODE_ENV || 'node'
 const target = process.env.NODE_ENV === 'production' ? 'browserslist' : 'web'
 
 module.exports = {
     entry: [
-        //`${PATHS.src}/scripts/api.js`,
+        // `${PATHS.src}/dev/api.dev.js`,
         `${PATHS.src}/styles/index.scss`
     ],
     output: {
@@ -21,12 +21,12 @@ module.exports = {
         filename: 'script.bundle.js'
     },
     devtool: 'source-map',
-    mode: mode,
-    target: target,
+    mode,
+    target,
     node: {
         global: true,
         __filename: true,
-        __dirname: true,
+        __dirname: true
     },
     module: {
         rules: [
@@ -34,7 +34,7 @@ module.exports = {
                 test: /\.js$/,
                 exclude: /(node_modules|bower_components)/,
                 use: {
-                    loader: 'babel-loader',
+                    loader: 'babel-loader'
                 }
             },
             {
@@ -55,11 +55,16 @@ module.exports = {
     },
     resolve: {
         modules: ['node_modules'],
-        extensions: ['.js', '.scss']
+        extensions: ['.js', '.scss'],
+        fallback: {
+            fs: false,
+            os: false,
+            path: false
+        }
     },
     plugins: [
         new MiniCssExtractPlugin({
-            filename: `style.bundle.css`,
-        }),
+            filename: 'style.bundle.css'
+        })
     ]
 }

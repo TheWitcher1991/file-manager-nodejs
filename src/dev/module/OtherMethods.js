@@ -19,14 +19,14 @@ module.exports = function () {
 
     document.querySelector('#gih__to').addEventListener('blur', e => {
         for (let x in $.db) {
-            let tmp = String(Object.keys($.db[x])),
-                preset = String($._fs.getPreset())
+            let tmp = String(Object.keys($.db[x]))
+            let preset = String($._fs.getPreset())
             if (tmp === preset) {
                 for (let y in $.db[x]) {
                     document.querySelector('.gih__to').style.display = 'none'
                     document.querySelector('.gil__to').style.display = 'flex'
 
-                    if (document.querySelector('#gih__to').value.replace(/\s/g,'') === '') {
+                    if (document.querySelector('#gih__to').value.replace(/\s/g, '') === '') {
                         $._fs.createNotice('Поле не должно быть пустым')
                         document.querySelector('#gih__to').value = ''
                         return false
@@ -35,7 +35,7 @@ module.exports = function () {
                     $.db[x][y].pathTo = document.querySelector('#gih__to').value.trim()
                     $._fs.setPathTo(document.querySelector('#gih__to').value.trim())
                     $._fs.updateDB($.db)
-                    fs.writeFileSync(path.join(__dirname, rpath.db), JSON.stringify($.db));
+                    fs.writeFileSync(path.join(__dirname, rpath.db), JSON.stringify($.db))
                     document.querySelector('.home__to').innerHTML = document.querySelector('#gih__to').value.trim()
                     document.querySelector('.global__to').value = document.querySelector('#gih__to').value
                     document.querySelector('#gih__to').value = ''
@@ -43,19 +43,18 @@ module.exports = function () {
                 }
             }
         }
-    });
+    })
 
     document.querySelector('#gih__from').addEventListener('blur', e => {
         for (let x in $.db) {
-            let tmp = String(Object.keys($.db[x])),
-                preset = String($._fs.getPreset())
+            let tmp = String(Object.keys($.db[x]))
+            let preset = String($._fs.getPreset())
             if (tmp === preset) {
                 for (let y in $.db[x]) {
-
                     document.querySelector('.gih__from').style.display = 'none'
                     document.querySelector('.gil__from').style.display = 'flex'
 
-                    if (document.querySelector('#gih__from').value.replace(/\s/g,'') === '') {
+                    if (document.querySelector('#gih__from').value.replace(/\s/g, '') === '') {
                         $._fs.createNotice('Поле не должно быть пустым')
                         document.querySelector('#gih__from').value = ''
                         return false
@@ -64,7 +63,7 @@ module.exports = function () {
                     $.db[x][y].pathFrom = document.querySelector('#gih__from').value.trim()
                     $._fs.setPathFrom(document.querySelector('#gih__from').value.trim())
                     $._fs.updateDB($.db)
-                    fs.writeFileSync(path.join(__dirname, rpath.db), JSON.stringify($.db));
+                    fs.writeFileSync(path.join(__dirname, rpath.db), JSON.stringify($.db))
                     document.querySelector('.home__path').innerHTML = document.querySelector('#gih__from').value.trim()
                     document.querySelector('.global__from').value = document.querySelector('#gih__from').value
                     document.querySelector('#gih__from').value = ''
@@ -73,10 +72,9 @@ module.exports = function () {
                 }
             }
         }
-    });
+    })
 
     document.querySelector('.setting-button').addEventListener('click', function () {
-
         let $this = document.documentElement.getAttribute('theme')
 
         if ($this === 'dark') {
@@ -87,11 +85,10 @@ module.exports = function () {
             $.config.theme = 'dark'
         }
 
-        fs.writeFileSync(path.join(__dirname, rpath.config), JSON.stringify($.config));
+        fs.writeFileSync(path.join(__dirname, rpath.config), JSON.stringify($.config))
     })
 
     document.querySelector('.lang-button').addEventListener('click', function () {
-
         let $this = document.documentElement.getAttribute('lang')
 
         if ($this === 'ru') {
@@ -102,7 +99,7 @@ module.exports = function () {
             $.config.lang = 'ru'
         }
 
-        fs.writeFileSync(path.join(__dirname, rpath.config), JSON.stringify($.config));
+        fs.writeFileSync(path.join(__dirname, rpath.config), JSON.stringify($.config))
     })
 
     document.querySelector('.remember__list').addEventListener('click', function () {
@@ -114,8 +111,8 @@ module.exports = function () {
         target.forEach(el => {
             el.onclick = () => {
                 for (let x in $.db) {
-                    let tmp = String(Object.keys($.db[x])),
-                        preset = String($._fs.getPreset())
+                    let tmp = String(Object.keys($.db[x]))
+                    let preset = String($._fs.getPreset())
                     if (tmp === preset) {
                         for (let y in $.db[x]) {
                             if ($.db[x][y].remember.includes(el.dataset.name)) {
@@ -128,21 +125,20 @@ module.exports = function () {
 
                 $._fs.updateRemember()
                 $._fs.updateDB($.db)
-                fs.writeFileSync(path.join(__dirname, rpath.db), JSON.stringify($.db));
+                fs.writeFileSync(path.join(__dirname, rpath.db), JSON.stringify($.db))
             }
         })
-
     })
 
     document.querySelector('.remember__apply').addEventListener('click', function () {
         const file = document.querySelector('#global__remember')
 
-        if (file.value.replace(/\s/g,'') === '') {
+        if (file.value.replace(/\s/g, '') === '') {
             $._fs.createNotice('Укажите файл')
         } else {
             for (let x in $.db) {
-                let tmp = String(Object.keys($.db[x])),
-                    preset = String($._fs.getPreset())
+                let tmp = String(Object.keys($.db[x]))
+                let preset = String($._fs.getPreset())
                 if (tmp === preset) {
                     for (let y in $.db[x]) {
                         if ($.db[x][y].remember.includes(file.value)) {
@@ -151,23 +147,21 @@ module.exports = function () {
                             $.db[x][y].remember.push(file.value)
                             file.value = ''
                             $._fs.updateDB($.db)
-                            fs.writeFileSync(path.join(__dirname, rpath.db), JSON.stringify($.db));
+                            fs.writeFileSync(path.join(__dirname, rpath.db), JSON.stringify($.db))
                             $._fs.updateRemember()
                         }
                     }
                 }
             }
         }
-
     })
 
     document.querySelector('.bth__preset-save').addEventListener('click', function () {
-        let pathFrom = document.querySelector('#preset-from'),
-            pathTo   = document.querySelector('#preset-to'),
-            name     = document.querySelector('#preset-name')
+        let pathFrom = document.querySelector('#preset-from')
+        let pathTo = document.querySelector('#preset-to')
+        let name = document.querySelector('#preset-name')
 
-        if (pathFrom.value.replace(/\s/g,'') !== '' || pathTo.value.replace(/\s/g,'') !== ''|| name.value.replace(/\s/g,'') !== '') {
-
+        if (pathFrom.value.replace(/\s/g, '') !== '' || pathTo.value.replace(/\s/g, '') !== '' || name.value.replace(/\s/g, '') !== '') {
             let id = rkey(20)
 
             let tmp = new Map([
@@ -186,7 +180,7 @@ module.exports = function () {
 
             $.db.push(Object.fromEntries(tmp))
 
-            fs.writeFileSync(path.join(__dirname, rpath.db), JSON.stringify($.db));
+            fs.writeFileSync(path.join(__dirname, rpath.db), JSON.stringify($.db))
 
             document.querySelector('.preset__list').innerHTML += `
                     <div class="preset__item-wrap">
@@ -223,7 +217,6 @@ module.exports = function () {
 
         target.forEach(el => {
             el.onclick = () => {
-
                 let inp = el.parentNode.parentNode.querySelector('input')
 
                 let arr = {}
@@ -265,14 +258,14 @@ module.exports = function () {
     document.querySelector('.bth__change-save').addEventListener('click', function (e) {
         e.preventDefault()
 
-        let id = document.querySelector('#preset-id').value,
-            name = document.querySelector('#change-name').value,
-            from = document.querySelector('#change-from').value,
-            to = document.querySelector('#change-to').value,
-            file = document.querySelector('#change-file').value,
-            nameFrom = document.querySelector('#change-name-from').value,
-            nameTo = document.querySelector('#change-name-to').value,
-            size = document.querySelector('#change-size').value
+        let id = document.querySelector('#preset-id').value
+        let name = document.querySelector('#change-name').value
+        let from = document.querySelector('#change-from').value
+        let to = document.querySelector('#change-to').value
+        let file = document.querySelector('#change-file').value
+        let nameFrom = document.querySelector('#change-name-from').value
+        let nameTo = document.querySelector('#change-name-to').value
+        let size = document.querySelector('#change-size').value
 
         for (let x in $.db) {
             let tmp = String(Object.keys($.db[x])[0])
@@ -286,7 +279,7 @@ module.exports = function () {
                     $.db[x][y].wordLeft = nameFrom
                     $.db[x][y].wordRight = nameTo
 
-                    fs.writeFileSync(path.join(__dirname, rpath.db), JSON.stringify($.db));
+                    fs.writeFileSync(path.join(__dirname, rpath.db), JSON.stringify($.db))
                     break
                 }
             }
@@ -314,7 +307,7 @@ module.exports = function () {
 
         let preset = $._fs.getPreset()
 
-        if (from.replace(/\s/g,'') !== '') {
+        if (from.replace(/\s/g, '') !== '') {
             for (let x in $.db) {
                 let tmp = String(Object.keys($.db[x])[0])
                 for (let y in $.db[x]) {
@@ -323,7 +316,7 @@ module.exports = function () {
                         document.querySelector('#preset__letter-name').value = ''
                         document.querySelector('.preset__letter-pop').style.display = 'none'
                         document.querySelector('.preset__letter-container').style.display = 'none'
-                        fs.writeFileSync(path.join(__dirname, rpath.db), JSON.stringify($.db));
+                        fs.writeFileSync(path.join(__dirname, rpath.db), JSON.stringify($.db))
                         $._fs.loadFiles()
                         return false
                     }
@@ -333,7 +326,7 @@ module.exports = function () {
     })
 
     document.querySelector('.preset__list').addEventListener('click', function (event) {
-        const targetPreset = this.querySelectorAll('input');
+        const targetPreset = this.querySelectorAll('input')
         if (!targetPreset) return false;
 
         [].forEach.call(targetPreset, el => {
@@ -346,9 +339,9 @@ module.exports = function () {
                 $.config.ActivePreset = el.dataset.id
 
                 $._fs.setPreset($.tmpf['id'], $.tmpf['from'], $.tmpf['to'], $.tmpf['remember'])
-                fs.writeFileSync(path.join(__dirname, rpath.config), JSON.stringify($.config));
+                fs.writeFileSync(path.join(__dirname, rpath.config), JSON.stringify($.config))
 
-                document.querySelector('.tb__popup').style.display = 'none';
+                document.querySelector('.tb__popup').style.display = 'none'
             }
         })
 
@@ -356,8 +349,8 @@ module.exports = function () {
 
         [].forEach.call(targetTrashPreset, el => {
             el.onclick = () => {
-                let preset = el.dataset.id,
-                    active = $._fs.getPreset()
+                let preset = el.dataset.id
+                let active = $._fs.getPreset()
 
                 let tmpdb = []
 
@@ -377,17 +370,13 @@ module.exports = function () {
 
                     $._fs.updateDB($.db)
                     $._fs.updatePreset()
-                    fs.writeFileSync(path.join(__dirname, rpath.db), JSON.stringify($.db));
+                    fs.writeFileSync(path.join(__dirname, rpath.db), JSON.stringify($.db))
                 }
-
-
             }
         })
-
     })
 
     document.querySelector('.file__thead input').addEventListener('click', function (event) {
-
         $.files_ = []
 
         $._fs.cleanActiveList()
@@ -395,7 +384,6 @@ module.exports = function () {
         let check = this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.querySelectorAll('.file__tbody input')
 
         check.forEach(el => {
-
             if (this.checked) {
                 el.setAttribute('checked', 'true')
                 el.checked = true
@@ -403,14 +391,12 @@ module.exports = function () {
                 $.files_.push({
                     id: el.dataset.id,
                     name: el.dataset.name,
-                    path: el.dataset.path,
+                    path: el.dataset.path
                 })
             } else {
                 el.removeAttribute('checked')
                 el.checked = false
             }
-
-
         })
 
         let keySize = Object.keys($.files_).length
@@ -424,13 +410,90 @@ module.exports = function () {
         }
     })
 
+    document.querySelector('.file__tbody').addEventListener('contextmenu', function (e) {
+        const target = this.querySelectorAll('.file__div')
+        if (!target) return false
+
+        e.srcElement.offsetParent.parentNode.querySelector('.context__file .create__props').addEventListener('click', function () {
+            let i = e.srcElement.offsetParent.parentNode.querySelector('.file__table-ctx input')
+
+            let changed = new Date(i.dataset.time).toLocaleString('ru', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: 'numeric',
+                minute: 'numeric',
+                second: 'numeric',
+                timezone: 'UTC'
+            })
+
+            let open = new Date(i.dataset.open).toLocaleString('ru', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: 'numeric',
+                minute: 'numeric',
+                second: 'numeric',
+                timezone: 'UTC'
+            })
+
+            let create = new Date(i.dataset.create).toLocaleString('ru', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: 'numeric',
+                minute: 'numeric',
+                second: 'numeric',
+                timezone: 'UTC'
+            })
+
+            document.querySelector('.ino-img').innerHTML = `<img src="${i.dataset.img}" alt="">`
+            document.querySelector('.ino-name').innerHTML = i.dataset.name
+            document.querySelector('.ino-path').value = i.dataset.dir
+            document.querySelector('.ino-type').innerHTML = i.dataset.type
+            document.querySelector('.ino-size').innerHTML = `${i.dataset.psize} (${i.dataset.size} байт)`
+            document.querySelector('.ino-create').innerHTML = create
+            document.querySelector('.ino-changed').innerHTML = changed
+            document.querySelector('.ino-open').innerHTML = open
+
+            document.querySelector('.infofile__from-pop').style.display = 'flex'
+            document.querySelector('.infofile__from-container').style.display = 'block'
+        })
+
+        this.querySelectorAll('.context__file').forEach(el => el.style.cssText = 'display:none')
+        this.querySelectorAll('.file__table-ctx').forEach(el => el.classList.remove('context__active'))
+
+        const clickCoordsX = e.pageX
+        const clickCoordsY = e.pageY
+
+        const menu = e.srcElement.offsetParent.parentNode.querySelector('.context__file')
+        const label = e.srcElement.offsetParent.parentNode.querySelector('.file__table-ctx')
+
+        label.classList.add('context__active')
+
+        const windowWidth = window.innerWidth
+        const windowHeight = window.innerHeight
+
+        menu.style.display = 'block'
+
+        if ((windowWidth - clickCoordsX) < menu.offsetWidth) {
+            menu.style.left = windowWidth - menu.offsetWidth + 'px'
+        } else {
+            menu.style.left = clickCoordsX + 10 + 'px'
+        }
+
+        if ((windowHeight - clickCoordsY) < menu.offsetHeight) {
+            menu.style.top = windowHeight - menu.offsetHeight + 'px'
+        } else {
+            menu.style.top = clickCoordsY + 15 + 'px'
+        }
+    })
+
     document.querySelector('.file__tbody').addEventListener('click', function (e) {
         const target = this.querySelectorAll('input')
         if (!target) return false
 
-        $._fs.cleanActiveList()
-
-        let check =  document.querySelector('.file__table input')
+        let check = document.querySelector('.file__table input')
 
         if (check.checked) {
             check.removeAttribute('checked')
@@ -439,31 +502,31 @@ module.exports = function () {
 
         target.forEach(el => {
             el.onclick = () => {
-                let elems = this.querySelectorAll('input:checked');
+                $._fs.cleanActiveList()
+                let elems = this.querySelectorAll('input:checked')
                 $.files_ = [].map.call(elems, (obj) => {
                     return {
                         id: obj.dataset.id,
                         name: obj.dataset.name,
-                        path: obj.dataset.path,
+                        path: obj.dataset.path
                     }
                 })
+
+                let keySize = Object.keys($.files_).length
+
+                if (keySize === $._fs.getCountFiles()) {
+                    check.setAttribute('checked', 'true')
+                    check.checked = true
+                }
+
+                if (keySize > 0) {
+                    document.querySelector('.search__result').innerHTML = `Выбрано ${keySize} файлов`
+                    document.querySelector('.global__button-tran').style.display = 'flex'
+                } else {
+                    document.querySelector('.search__result').innerHTML = `Найдено ${$._fs.getCountFiles()} файлов`
+                    document.querySelector('.global__button-tran').style.display = 'none'
+                }
             }
         })
-
-        let keySize = Object.keys($.files_).length
-
-        if (keySize === $._fs.getCountFiles()) {
-            check.setAttribute('checked', 'true')
-            check.checked = true
-        }
-
-        if (keySize > 0) {
-            document.querySelector('.search__result').innerHTML = `Выбрано ${keySize} файлов`
-            document.querySelector('.global__button-tran').style.display = 'flex'
-        } else {
-            document.querySelector('.search__result').innerHTML = `Найдено ${$._fs.getCountFiles()} файлов`
-            document.querySelector('.global__button-tran').style.display = 'none'
-        }
-
     })
 }

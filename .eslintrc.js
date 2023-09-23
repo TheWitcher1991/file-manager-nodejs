@@ -24,6 +24,10 @@ module.exports = {
         ecmaVersion: 'latest'
     },
     rules: {
-        indent: ['error', 4]
+        indent: ['error', 4],
+        'no-return-assign': 0,
+        'no-unused-vars': 0,
+        'dot-notation': 0,
+        'prefer-const': 0
     }
 }

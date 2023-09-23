@@ -9,6 +9,11 @@ module.exports = function () {
         document.querySelector('.info__from-container').style.display = 'none'
     })
 
+    document.querySelector('.close__infofile').addEventListener('click', function () {
+        document.querySelector('.infofile__from-pop').style.display = 'none'
+        document.querySelector('.infofile__from-container').style.display = 'none'
+    })
+
     document.querySelector('.close__need').addEventListener('click', function () {
         document.querySelector('.need__from-pop').style.display = 'none'
         document.querySelector('.need__from-container').style.display = 'none'

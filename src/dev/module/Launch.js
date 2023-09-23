@@ -2,7 +2,7 @@ const path = require('path')
 const fs = require('fs')
 
 const { Files, config, rpath } = require(path.join(__dirname, '/config'))
-const $ = require(path.join(__dirname, '/config'))
+let $ = require(path.join(__dirname, '/config'))
 
 module.exports = function () {
     document.querySelector('.gload__from-pop').style.display = 'none'

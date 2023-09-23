@@ -8,7 +8,7 @@ module.exports = {
         config: '../db/config.json',
         launchDB: 'db/db.json',
         launchConfig: 'db/config.json',
-        log: 'log.dev.txt'
+        log: 'log.dev.txt',
     },
 
     files_: [],
@@ -17,7 +17,7 @@ module.exports = {
 
     rkey: i => {
         let rnd = ''
-        while (rnd.length < i) { rnd += Math.random().toString(36).substring(2) }
+        while (rnd.length < i) rnd += Math.random().toString(36).substring(2)
         return rnd.substring(0, i)
     },
 
@@ -27,6 +27,7 @@ module.exports = {
         } catch (e) {
             return undefined
         }
+
     },
 
     get config () {
@@ -41,5 +42,5 @@ module.exports = {
         return Object.keys(this.db).length
     },
 
-    _fs: ''
+    _fs: '',
 }

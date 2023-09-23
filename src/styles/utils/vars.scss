@@ -23,15 +23,22 @@ $vendors  : "-webkit-", "-apple-", "-khtml-", "-moz-", "-rim-", "-xv-","-ms-", "
     --bthFg    : #ffffff;
     --fg550    : #e6f1f8;
     --noticeBg : #ffffff;
-    --checkNBg  : #e9ecef;
-    --checkNFg  : #e9ecef;
+    --checkNBg : #e9ecef;
+    --checkNFg : #e9ecef;
+    --icon     : #656d76;
+    --cntWrap  : #ffffff;
+    --cntHov   : #f6f8fa;
     --fg450    : rgb(34 34 34 / 60%);
 
     --rbg650   : rgb(0 35 63 / 95%);
 
+    --cntTBor  : 1px solid #e9ecef;
+    --cntBor   : 0;
+
     --boxPop   : 1px 3px 3px 0 rgb(0 0 0 / 20%), 1px 3px 15px 2px rgb(0 0 0 / 20%);
     --boxTb    : 0px 0px 50px 0px rgba(43, 40, 45, 0.15);
     --noticBox : 0 4px 20px rgba(37,40,43,.15);
+    --cntBox   : 0 1px 3px rgba(31,35,40,0.12), 0 8px 24px rgba(66,74,83,0.12);
 }
 
 :root[theme="dark"] {
@@ -51,13 +58,20 @@ $vendors  : "-webkit-", "-apple-", "-khtml-", "-moz-", "-rim-", "-xv-","-ms-", "
     --bthFg    : #ffffff;
     --fg550    : #373e47;
     --noticeBg : #101318;
-    --checkNBg  : #1c2128;
-    --checkNFg  : #373e47;
+    --checkNBg : #1c2128;
+    --checkNFg : #373e47;
+    --icon     : #768390;
+    --cntWrap  : #2d333b;
+    --cntHov   : #3a4049;
     --fg450    : rgba(42, 48, 55, 0.6);
 
     --rbg650   : rgba(99,110,123,0.4);
 
+    --cntTBor  : 1px solid rgb(55 62 71);
+    --cntBor   : 1px solid #444c56;
+
     --boxPop   : 1px 3px 3px 0 rgb(0 0 0 / 20%), 1px 3px 15px 2px rgb(0 0 0 / 20%);
     --boxTb    : 0 16px 32px rgba(28,33,40,0.85);
     --noticBox : 0 16px 32px rgba(28,33,40,0.85);
+    --cntBox   : 0 8px 24px #1c2128;
 }
