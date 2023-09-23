@@ -1,0 +1,58 @@
+{
+  "preset": {
+    "ru": "Пресет",
+    "en": "Preset"
+  },
+  "filter": {
+    "ru": "Фильтр",
+    "en": "Filter"
+  },
+  "search": {
+    "ru": "Найти",
+    "en": "Search"
+  },
+  "remember": {
+    "ru": "Обязательно",
+    "en": "Remember"
+  },
+  "subfolder": {
+    "ru": "Читать файлы в подкаталогах",
+    "en": "Read files in subdirectories"
+  },
+  "delete": {
+    "ru": "Удалить",
+    "en": "Delete"
+  },
+  "attention": {
+    "ru": "Внимание",
+    "en": "Attention"
+  },
+  "relocate": {
+    "ru": "Перенести",
+    "en": "Relocate"
+  },
+  "copy": {
+    "ru": "Копировать",
+    "en": "Copy"
+  },
+  "name": {
+    "ru": "Имя",
+    "en": "Name"
+  },
+  "size": {
+    "ru": "Размер",
+    "en": "Size"
+  },
+  "type": {
+    "ru": "Тип",
+    "en": "Type"
+  },
+  "changed": {
+    "ru": "Изменён",
+    "en": "Changed"
+  },
+  "about": {
+    "ru": "О приложении",
+    "en": "About"
+  }
+}

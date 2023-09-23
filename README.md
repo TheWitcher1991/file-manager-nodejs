@@ -1,6 +1,9 @@
 # Folder parser `LITSER`
 
-`Clear file dist\db\db.json — Write an empty array in it: []`
+After compiling the application, there must be a db folder in the root folder along with the exe file, which must contain the files db.json, config.json and lang.json
+Copy it from dist/dev/
+
+`Clear file db.json — Write an empty array in it: []`
 
 Presets have the following format
 ```json5
