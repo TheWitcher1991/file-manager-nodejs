@@ -5,13 +5,13 @@
   "bin": "./cli.js",
   "private": true,
   "expressPort": 8080,
-
+  "type": "commonjs",
   "basePath": "./dist",
   "scripts": {
     "test": "jest",
     "cli": "node cli.js",
-    "start": "electron .",
-    "dev": "electron . --debug",
+    "start": "electron --trace-warnings .",
+    "dev": "electron --debug .",
     "build": "webpack --mode production",
     "watch": "webpack --mode production -w",
     "package:win": "electron-packager . litser --overwrite --asar --platform=win32 --arch=x64 --app-version=2.0.0 --prune --out=desktop/win --ignore=src --icon=./dist/public/img/icon.ico",

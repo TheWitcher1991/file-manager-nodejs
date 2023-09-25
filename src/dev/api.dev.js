@@ -27,11 +27,15 @@ module.exports = (() => {
 
     window.onload = $.size <= 0 ? Launch : Reset
 
-    SwitchingOperations()
-    OtherMethods()
-    ActivationPopup()
-    SpecialOperations()
-    BasicOperations()
+    document.addEventListener("DOMContentLoaded", (event) => {
+        SwitchingOperations()
+        OtherMethods()
+        ActivationPopup()
+        SpecialOperations()
+        BasicOperations()
+    });
+
+
 
     // fs.appendFileSync(path.join(__dirname, $.rpath.log), `\n[${new Date()}] | Launch`, 'utf-8')
 })(0)

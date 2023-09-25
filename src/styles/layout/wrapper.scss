@@ -726,9 +726,13 @@
     background: var(--hover300);
 }
 
-.file__wrapper {
+.file__context {
     flex: 1 1 0;
     overflow-x: auto;
+}
+
+.file__wrapper {
+
 }
 
 .file__tbody {
@@ -1405,6 +1409,7 @@
 
     .ino__flex-l {
         width: 110px;
+        color: var(--icon);
     }
 
     input {
@@ -1419,4 +1424,17 @@
 
 .ino__block + .ino__block {
     border-top: var(--cntTBor);
+}
+
+.sort__up {
+    cursor: pointer;
+}
+
+.sort__up i {
+    font-size: 20px;
+    transition: all 0.1s linear;
+}
+
+.sort__up i:hover {
+    color: var(--activeFg);
 }

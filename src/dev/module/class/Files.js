@@ -25,7 +25,7 @@ class Files {
         this.from = from
         this.to = to
         this.preset = 'start'
-        this.activeFiles = []
+        this.activeFilesSort = []
         this.remember = remember
         this.count = count
         this.files = files
@@ -34,12 +34,23 @@ class Files {
         this.activeList = activeList
         this.countRender = countRender
         this.baseDir = ''
+        this.bindScroll = 1
 
         this.typeFiles = [
             {
                 img: `<img src="${path.join(__dirname, '../../public/img/png/html.png')}" />`,
                 path: '../../public/img/png/html.png',
                 type: ['.html', '.htm', '.htb', '.htx', '.htg']
+            },
+            {
+                img: `<img src="${path.join(__dirname, '../../public/img/png/xml.png')}" />`,
+                path: '../../public/img/png/xml.png',
+                type: ['.xml']
+            },
+            {
+                img: `<img src="${path.join(__dirname, '../../public/img/png/exe.png')}" />`,
+                path: '../../public/img/png/exe.png',
+                type: ['.exe']
             },
             {
                 img: `<img src="${path.join(__dirname, '../../public/img/png/js.png')}" />`,
@@ -408,7 +419,123 @@ class Files {
         }
     }
 
-    renderFiles (ul, el, act = 1) {
+    sliceIntoChunks (arr, chunkSize) {
+        const res = []
+        for (let i = 0; i < arr.length; i += chunkSize) {
+            const chunk = arr.slice(i, i + chunkSize)
+            res.push(chunk)
+        }
+        return res
+    }
+
+    throttle (callee, timeout) {
+        let timer = null
+        return function perform (...args) {
+            if (timer) return
+            timer = setTimeout(() => {
+                callee(...args)
+                clearTimeout(timer)
+                timer = null
+            }, timeout)
+        }
+    }
+
+    async preloadFiles (html) {
+        document.querySelector('.file__wrapper')?.remove()
+
+        let wrap = document.createElement('div')
+        wrap.classList.add('file__wrapper')
+        let tbody = document.createElement('div')
+        tbody.id = 'file__tbody'
+        tbody.classList.add('file__tbody')
+        wrap.append(tbody)
+
+        document.querySelector('.file__context').appendChild(wrap)
+
+        let ul = document.querySelector(this.selector)
+
+        let chuck = []
+
+        if (window.innerHeight <= 660) {
+            chuck = this.sliceIntoChunks(html, 10)
+        } else {
+            chuck = this.sliceIntoChunks(html, 15)
+        }
+
+        let countChuck = chuck.length
+        let thisChuck = 0
+        let prevChuck = 0
+
+        if (countChuck === 0) {
+            return false
+        }
+
+        if (chuck.length === 1) {
+            chuck.forEach(el => {
+                el.forEach(t => {
+                    ul.append(t)
+                })
+            })
+        } else {
+            chuck.forEach((el, i) => {
+                if (i === 0) {
+                    el.forEach(t => {
+                        ul.append(t)
+                    })
+                    prevChuck = i
+                    thisChuck = i + 1
+                    countChuck -= 1
+                    return false
+                }
+                return false
+            })
+
+            function checkPosition () {
+                if (countChuck === 0) {
+                    return false
+                }
+
+                const height = document.querySelector('.file__context').offsetHeight
+                const screenHeight = window.innerHeight
+
+                const scrolled = window.scrollY
+
+                const threshold = height - screenHeight / 4
+
+                const position = scrolled + screenHeight
+
+                if (position >= threshold) {
+                    chuck[thisChuck].forEach(el => {
+                        let all = document.querySelector('.check__all')
+
+                        if (all.checked) {
+                            el.querySelector('input').setAttribute('checked', 'true')
+                            el.querySelector('input').checked = true
+                        }
+
+                        ul.append(el)
+                    })
+                    thisChuck += 1
+                    countChuck -= 1
+                }
+            }
+
+            let oldScrollTopPosition = 0
+
+            document.querySelector('.file__context').addEventListener('scroll', this.throttle(() => {
+                const scrollTopPosition = document.querySelector('.file__context').scrollTop
+
+                if (scrollTopPosition > oldScrollTopPosition) {
+                    checkPosition()
+                }
+
+                oldScrollTopPosition = scrollTopPosition
+            }, 100))
+            window.addEventListener('resize', this.throttle(checkPosition, 100))
+        }
+    }
+
+    renderFiles (el, act = 1) {
         this.baseDir = this.from.split('\\').at(-1)
 
         try {
@@ -459,23 +586,26 @@ class Files {
             let context = `
             <div class="user-select-none context__file context__${el.id}">
                 <div class="user-select-none context__list context__list-sub">
-                    <div class="user-select-none context__item-none">${this.mb_strimwidth(el.name, 0, 50, '...')}</div>
+                    <div class="user-select-none context__item-none">${this.mb_strimwidth(el.name, 0, 28, '...')}</div>
                 </div>
-                <div class="user-select-none context__list">
+                <!-- <div class="user-select-none context__list">
                     <div class="context__item"><i class="fa-regular fa-ban"></i> Снять выделение</div>
                     <div class="context__item"><i class="fa-regular fa-hashtag"></i> Переименовать</div>
-                    <div class="context__item context__del"><i class="fa-regular fa-trash"></i> Удалить</div>
-                </div>
-                <div class="user-select-none context__list context__list-sub">
-                    <div class="context__item create__props"><i class="fa-regular fa-gear"></i> Свойства</div>
                     
+                </div>-->
+                <div class="user-select-none context__list context__list-sub">
+                   <div class="context__item context__del"><i class="fa-regular fa-trash"></i> Удалить</div>
+                    <div class="context__item create__props"><i class="fa-regular fa-gear"></i> Свойства</div>  
                 </div>
             </div>
             `
 
+            let html = document.createElement('div')
+            html.classList.add('file__div', `file__div-${el.id}`)
+
             if (el.active === 1) {
-                let html = `
-            <div class="file__div file__div-${el.id}">
+                html.innerHTML = `
+          
                 <div class="file__parent file__parent-${el.id}">
                 ${context}
                 <label class="file__table-ctx file__ctx-${el.id}" for="file__${el.id}" 
@@ -519,8 +649,6 @@ class Files {
                 </label>
                 </div>
             
-                
-            </div>
                 `
                 this.activeFiles = 1
                 this.activeList.push({
@@ -533,8 +661,8 @@ class Files {
                     active: 1
                 }
             } else {
-                let html = `
-            <div class="file__div file__div-${el.id}">
+                html.innerHTML = `
+          
                 <div class="file__parent file__parent-${el.id}">
                 ${context}
                 <label class="file__table-ctx file__ctx-${el.id}" for="file__${el.id}" 
@@ -561,7 +689,7 @@ class Files {
                                     data-time="${el.changed}"
                                     data-ptime="${time}
                                     data-asize="${size}"
-                                    data-img="${img}"
+                                    data-img="${img}"  
                                     />
                                     <label class="checkbox__label" for="file__${el.id}"></label>
                                 </div>
@@ -580,9 +708,7 @@ class Files {
                 </label>
                 </div>
             
-            
                 
-            </div>       
             `
                 return {
                     html,
@@ -595,6 +721,10 @@ class Files {
     }
 
     async searchFiles (text, column, type) {
+        if (text.replace(/\s/g, '') === '') {
+            await this.updatePath()
+        }
+
         this.countRender = 0
 
         this.activeFiles = 0
@@ -603,10 +733,6 @@ class Files {
         let files_ = this.files
         let all = this.files.length
         let count = 0
-
-        let ul = document.querySelector(this.selector)
-
-        ul.innerHTML = ''
 
         if ((column >= 1 && column <= 4) && (type >= 1 && type <= 2)) {
             let name = document.querySelector('.sort__name')
@@ -656,18 +782,17 @@ class Files {
             }
         }
 
-        this.activeFiles = []
+        this.files = []
 
         await Promise
-            .all(files_.map(async (el) => {
-                if (el.name.toLowerCase().search(text.toLowerCase()) === -1) { return false }
-                this.activeFiles.push(el)
+            .all(files_.filter(el => el.name.toLowerCase().search(text.toLowerCase()) !== -1).map(async (el) => {
+                this.files.push(el)
                 count++
-                return this.renderFiles(ul, el, 0)
+                return this.renderFiles(el, 0)
             }))
-            .then(e => ul.innerHTML = e.reduce((a, f) => a.concat(f), []).map(el => el.html).join(''))
+            .then(async e => this.preloadFiles(e.reduce((a, f) => a.concat(f), []).map(el => el.html)))
 
-        document.querySelector('.search__result').innerHTML = `Найдено ${this.activeFiles.length} файлов по запросу ${text}`
+        document.querySelector('.search__result').innerHTML = `Найдено ${this.files.length} файлов по запросу ${text}`
     }
 
     async sortFiles (column, type) {
@@ -679,12 +804,6 @@ class Files {
         let files_ = this.files
         let count = this.files.length
 
-        let ul = document.querySelector(this.selector)
-
-        ul.innerHTML = ''
-
-        if (this.activeFiles.length > 0) { files_ = this.activeFiles }
-
         if ((column >= 1 && column <= 4) && (type >= 1 && type <= 2)) {
             let name = document.querySelector('.sort__name')
             let size = document.querySelector('.sort__size')
@@ -734,8 +853,8 @@ class Files {
         }
 
         await Promise
-            .all(files_.map(async (el) => this.renderFiles(ul, el, 0)))
-            .then(e => ul.innerHTML = e.reduce((a, f) => a.concat(f), []).map(el => el.html).join(''))
+            .all(files_.map(async (el) => await this.renderFiles(el, 0)))
+            .then(e => this.preloadFiles(e.reduce((a, f) => a.concat(f), []).map(el => el.html)))
     }
 
     async updatePath () {
@@ -745,9 +864,12 @@ class Files {
         document.querySelector('.gload__from-container').style.display = 'block'
 
         this.activeFiles = 0
-        this.activeList = []
+        this.activeList.length = 0
+        this.activeFilesSort.length = 0
 
         this.count = 0
+
+        this.bindScroll = 1
 
         console.time('ReadFiles')
 
@@ -782,10 +904,6 @@ class Files {
 
             this.files = files_
 
-            let ul = document.querySelector(this.selector)
-
-            ul.innerHTML = ''
-
             document.querySelectorAll('.sort__item').forEach(el => {
                 el.classList.remove('sort__active')
                 if (el.parentNode.querySelector('.sort__arrow')) {
@@ -816,8 +934,8 @@ class Files {
                     document.querySelector('.load__from-pop').style.display = 'none'
                     document.querySelector('.load__from-container').style.display = 'none'
                 }
-                return this.renderFiles(ul, el)
-            })).then(e => ul.innerHTML = e.reduce((a, f) => a.concat(f), []).sort(x => x.active === 1 ? -1 : 1).map(el => el.html).join(''))
+                return this.renderFiles(el)
+            })).then(e => this.preloadFiles(e.reduce((a, f) => a.concat(f), []).sort(x => x.active === 1 ? -1 : 1).map(el => el.html)))
 
             console.timeEnd('RenderFiles')
 
@@ -934,6 +1052,14 @@ class Files {
         return this.files.length
     }
 
+    getFiles () {
+        return this.files
+    }
+
+    updateFiles (files) {
+        this.files = files
+    }
+
     setRemember (files) {
         this.remember.push(String(files))
     }
@@ -987,10 +1113,12 @@ class Files {
         this.from = ''
         this.to = ''
         this.preset = 'start'
-        this.activeFiles = []
-        this.remember = []
+        this.activeFilesSort.length = 0
+        this.activeList.length = 0
+        this.activeFiles = 0
+        this.remember.length = 0
         this.count = 0
-        this.files = []
+        this.files.length = 0
     }
 
     setTheme (val = 'dark') {

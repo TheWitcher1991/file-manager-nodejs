@@ -14,6 +14,7 @@ module.exports = function () {
         $.config = {}
         $.size = 0
 
+        $._fs.cleanActiveList()
         $._fs.cleanBase()
 
         fs.writeFileSync(path.join(__dirname, rpath.db), JSON.stringify($.db))
@@ -61,6 +62,8 @@ module.exports = function () {
         document.querySelector('#change-size').value = ''
 
         $.files_ = []
+
+        $._fs.cleanActiveList()
 
         document.querySelector('.global__button-danger').style.display = 'none'
         document.querySelector('.need__block > div').innerHTML = ''

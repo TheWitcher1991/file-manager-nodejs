@@ -5,6 +5,13 @@ let { rpath, rkey } = require(path.join(__dirname, '/config'))
 let $ = require(path.join(__dirname, '/config'))
 
 module.exports = function () {
+
+    let globalActive = false
+
+    document.querySelector('.sort__up').addEventListener('click', function () {
+        document.querySelector('.file__context').scrollTop = 0
+    })
+
     document.querySelector('.gil__to').addEventListener('dblclick', function () {
         this.style.display = 'none'
         document.querySelector('.gih__to').style.display = 'flex'
@@ -31,6 +38,13 @@ module.exports = function () {
                         document.querySelector('#gih__to').value = ''
                         return false
                     }
+
+                    $.files_ = []
+
+                    $._fs.cleanActiveList()
+
+                    document.querySelector('.check__all').removeAttribute('checked')
+                    document.querySelector('.check__all').checked = false
 
                     $.db[x][y].pathTo = document.querySelector('#gih__to').value.trim()
                     $._fs.setPathTo(document.querySelector('#gih__to').value.trim())
@@ -59,6 +73,13 @@ module.exports = function () {
                         document.querySelector('#gih__from').value = ''
                         return false
                     }
+
+                    $.files_ = []
+
+                    $._fs.cleanActiveList()
+
+                    document.querySelector('.check__all').removeAttribute('checked')
+                    document.querySelector('.check__all').checked = false
 
                     $.db[x][y].pathFrom = document.querySelector('#gih__from').value.trim()
                     $._fs.setPathFrom(document.querySelector('#gih__from').value.trim())
@@ -383,26 +404,39 @@ module.exports = function () {
 
         let check = this.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.querySelectorAll('.file__tbody input')
 
+        let active = false
+
         check.forEach(el => {
             if (this.checked) {
                 el.setAttribute('checked', 'true')
                 el.checked = true
-
-                $.files_.push({
-                    id: el.dataset.id,
-                    name: el.dataset.name,
-                    path: el.dataset.path
-                })
+                active = true
+                globalActive = true
             } else {
                 el.removeAttribute('checked')
                 el.checked = false
+                active = false
+                globalActive = false
             }
         })
+
+        if (!active) {
+            $.files_.length = 0
+            $._fs.cleanActiveList()
+        } else {
+            $._fs.getFiles().forEach(el => {
+                $.files_.push({
+                    id: el.id,
+                    name: el.name,
+                    path: el.path
+                })
+            })
+        }
 
         let keySize = Object.keys($.files_).length
 
         if (keySize > 0) {
-            document.querySelector('.search__result').innerHTML = `Выбрано ${keySize} файлов`
+            document.querySelector('.search__result').innerHTML = `Выбрано ${$._fs.getCountFiles()} файлов`
             document.querySelector('.global__button-tran').style.display = 'flex'
         } else {
             document.querySelector('.search__result').innerHTML = `Найдено ${$._fs.getCountFiles()} файлов`
@@ -410,113 +444,161 @@ module.exports = function () {
         }
     })
 
-    document.querySelector('.file__tbody').addEventListener('contextmenu', function (e) {
-        const target = this.querySelectorAll('.file__div')
-        if (!target) return false
+    document.querySelector('.file__context').addEventListener('contextmenu', function (e) {
+        try {
+            let t = e.srcElement.offsetParent.parentNode.querySelector('.context__file .create__props')
 
-        e.srcElement.offsetParent.parentNode.querySelector('.context__file .create__props').addEventListener('click', function () {
-            let i = e.srcElement.offsetParent.parentNode.querySelector('.file__table-ctx input')
+            t.addEventListener('click', function () {
+                let i = e.srcElement.offsetParent.parentNode.querySelector('.file__table-ctx input')
 
-            let changed = new Date(i.dataset.time).toLocaleString('ru', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                hour: 'numeric',
-                minute: 'numeric',
-                second: 'numeric',
-                timezone: 'UTC'
+                let changed = new Date(i.dataset.time).toLocaleString('ru', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: 'numeric',
+                    minute: 'numeric',
+                    second: 'numeric',
+                    timezone: 'UTC'
+                })
+
+                let open = new Date(i.dataset.open).toLocaleString('ru', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: 'numeric',
+                    minute: 'numeric',
+                    second: 'numeric',
+                    timezone: 'UTC'
+                })
+
+                let create = new Date(i.dataset.create).toLocaleString('ru', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: 'numeric',
+                    minute: 'numeric',
+                    second: 'numeric',
+                    timezone: 'UTC'
+                })
+
+                document.querySelector('.ino-img').innerHTML = `<img src="${i.dataset.img}" alt="">`
+                document.querySelector('.ino-name').innerHTML = i.dataset.name
+                document.querySelector('.ino-path').value = i.dataset.dir
+                document.querySelector('.ino-type').innerHTML = i.dataset.type
+                document.querySelector('.ino-size').innerHTML = `${i.dataset.psize} (${i.dataset.size} байт)`
+                document.querySelector('.ino-create').innerHTML = create
+                document.querySelector('.ino-changed').innerHTML = changed
+                document.querySelector('.ino-open').innerHTML = open
+
+                document.querySelector('.infofile__from-pop').style.display = 'flex'
+                document.querySelector('.infofile__from-container').style.display = 'block'
             })
 
-            let open = new Date(i.dataset.open).toLocaleString('ru', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                hour: 'numeric',
-                minute: 'numeric',
-                second: 'numeric',
-                timezone: 'UTC'
-            })
+            this.querySelectorAll('.context__file').forEach(el => el.style.cssText = 'display:none')
+            this.querySelectorAll('.file__table-ctx').forEach(el => el.classList.remove('context__active'))
 
-            let create = new Date(i.dataset.create).toLocaleString('ru', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                hour: 'numeric',
-                minute: 'numeric',
-                second: 'numeric',
-                timezone: 'UTC'
-            })
+            const clickCoordsX = e.pageX
+            const clickCoordsY = e.pageY
 
-            document.querySelector('.ino-img').innerHTML = `<img src="${i.dataset.img}" alt="">`
-            document.querySelector('.ino-name').innerHTML = i.dataset.name
-            document.querySelector('.ino-path').value = i.dataset.dir
-            document.querySelector('.ino-type').innerHTML = i.dataset.type
-            document.querySelector('.ino-size').innerHTML = `${i.dataset.psize} (${i.dataset.size} байт)`
-            document.querySelector('.ino-create').innerHTML = create
-            document.querySelector('.ino-changed').innerHTML = changed
-            document.querySelector('.ino-open').innerHTML = open
+            const menu = e.srcElement.offsetParent.parentNode.querySelector('.context__file')
+            const label = e.srcElement.offsetParent.parentNode.querySelector('.file__table-ctx')
 
-            document.querySelector('.infofile__from-pop').style.display = 'flex'
-            document.querySelector('.infofile__from-container').style.display = 'block'
-        })
+            label.classList.add('context__active')
 
-        this.querySelectorAll('.context__file').forEach(el => el.style.cssText = 'display:none')
-        this.querySelectorAll('.file__table-ctx').forEach(el => el.classList.remove('context__active'))
+            const windowWidth = window.innerWidth
+            const windowHeight = window.innerHeight
 
-        const clickCoordsX = e.pageX
-        const clickCoordsY = e.pageY
+            menu.style.display = 'block'
 
-        const menu = e.srcElement.offsetParent.parentNode.querySelector('.context__file')
-        const label = e.srcElement.offsetParent.parentNode.querySelector('.file__table-ctx')
+            if ((windowWidth - clickCoordsX) < menu.offsetWidth) {
+                menu.style.left = windowWidth - menu.offsetWidth + 'px'
+            } else {
+                menu.style.left = clickCoordsX + 10 + 'px'
+            }
 
-        label.classList.add('context__active')
+            if ((windowHeight - clickCoordsY) < menu.offsetHeight) {
+                menu.style.top = windowHeight - menu.offsetHeight + 'px'
+            } else {
+                menu.style.top = clickCoordsY + 15 + 'px'
+            }
+        } catch (e) {
 
-        const windowWidth = window.innerWidth
-        const windowHeight = window.innerHeight
-
-        menu.style.display = 'block'
-
-        if ((windowWidth - clickCoordsX) < menu.offsetWidth) {
-            menu.style.left = windowWidth - menu.offsetWidth + 'px'
-        } else {
-            menu.style.left = clickCoordsX + 10 + 'px'
-        }
-
-        if ((windowHeight - clickCoordsY) < menu.offsetHeight) {
-            menu.style.top = windowHeight - menu.offsetHeight + 'px'
-        } else {
-            menu.style.top = clickCoordsY + 15 + 'px'
         }
     })
 
-    document.querySelector('.file__tbody').addEventListener('click', function (e) {
-        const target = this.querySelectorAll('input')
-        if (!target) return false
+    document.querySelector('.file__context').addEventListener('click', function (e) {
+        try {
+            if (!globalActive) {
+                const target = e.srcElement.offsetParent.parentNode.parentNode.parentNode.querySelectorAll('input')
+                if (!target) return false
 
-        let check = document.querySelector('.file__table input')
+                let check = document.querySelector('.file__table input')
 
-        if (check.checked) {
-            check.removeAttribute('checked')
-            check.checked = false
-        }
+                if (check.checked) {
+                    check.removeAttribute('checked')
+                    check.checked = false
+                }
 
-        target.forEach(el => {
-            el.onclick = () => {
-                $._fs.cleanActiveList()
-                let elems = this.querySelectorAll('input:checked')
-                $.files_ = [].map.call(elems, (obj) => {
-                    return {
-                        id: obj.dataset.id,
-                        name: obj.dataset.name,
-                        path: obj.dataset.path
+                target.forEach(el => {
+                    el.onclick = () => {
+                        $._fs.cleanActiveList()
+                        let elems = e.srcElement.offsetParent.parentNode.parentNode.parentNode.querySelectorAll('input:checked')
+                        $.files_ = [].map.call(elems, (obj) => {
+                            return {
+                                id: obj.dataset.id,
+                                name: obj.dataset.name,
+                                path: obj.dataset.path
+                            }
+                        })
+
+                        let keySize = Object.keys($.files_).length
+
+                        if (keySize === $._fs.getCountFiles()) {
+                            document.querySelector('.check__all').setAttribute('checked', 'true')
+                            document.querySelector('.check__all').checked = true
+                        } else {
+                            document.querySelector('.check__all').removeAttribute('checked')
+                            document.querySelector('.check__all').checked = false
+                        }
+
+
+                        if (keySize > 0) {
+                            document.querySelector('.search__result').innerHTML = `Выбрано ${keySize} файлов`
+                            document.querySelector('.global__button-tran').style.display = 'flex'
+                        } else {
+                            document.querySelector('.search__result').innerHTML = `Найдено ${$._fs.getCountFiles()} файлов`
+                            document.querySelector('.global__button-tran').style.display = 'none'
+                        }
+                    }
+                })
+            } else {
+                let elems = e.srcElement.offsetParent.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.querySelectorAll('input')
+
+                let tmp = []
+
+                elems.forEach(el => {
+                    if (!el.checked) {
+                        tmp.push(el.dataset.path)
                     }
                 })
 
+                $.files_ = $._fs.getFiles().filter(el => {
+                    if (tmp.includes(el.path)) {
+                        return false
+                    }
+                    return true
+                }).map(el => el)
+
                 let keySize = Object.keys($.files_).length
 
+                console.log(keySize + ' ' + $._fs.getCountFiles())
+
                 if (keySize === $._fs.getCountFiles()) {
-                    check.setAttribute('checked', 'true')
-                    check.checked = true
+                    document.querySelector('.check__all').setAttribute('checked', 'true')
+                    document.querySelector('.check__all').checked = true
+                } else {
+                    document.querySelector('.check__all').removeAttribute('checked')
+                    document.querySelector('.check__all').checked = false
                 }
 
                 if (keySize > 0) {
@@ -527,6 +609,8 @@ module.exports = function () {
                     document.querySelector('.global__button-tran').style.display = 'none'
                 }
             }
-        })
+        } catch (e) {
+
+        }
     })
 }

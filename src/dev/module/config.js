@@ -13,6 +13,8 @@ module.exports = {
 
     files_: [],
 
+    all: [],
+
     tmpf: {},
 
     rkey: i => {
@@ -27,7 +29,6 @@ module.exports = {
         } catch (e) {
             return undefined
         }
-
     },
 
     get config () {
@@ -42,5 +43,5 @@ module.exports = {
         return Object.keys(this.db).length
     },
 
-    _fs: '',
+    _fs: ''
 }
