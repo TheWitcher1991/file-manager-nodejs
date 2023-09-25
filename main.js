@@ -38,7 +38,7 @@ process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = 'true'
 function createWindow () {
     const windowOptions = {
         minWidth: 960,
-        minHeight: 660,
+        minHeight: 665,
         center: true,
         title: pjson.name,
         resizable: true,

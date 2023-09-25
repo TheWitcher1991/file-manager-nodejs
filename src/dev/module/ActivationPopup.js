@@ -19,6 +19,16 @@ module.exports = function () {
         document.querySelector('.need__from-container').style.display = 'none'
     })
 
+    document.querySelector('.rembr__info').addEventListener('click', function () {
+        document.querySelector('.rembr__from-pop').style.display = 'flex'
+        document.querySelector('.rembr__from-container').style.display = 'block'
+    })
+
+    document.querySelector('.faq__info').addEventListener('click', function () {
+        document.querySelector('.faq__from-pop').style.display = 'flex'
+        document.querySelector('.faq__from-container').style.display = 'block'
+    })
+
     document.querySelector('.tb__apply').addEventListener('click', function () {
         document.querySelector('.preset__from-pop').style.display = 'flex'
         document.querySelector('.preset__from-container').style.display = 'block'

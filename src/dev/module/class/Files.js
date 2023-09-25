@@ -19,7 +19,7 @@ const readdir = promisify(fs.readdir)
 const stat = promisify(fs.stat)
 
 class Files {
-    constructor (db, selector, from = '', to = '', remember = [], count = 0, files = [], readSubfolders = 1, activeFiles = 0, activeList = [], countRender = 0) {
+    constructor (db, selector, from = '', to = '', remember = [], regexp = [], count = 0, files = [], readSubfolders = 1, activeFiles = 0, activeList = [], countRender = 0) {
         this.db = db
         this.selector = selector
         this.from = from
@@ -27,6 +27,7 @@ class Files {
         this.preset = 'start'
         this.activeFilesSort = []
         this.remember = remember
+        this.regexp = regexp
         this.count = count
         this.files = files
         this.readSubfolders = readSubfolders
@@ -263,10 +264,12 @@ class Files {
                 if (stats.isDirectory() && this.readSubfolders === 1) {
                     return this.readFiles(res)
                 } else {
+                    let uri = subfolder.replace(/\.[^.]+$/, '')
+
                     if (
                         (config.typeFiles.replace(/\s/g, '') !== '' && !types.includes(path.extname(res).toLowerCase())) ||
-                        (config.wordLeft.replace(/\s/g, '') !== '' && !subfolder.replace(/\.[^.]+$/, '').startsWith(config.wordLeft)) ||
-                        (config.wordRight.replace(/\s/g, '') !== '' && !subfolder.replace(/\.[^.]+$/, '').endsWith(config.wordRight)) ||
+                        (config.wordLeft.replace(/\s/g, '') !== '' && !uri.startsWith(config.wordLeft)) ||
+                        (config.wordRight.replace(/\s/g, '') !== '' && !uri.endsWith(config.wordRight)) ||
                         (config.sizeFiles > 0 && ((stats.size / 1000) > config.sizeFiles))
                     ) {
                         return true
@@ -282,7 +285,7 @@ class Files {
                         id: this.count,
                         path: res,
                         name: subfolder,
-                        uri: subfolder.replace(/\.[^.]+$/, ''),
+                        uri: uri,
                         size: stats.size,
                         type: path.extname(res),
                         dir: path.dirname(res),
@@ -458,7 +461,7 @@ class Files {
 
         let chuck = []
 
-        if (window.innerHeight <= 660) {
+        if (window.innerHeight <= 665) {
             chuck = this.sliceIntoChunks(html, 10)
         } else {
             chuck = this.sliceIntoChunks(html, 15)
@@ -551,6 +554,19 @@ class Files {
                 el.active = 0
             }
 
+            if (act === 1) {
+                this.regexp.forEach(t => {
+                    let regexp = new RegExp(`^${t}\\s+([^\n]+)$`, 'gi')
+                    if (regexp.test(el.name)) {
+                        el.active = 1
+                        return false
+                    }
+                })
+            }
+
+
+
+
             let time = new Date(el.changed).toLocaleString('ru', {
                 year: 'numeric',
                 month: 'long',
@@ -593,11 +609,11 @@ class Files {
                 <!-- <div class="user-select-none context__list">
                     <div class="context__item"><i class="fa-regular fa-ban"></i> Снять выделение</div>
                     <div class="context__item"><i class="fa-regular fa-hashtag"></i> Переименовать</div>
-                    
+
                 </div>-->
                 <div class="user-select-none context__list context__list-sub">
                    <div class="context__item context__del"><i class="fa-regular fa-trash"></i> Удалить</div>
-                    <div class="context__item create__props"><i class="fa-regular fa-gear"></i> Свойства</div>  
+                    <div class="context__item create__props"><i class="fa-regular fa-gear"></i> Свойства</div>
                 </div>
             </div>
             `
@@ -607,17 +623,17 @@ class Files {
 
             if (el.active === 1) {
                 html.innerHTML = `
-          
+
                 <div class="file__parent file__parent-${el.id}">
                 ${context}
-                <label class="file__table-ctx file__ctx-${el.id}" for="file__${el.id}" 
+                <label class="file__table-ctx file__ctx-${el.id}" for="file__${el.id}"
                 data-id="${el.id}"
                 data-name="${el.name}"
                 data-path="${el.path}"
                 >
                 <div class="file__table-temp">
                         <div class="container">
-                            <div class="sort__check"> 
+                            <div class="sort__check">
                                 <div class="checkbox__wrap">
                                     <input type="checkbox" class="files checkbox__files custom-checkbox" name="file__${el.id}" id="file__${el.id}" value="${el.id}
                                     data-id="${el.id}"
@@ -650,7 +666,7 @@ class Files {
                     </div>
                 </label>
                 </div>
-            
+
                 `
                 this.activeFiles = 1
                 this.activeList.push({
@@ -664,19 +680,19 @@ class Files {
                 }
             } else {
                 html.innerHTML = `
-          
+
                 <div class="file__parent file__parent-${el.id}">
                 ${context}
-                <label class="file__table-ctx file__ctx-${el.id}" for="file__${el.id}" 
+                <label class="file__table-ctx file__ctx-${el.id}" for="file__${el.id}"
                 data-id="${el.id}"
                 data-name="${el.name}"
                 data-path="${el.path}"
                 >
-                  
+
                     <div class="file__table-temp">
                         <div class="container">
-                        
-                             <div class="sort__check"> 
+
+                             <div class="sort__check">
                                 <div class="checkbox__wrap">
                                     <input type="checkbox" class="files checkbox__files custom-checkbox" name="file__${el.id}" id="file__${el.id}" value="${el.id}
                                     data-id="${el.id}"
@@ -691,12 +707,12 @@ class Files {
                                     data-time="${el.changed}"
                                     data-ptime="${time}
                                     data-asize="${size}"
-                                    data-img="${img}"  
+                                    data-img="${img}"
                                     />
                                     <label class="checkbox__label" for="file__${el.id}"></label>
                                 </div>
                             </div>
-                       
+
                             <span class="sort__name">
                                 ${type}
                                 ${this.mb_strimwidth(el.dirName === this.baseDir ? el.name : el.dirName + '/' + el.name, 0, 50, '...')}
@@ -709,8 +725,8 @@ class Files {
                     </div>
                 </label>
                 </div>
-            
-                
+
+
             `
                 return {
                     html,
@@ -800,7 +816,6 @@ class Files {
                     return this.renderFiles(el, 0)
                 }))
                 .then(async e => this.preloadFiles(e.reduce((a, f) => a.concat(f), []).map(el => el.html)))
-
             this.mod = 1
             document.querySelector('.search__result').innerHTML = `Найдено ${this.activeFilesSort.length} файлов по запросу ${text}`
         }
@@ -810,7 +825,7 @@ class Files {
         this.countRender = 0
 
         this.activeFiles = 0
-        this.activeList = []
+        this.activeList.length = 0
 
         let files_ = this.files
         let count = this.files.length
@@ -990,8 +1005,35 @@ class Files {
                         document.querySelector('.remember__list').innerHTML += `
                         <div class="remember__item remember__item-${id}">
                             <span>${el}</span>
-                            <button 
+                            <button
                                 class="remember__item-bth remember__item-bth-${id}"
+                                data-preset="${tmp}"
+                                data-id="${id}"
+                                data-name="${el}"
+                            ><i class="fa-regular fa-trash"></i></button>
+                        </div>
+                    `
+                    })
+                }
+            }
+        }
+    }
+
+    updateRegexp () {
+        document.querySelector('.regexp__list').innerHTML = ''
+        let id = 0
+        for (let x in this.db) {
+            let tmp = String(Object.keys(this.db[x]))
+            if (tmp === this.preset) {
+                for (let y in this.db[x]) {
+                    this.regexp = this.db[x][y].regexp
+                    this.db[x][y].regexp.forEach((el, i) => {
+                        id++
+                        document.querySelector('.regexp__list').innerHTML += `
+                        <div class="regexp__item regexp__item-${id}">
+                            <span>${el}</span>
+                            <button
+                                class="regexp__item-bth regexp__item-bth-${id}"
                                 data-preset="${tmp}"
                                 data-id="${id}"
                                 data-name="${el}"
@@ -1008,7 +1050,6 @@ class Files {
         document.querySelector('.preset__list').innerHTML = ''
         for (let x in this.db) {
             let tmp = String(Object.keys(this.db[x])[0])
-
             for (let y in this.db[x]) {
                 document.querySelector('.preset__list').innerHTML += `
                     <div class="preset__item-wrap">
@@ -1018,11 +1059,12 @@ class Files {
                                     data-to="${this.db[x][y].pathTo}"
                                     data-id="${tmp}"
                                     data-remember="${this.db[x][y].remember}"
+                                    data-regexp="${this.db[x][y].regexp}"
                                     data-db=\'${JSON.stringify(this.db[x][y])}\'
                                     />
                             <label class="radio__label" for="${tmp}">${this.db[x][y].name}</label>
                         </div>
-                 
+
                         <div>
                             ${tmp !== 'start'
         ? `<i class="trash__preset fa-regular fa-trash trash__preset-${tmp}"
@@ -1030,24 +1072,11 @@ class Files {
                             ></i>`
         : ''}
                             <i class="fa-regular fa-wrench setting__preset-${tmp}"></i>
-                           
+
                         </div>
                     </div>
                 `
             }
-        }
-    }
-
-    startPreset (preset = 'start') {
-        this.preset = preset
-    }
-
-    setPreset (id = '', from = '', to = '') {
-        if (id.trim() === '') { this.preset = 'start' } else {
-            this.preset = id
-            this.from = from
-            this.to = to
-            this.loadFiles()
         }
     }
 
@@ -1086,8 +1115,27 @@ class Files {
         this.files = files
     }
 
+    startPreset (preset = 'start') {
+        this.preset = preset
+    }
+
+    setPreset (id = '', from = '', to = '', remember = [], regexp = []) {
+        if (id.trim() === '') { this.preset = 'start' } else {
+            this.preset = id
+            this.from = from
+            this.to = to
+            this.remember = remember
+            this.regexp = regexp
+            this.loadFiles()
+        }
+    }
+
     setRemember (files) {
         this.remember.push(String(files))
+    }
+
+    setMod (val = 0) {
+        this.mod = val
     }
 
     setPathTo (val) {
@@ -1196,6 +1244,7 @@ class Files {
         document.querySelector('.global__remember').value = this.remember
 
         this.updateRemember()
+        this.updateRegexp()
         this.updatePreset()
         await this.updatePath()
     }

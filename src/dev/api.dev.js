@@ -19,7 +19,7 @@ module.exports = (() => {
     const Reset = require(path.join(__dirname, '/module/Reset'))
 
     if ($.db === undefined) {
-        fs.appendFileSync(path.join(__dirname, $.rpath.log), `\n[${new Date()}] | Error: not found db.json`, 'utf-8')
+        // fs.appendFileSync(path.join(__dirname, $.rpath.log), `\n[${new Date()}] | Error: not found db.json`, 'utf-8')
         fs.writeFileSync(path.join(__dirname, $.rpath.launchDB), JSON.stringify([]))
         window.onload = Launch
         return false
@@ -27,15 +27,11 @@ module.exports = (() => {
 
     window.onload = $.size <= 0 ? Launch : Reset
 
-    document.addEventListener("DOMContentLoaded", (event) => {
-        SwitchingOperations()
-        OtherMethods()
-        ActivationPopup()
-        SpecialOperations()
-        BasicOperations()
-    });
-
-
+    SwitchingOperations()
+    OtherMethods()
+    ActivationPopup()
+    SpecialOperations()
+    BasicOperations()
 
     // fs.appendFileSync(path.join(__dirname, $.rpath.log), `\n[${new Date()}] | Launch`, 'utf-8')
 })(0)

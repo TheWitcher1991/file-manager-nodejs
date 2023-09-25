@@ -26,7 +26,8 @@ module.exports = function () {
                     wordLeft: '',
                     wordRight: '',
                     changed: '',
-                    remember: []
+                    remember: [],
+                    regexp: []
                 }]
             ])
 

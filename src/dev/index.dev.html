@@ -15,6 +15,48 @@
 </head>
 <body>
 
+<div class="rembr__from-pop popup__wrap" >
+    <div class="popup__container rembr__from-container">
+        <form enctype="multipart/form-data" method="post" action="">
+            <div class="form__title">
+                <span class="form__span">FAQ</span>
+            </div>
+            <div class="file__upload faq__block">
+                <span>Как работает запомнить?</span>
+                <p>
+                    Введите значение и приложение будет искать файлы с похожим названием <br />
+                    Файлы, которые удовлетворяют условию будут сразу выделены в списке
+                </p>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="faq__from-pop popup__wrap" >
+    <div class="popup__container faq__from-container">
+        <form enctype="multipart/form-data" method="post" action="">
+            <div class="form__title">
+                <span class="form__span">FAQ</span>
+            </div>
+            <div class="file__upload faq__block">
+                <span>Как работают регулярные выражения?</span>
+                <p>
+                    Например, нам надо найти все файлы, которые похожи на следующее название: САНТ.123456-789 <br/>
+                    В этом случае: <code>[А-Яа-яЁё]{4}[-.]\d{6}[-.]\d{3}</code> <br/> <br/>
+                    <code>[...]</code> — диапазон нужных значений в подстроке. Например: <br/>
+                    <i></i> <code>[А-Яа-яЁё]</code> — весь алфавит с регистром <br/>
+                    <i></i> <code>[0-9]</code> — все цифры от 0 до 9
+                    <br/>
+                    <code>\d</code> — в подстроке должны быть только цифры <br/>
+                    <code>{n}</code> — число символов в подстроке <br/>
+                    Все части регулярного выражения можно комбинировать, менять местами <br/>
+                    Файлы, которые удовлетворяют выражению будут сразу выделены в списке
+                </p>
+            </div>
+        </form>
+    </div>
+</div>
+
 <div class="infofile__from-pop popup__wrap">
     <div class="popup__container infofile__from-container">
         <form enctype="multipart/form-data" method="post" action="">
@@ -174,7 +216,7 @@
                 <img src="./public/img/icon.ico" alt="">
                 <div>
                     <span>litser</span>
-                    <p>build: #2.0.0 18.09.2023</p>
+                    <p>build: #2.1.0 25.09.2023</p>
                     <div>
                         <span>electron: ^25.5.0</span>
                         <span>electron-packager: ^17.1.1</span>
@@ -498,18 +540,40 @@
                         </div>
                     </div>
                     <div class="remember__button tb__bth">
-                        <span class="tb__span remember__button-span"><i class="fa-regular fa-folder-bookmark"></i> Обязательно</span>
+                        <span class="tb__span  tb__span-i remember__button-span"><i class="fa-regular fa-folder-bookmark"></i></span>
                         <div class="tb__popup remember__popup" style="display:none;">
-                            <label class="label__block-global" for="global__search">
+                            <label class="label__block-global" for="global__remember">
                                 <i class="fa-regular fa-bookmark"></i>
                                 <input class="global__remember" type="text" name="global__remember" id="global__remember" placeholder="Имя файла, учитывая регистр, например, Архив-001" />
                             </label>
-                            <span class="label__exp">для каждого пресета свои файлы</span>
+                            <div class="exp__flex">
+                                <span class="label__exp">для каждого пресета свои файлы</span>
+                                <span class="exp__info rembr__info">FAQ</span>
+                            </div>
                             <div class="remember__list">
 
                             </div>
                             <div class="tb__button">
                                 <button type="button" class="remember__apply tb__apply">Добавить</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="regexp__button tb__bth">
+                        <span class="tb__span tb__span-i regexp__button-span"><i class="fa-regular fa-function"></i></span>
+                        <div class="tb__popup regexp__popup" style="display:none;">
+                            <label class="label__block-global" for="global__regexp">
+                                <i>(.*)</i>
+                                <input class="global__regexp" type="text" name="global__regexp" id="global__regexp" placeholder="Регулярное выражение, например, \d{6}-\d{3}" />
+                            </label>
+                            <div class="exp__flex">
+                                <span class="label__exp">для каждого пресета свои выражения</span>
+                                <span class="exp__info faq__info">FAQ</span>
+                            </div>
+
+                            <div class="regexp__list">
+                            </div>
+                            <div class="tb__button">
+                                <button type="button" class="regexp__apply tb__apply">Добавить</button>
                             </div>
                         </div>
                     </div>
@@ -542,9 +606,11 @@
         <div class="fixed__table">
 
             <div class="container container__table-title">
-            <span class="search__result">
+                <span class="search__result">
 
-            </span>
+                </span>
+
+                <button type="button" class="reply__button"><i class="fa-regular fa-arrow-rotate-left"></i></button>
 
             </div>
 

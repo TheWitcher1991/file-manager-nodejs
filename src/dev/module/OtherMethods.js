@@ -123,6 +123,34 @@ module.exports = function () {
         fs.writeFileSync(path.join(__dirname, rpath.config), JSON.stringify($.config))
     })
 
+    document.querySelector('.regexp__list').addEventListener('click', function () {
+        const target = this.querySelectorAll('button')
+        if (!target) return false
+
+        let els = []
+
+        target.forEach(el => {
+            el.onclick = () => {
+                for (let x in $.db) {
+                    let tmp = String(Object.keys($.db[x]))
+                    let preset = String($._fs.getPreset())
+                    if (tmp === preset) {
+                        for (let y in $.db[x]) {
+                            if ($.db[x][y].regexp.includes(el.dataset.name)) {
+                                els = $.db[x][y].regexp.filter(i => i !== el.dataset.name)
+                                $.db[x][y].regexp = els
+                            }
+                        }
+                    }
+                }
+
+                $._fs.updateRegexp()
+                $._fs.updateDB($.db)
+                fs.writeFileSync(path.join(__dirname, rpath.db), JSON.stringify($.db))
+            }
+        })
+    })
+
     document.querySelector('.remember__list').addEventListener('click', function () {
         const target = this.querySelectorAll('button')
         if (!target) return false
@@ -149,6 +177,32 @@ module.exports = function () {
                 fs.writeFileSync(path.join(__dirname, rpath.db), JSON.stringify($.db))
             }
         })
+    })
+
+    document.querySelector('.regexp__apply').addEventListener('click', function () {
+        const file = document.querySelector('#global__regexp')
+
+        if (file.value.replace(/\s/g, '') === '') {
+            $._fs.createNotice('Введите регулярное выражение')
+        } else {
+            for (let x in $.db) {
+                let tmp = String(Object.keys($.db[x]))
+                let preset = String($._fs.getPreset())
+                if (tmp === preset) {
+                    for (let y in $.db[x]) {
+                        if ($.db[x][y].regexp.includes(file.value)) {
+                            $._fs.createNotice('Такое выражение записано')
+                        } else {
+                            $.db[x][y].regexp.push(file.value)
+                            file.value = ''
+                            $._fs.updateDB($.db)
+                            fs.writeFileSync(path.join(__dirname, rpath.db), JSON.stringify($.db))
+                            $._fs.updateRegexp()
+                        }
+                    }
+                }
+            }
+        }
     })
 
     document.querySelector('.remember__apply').addEventListener('click', function () {
@@ -195,7 +249,8 @@ module.exports = function () {
                     wordLeft: '',
                     wordRight: '',
                     changed: '',
-                    remember: []
+                    remember: [],
+                    regexp: []
                 }]
             ])
 
@@ -356,10 +411,11 @@ module.exports = function () {
                 $.tmpf['from'] = el.dataset.from
                 $.tmpf['to'] = el.dataset.to
                 $.tmpf['remember'] = el.dataset.remember
+                $.tmpf['regexp'] = el.dataset.regexp
 
                 $.config.ActivePreset = el.dataset.id
 
-                $._fs.setPreset($.tmpf['id'], $.tmpf['from'], $.tmpf['to'], $.tmpf['remember'])
+                $._fs.setPreset($.tmpf['id'], $.tmpf['from'], $.tmpf['to'], $.tmpf['remember'], $.tmpf['regexp'])
                 fs.writeFileSync(path.join(__dirname, rpath.config), JSON.stringify($.config))
 
                 document.querySelector('.tb__popup').style.display = 'none'
