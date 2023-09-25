@@ -35,6 +35,8 @@ class Files {
         this.countRender = countRender
         this.baseDir = ''
         this.bindScroll = 1
+        this.htmlFiles = []
+        this.mod = 0
 
         this.typeFiles = [
             {
@@ -721,10 +723,6 @@ class Files {
     }
 
     async searchFiles (text, column, type) {
-        if (text.replace(/\s/g, '') === '') {
-            await this.updatePath()
-        }
-
         this.countRender = 0
 
         this.activeFiles = 0
@@ -733,6 +731,12 @@ class Files {
         let files_ = this.files
         let all = this.files.length
         let count = 0
+
+        if (this.activeFilesSort.length > 0) {
+            files_ = this.activeFilesSort
+        } else {
+            files_ = this.files
+        }
 
         if ((column >= 1 && column <= 4) && (type >= 1 && type <= 2)) {
             let name = document.querySelector('.sort__name')
@@ -782,17 +786,24 @@ class Files {
             }
         }
 
-        this.files = []
+        this.activeFilesSort = []
 
-        await Promise
-            .all(files_.filter(el => el.name.toLowerCase().search(text.toLowerCase()) !== -1).map(async (el) => {
-                this.files.push(el)
-                count++
-                return this.renderFiles(el, 0)
-            }))
-            .then(async e => this.preloadFiles(e.reduce((a, f) => a.concat(f), []).map(el => el.html)))
+        if (text.replace(/\s/g, '') === '') {
+            await this.preloadFiles(this.htmlFiles)
+            document.querySelector('.search__result').innerHTML = `Найдено ${this.files.length} файлов`
+            this.mod = 0
+        } else {
+            await Promise
+                .all(files_.filter(el => el.name.toLowerCase().search(text.toLowerCase()) !== -1).map(async (el) => {
+                    this.activeFilesSort.push(el)
+                    count++
+                    return this.renderFiles(el, 0)
+                }))
+                .then(async e => this.preloadFiles(e.reduce((a, f) => a.concat(f), []).map(el => el.html)))
 
-        document.querySelector('.search__result').innerHTML = `Найдено ${this.files.length} файлов по запросу ${text}`
+            this.mod = 1
+            document.querySelector('.search__result').innerHTML = `Найдено ${this.activeFilesSort.length} файлов по запросу ${text}`
+        }
     }
 
     async sortFiles (column, type) {
@@ -803,6 +814,8 @@ class Files {
 
         let files_ = this.files
         let count = this.files.length
+
+        if (this.activeFilesSort.length > 0) { files_ = this.activeFilesSort }
 
         if ((column >= 1 && column <= 4) && (type >= 1 && type <= 2)) {
             let name = document.querySelector('.sort__name')
@@ -871,6 +884,8 @@ class Files {
 
         this.bindScroll = 1
 
+        this.mod = 0
+
         console.time('ReadFiles')
 
         await this.readFiles(this.from).then(async (e) => {
@@ -935,7 +950,10 @@ class Files {
                     document.querySelector('.load__from-container').style.display = 'none'
                 }
                 return this.renderFiles(el)
-            })).then(e => this.preloadFiles(e.reduce((a, f) => a.concat(f), []).sort(x => x.active === 1 ? -1 : 1).map(el => el.html)))
+            })).then(e => {
+                this.htmlFiles = e.reduce((a, f) => a.concat(f), []).sort(x => x.active === 1 ? -1 : 1).map(el => el.html)
+                this.preloadFiles(e.reduce((a, f) => a.concat(f), []).sort(x => x.active === 1 ? -1 : 1).map(el => el.html))
+            })
 
             console.timeEnd('RenderFiles')
 
@@ -1049,11 +1067,19 @@ class Files {
     }
 
     getCountFiles () {
-        return this.files.length
+        if (this.mod === 0) {
+            return this.files.length
+        } else {
+            return this.activeFilesSort.length
+        }
     }
 
     getFiles () {
-        return this.files
+        if (this.mod === 0) {
+            return this.files
+        } else {
+            return this.activeFilesSort
+        }
     }
 
     updateFiles (files) {

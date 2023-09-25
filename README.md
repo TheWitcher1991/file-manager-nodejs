@@ -1,7 +1,7 @@
 # Folder parser `LITSER`
 
 After compiling the application, there must be a db folder in the root folder along with the exe file, which must contain the files db.json, config.json and lang.json
-Copy it from dist/dev/
+Copy it from src/dev/
 
 `Clear file db.json — Write an empty array in it: []`
 

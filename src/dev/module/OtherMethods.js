@@ -529,7 +529,7 @@ module.exports = function () {
     document.querySelector('.file__context').addEventListener('click', function (e) {
         try {
             if (!globalActive) {
-                const target = e.srcElement.offsetParent.parentNode.parentNode.parentNode.querySelectorAll('input')
+                const target = e.srcElement.offsetParent.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.querySelectorAll('input')
                 if (!target) return false
 
                 let check = document.querySelector('.file__table input')
@@ -539,44 +539,46 @@ module.exports = function () {
                     check.checked = false
                 }
 
+                $.files_.length = 0
+
                 target.forEach(el => {
-                    el.onclick = () => {
-                        $._fs.cleanActiveList()
-                        let elems = e.srcElement.offsetParent.parentNode.parentNode.parentNode.querySelectorAll('input:checked')
-                        $.files_ = [].map.call(elems, (obj) => {
-                            return {
-                                id: obj.dataset.id,
-                                name: obj.dataset.name,
-                                path: obj.dataset.path
-                            }
+                    $._fs.cleanActiveList()
+
+                    if (el.checked) {
+                        $.files_.push({
+                            id: el.dataset.id,
+                            name: el.dataset.name,
+                            path: el.dataset.path
                         })
-
-                        let keySize = Object.keys($.files_).length
-
-                        if (keySize === $._fs.getCountFiles()) {
-                            document.querySelector('.check__all').setAttribute('checked', 'true')
-                            document.querySelector('.check__all').checked = true
-                        } else {
-                            document.querySelector('.check__all').removeAttribute('checked')
-                            document.querySelector('.check__all').checked = false
-                        }
-
-
-                        if (keySize > 0) {
-                            document.querySelector('.search__result').innerHTML = `Выбрано ${keySize} файлов`
-                            document.querySelector('.global__button-tran').style.display = 'flex'
-                        } else {
-                            document.querySelector('.search__result').innerHTML = `Найдено ${$._fs.getCountFiles()} файлов`
-                            document.querySelector('.global__button-tran').style.display = 'none'
-                        }
                     }
                 })
+
+                let keySize = Object.keys($.files_).length
+
+                if (keySize === $._fs.getCountFiles()) {
+                    document.querySelector('.check__all').setAttribute('checked', 'true')
+                    document.querySelector('.check__all').checked = true
+                } else {
+                    document.querySelector('.check__all').removeAttribute('checked')
+                    document.querySelector('.check__all').checked = false
+                }
+
+
+                if (keySize > 0) {
+                    document.querySelector('.search__result').innerHTML = `Выбрано ${keySize} файлов`
+                    document.querySelector('.global__button-tran').style.display = 'flex'
+                } else {
+                    document.querySelector('.search__result').innerHTML = `Найдено ${$._fs.getCountFiles()} файлов`
+                    document.querySelector('.global__button-tran').style.display = 'none'
+                }
             } else {
                 let elems = e.srcElement.offsetParent.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.querySelectorAll('input')
 
                 let tmp = []
 
                 elems.forEach(el => {
+                    $._fs.cleanActiveList()
+
                     if (!el.checked) {
                         tmp.push(el.dataset.path)
                     }
