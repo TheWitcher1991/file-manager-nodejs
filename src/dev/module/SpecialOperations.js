@@ -115,4 +115,86 @@ module.exports = function () {
 
         $._fs.sortFiles(Number(column.value), Number(type.value))
     })
+
+    document.querySelector('.setting-button').addEventListener('click', function () {
+        let $this = document.documentElement.getAttribute('theme')
+
+        if ($this === 'dark') {
+            $._fs.setTheme('light')
+            $.config.theme = 'light'
+        } else {
+            $._fs.setTheme('dark')
+            $.config.theme = 'dark'
+        }
+
+        fs.writeFileSync(path.join(__dirname, rpath.config), JSON.stringify($.config))
+    })
+
+    document.querySelector('.lang-button').addEventListener('click', function () {
+        let $this = document.documentElement.getAttribute('lang')
+
+        if ($this === 'ru') {
+            $._fs.setLang('en')
+            $.config.lang = 'en'
+        } else {
+            $._fs.setLang('ru')
+            $.config.lang = 'ru'
+        }
+
+        fs.writeFileSync(path.join(__dirname, rpath.config), JSON.stringify($.config))
+    })
+
+    document.querySelector('.preset__list').addEventListener('click', function (event) {
+        const targetPreset = this.querySelectorAll('input')
+        if (!targetPreset) return false;
+
+        [].forEach.call(targetPreset, el => {
+            el.onclick = () => {
+                $.tmpf['id'] = el.dataset.id
+                $.tmpf['from'] = el.dataset.from
+                $.tmpf['to'] = el.dataset.to
+                $.tmpf['remember'] = el.dataset.remember
+                $.tmpf['regexp'] = el.dataset.regexp
+
+                $.config.ActivePreset = el.dataset.id
+
+                $._fs.setPreset($.tmpf['id'], $.tmpf['from'], $.tmpf['to'], $.tmpf['remember'], $.tmpf['regexp'])
+                fs.writeFileSync(path.join(__dirname, rpath.config), JSON.stringify($.config))
+
+                document.querySelector('.tb__popup').style.display = 'none'
+                document.querySelector('.check__all').removeAttribute('checked')
+                document.querySelector('.check__all').checked = false
+            }
+        })
+
+        const targetTrashPreset = this.querySelectorAll('.trash__preset');
+
+        [].forEach.call(targetTrashPreset, el => {
+            el.onclick = () => {
+                let preset = el.dataset.id
+                let active = $._fs.getPreset()
+
+                let tmpdb = []
+
+                if (preset === active) {
+                    $._fs.createNotice('Данный пресет активен')
+                } else {
+                    for (let x in $.db) {
+                        let tmp = String(Object.keys($.db[x]))
+                        if (tmp !== preset) {
+                            tmpdb.push($.db[x])
+                        }
+                    }
+
+                    $.db.length = 0
+
+                    $.db.push(...tmpdb)
+
+                    $._fs.updateDB($.db)
+                    $._fs.updatePreset()
+                    fs.writeFileSync(path.join(__dirname, rpath.db), JSON.stringify($.db))
+                }
+            }
+        })
+    })
 }

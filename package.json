@@ -5,7 +5,6 @@
   "bin": "./cli.js",
   "private": true,
   "expressPort": 8080,
-  "type": "commonjs",
   "basePath": "./dist",
   "scripts": {
     "test": "jest",

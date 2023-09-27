@@ -4,7 +4,7 @@ const path = require('path')
 const fs = require('fs')
 const { resolve } = require('path')
 
-function promisify (fn) {
+const promisify = fn => {
     return function () {
         return new Promise(
             (resolve, reject) => fn(
@@ -19,6 +19,8 @@ const readdir = promisify(fs.readdir)
 const stat = promisify(fs.stat)
 
 class Files {
+    self = this
+
     constructor (db, selector, from = '', to = '', remember = [], regexp = [], count = 0, files = [], readSubfolders = 1, activeFiles = 0, activeList = [], countRender = 0) {
         this.db = db
         this.selector = selector
@@ -183,6 +185,10 @@ class Files {
         ]
     }
 
+    _destruct () {
+        self = null
+    }
+
     mb_strwidth (str) {
         let i = 0
         let l = str.length
@@ -306,6 +312,17 @@ class Files {
             return files.reduce((a, f) => a.concat(f), [])
         } catch (error) {
             return 'Не найдена дирректория'
+        }
+    }
+
+    async trashFilesSync (path, id) {
+        try {
+            await fs.unlinkSync(String(path))
+            document.querySelector(`#file__${id}`)?.removeAttribute('checked')
+            document.querySelector(`#file__${id}`).checked = false
+            document.querySelector(`.file__div-${id}`)?.remove()
+        } catch {
+            alert('Произошла ошибка. Файлы не были удалены')
         }
     }
 
@@ -544,10 +561,6 @@ class Files {
         this.baseDir = this.from.split('\\').at(-1)
 
         try {
-            let config = this.getConfig()
-
-            let types = config.typeFiles.replace(/\s/g, '').split(/,|-/)
-
             if (this.remember.includes(el.uri) && act === 1) {
                 el.active = 1
             } else {
@@ -563,9 +576,6 @@ class Files {
                     }
                 })
             }
-
-
-
 
             let time = new Date(el.changed).toLocaleString('ru', {
                 year: 'numeric',
@@ -612,7 +622,7 @@ class Files {
 
                 </div>-->
                 <div class="user-select-none context__list context__list-sub">
-                   <div class="context__item context__del"><i class="fa-regular fa-trash"></i> Удалить</div>
+                   <div class="context__item delete__props"><i class="fa-regular fa-trash"></i> Удалить</div>
                     <div class="context__item create__props"><i class="fa-regular fa-gear"></i> Свойства</div>
                 </div>
             </div>
@@ -635,7 +645,7 @@ class Files {
                         <div class="container">
                             <div class="sort__check">
                                 <div class="checkbox__wrap">
-                                    <input type="checkbox" class="files checkbox__files custom-checkbox" name="file__${el.id}" id="file__${el.id}" value="${el.id}
+                                    <input type="checkbox" class="files checkbox__files custom-checkbox" name="file__${el.id}" id="file__${el.id}" value="${el.id}"
                                     data-id="${el.id}"
                                     data-path="${el.path}"
                                     data-name="${el.name}"
@@ -646,7 +656,7 @@ class Files {
                                     data-open="${el.open}"
                                     data-psize="${size}"
                                     data-time="${el.changed}"
-                                    data-ptime="${time}
+                                    data-ptime="${time}"
                                     data-asize="${size}"
                                     data-img="${img}"
                                     ${el.active === 1 ? 'checked' : ''}
@@ -688,13 +698,11 @@ class Files {
                 data-name="${el.name}"
                 data-path="${el.path}"
                 >
-
                     <div class="file__table-temp">
                         <div class="container">
-
                              <div class="sort__check">
                                 <div class="checkbox__wrap">
-                                    <input type="checkbox" class="files checkbox__files custom-checkbox" name="file__${el.id}" id="file__${el.id}" value="${el.id}
+                                    <input type="checkbox" class="files checkbox__files custom-checkbox" name="file__${el.id}" id="file__${el.id}" value="${el.id}"
                                     data-id="${el.id}"
                                     data-path="${el.path}"
                                     data-name="${el.name}"
@@ -705,7 +713,7 @@ class Files {
                                     data-open="${el.open}"
                                     data-psize="${size}"
                                     data-time="${el.changed}"
-                                    data-ptime="${time}
+                                    data-ptime="${time}"
                                     data-asize="${size}"
                                     data-img="${img}"
                                     />
@@ -733,7 +741,7 @@ class Files {
                     active: 0
                 }
             }
-        } catch (e) {
+        } catch {
 
         }
     }
