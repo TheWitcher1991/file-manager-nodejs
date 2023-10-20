@@ -1,4 +1,4 @@
-# Folder parser `LITSER`
+# File manager `LITSER`
 
 After compiling the application, there must be a db folder in the root folder along with the exe file, which must contain the files db.json, config.json and lang.json
 Copy it from src/dev/
